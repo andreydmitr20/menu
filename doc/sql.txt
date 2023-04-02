@@ -1,17 +1,21 @@
+
+Generate SQL
 CREATE TABLE user
 (
   user_id INT NOT NULL,
   name VARCHAR(200) NOT NULL,
   contacts VARCHAR(400) NOT NULL,
   icon VARCHAR(400) NOT NULL,
-  PRIMARY KEY (user_id)
+  PRIMARY KEY (user_id),
+  UNIQUE (name)
 );
 
 CREATE TABLE tag
 (
   tag_id INT NOT NULL,
   name VARCHAR(200) NOT NULL,
-  PRIMARY KEY (tag_id)
+  PRIMARY KEY (tag_id),
+  UNIQUE (name)
 );
 
 CREATE TABLE dish
@@ -22,13 +26,15 @@ CREATE TABLE dish
   receipt VARCHAR(2048) NOT NULL,
   user_id INT NOT NULL,
   PRIMARY KEY (dish_id),
-  FOREIGN KEY (user_id) REFERENCES user(user_id)
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  UNIQUE (name)
 );
 
 CREATE TABLE like
 (
   user_id INT NOT NULL,
   dish_id INT NOT NULL,
+  PRIMARY KEY (user_id, dish_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id),
   FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
 );
@@ -42,7 +48,10 @@ CREATE TABLE ingredient
   fat FLOAT NOT NULL,
   carbohydrates FLOAT NOT NULL,
   vitamins VARCHAR(1000) NOT NULL,
-  PRIMARY KEY (ingredient_id)
+  user_id INT NOT NULL,
+  PRIMARY KEY (ingredient_id),
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  UNIQUE (name)
 );
 
 CREATE TABLE unit
@@ -50,15 +59,17 @@ CREATE TABLE unit
   unit_id INT NOT NULL,
   name VARCHAR(20) NOT NULL,
   value FLOAT NOT NULL,
-  PRIMARY KEY (unit_id)
+  PRIMARY KEY (unit_id),
+  UNIQUE (name)
 );
 
-CREATE TABLE rating
+CREATE TABLE marking
 (
   value FLOAT NOT NULL,
   user_id INT NOT NULL,
   dish_id INT NOT NULL,
   tag_id INT NOT NULL,
+  PRIMARY KEY (user_id, dish_id, tag_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id),
   FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
   FOREIGN KEY (tag_id) REFERENCES tag(tag_id)
@@ -70,8 +81,21 @@ CREATE TABLE calendar
   amount FLOAT NOT NULL,
   user_id INT NOT NULL,
   dish_id INT NOT NULL,
+  PRIMARY KEY (date, user_id, dish_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id),
   FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
+);
+
+CREATE TABLE auth
+(
+  login VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  jwt VARCHAR(400) NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (user_id),
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  UNIQUE (login),
+  UNIQUE (jwt)
 );
 
 CREATE TABLE composition
@@ -80,6 +104,7 @@ CREATE TABLE composition
   dish_id INT NOT NULL,
   ingredient_id INT NOT NULL,
   unit_id INT NOT NULL,
+  PRIMARY KEY (dish_id, ingredient_id),
   FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
   FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id),
   FOREIGN KEY (unit_id) REFERENCES unit(unit_id)

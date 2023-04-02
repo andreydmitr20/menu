@@ -1,0 +1,19 @@
+Filters
+
+1. choose tags
+special tag: was not yesterday
+
+2. select existing ingredients
+
+3. automatically select tie of day (breakfast, etc.)
+and activate such tag
+
+4. tag like
+
+Add ingredients
+
+Make dish
+
+Register user
+
+Big button choose

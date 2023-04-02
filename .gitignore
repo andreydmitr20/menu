@@ -2,3 +2,5 @@
 **/.vscode
 **/.token
 **/.env
+**/__init__.py
+**/__pycache__
