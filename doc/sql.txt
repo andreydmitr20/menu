@@ -1,0 +1,86 @@
+CREATE TABLE user
+(
+  user_id INT NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  contacts VARCHAR(400) NOT NULL,
+  icon VARCHAR(400) NOT NULL,
+  PRIMARY KEY (user_id)
+);
+
+CREATE TABLE tag
+(
+  tag_id INT NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  PRIMARY KEY (tag_id)
+);
+
+CREATE TABLE dish
+(
+  dish_id INT NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  photo VARCHAR(400) NOT NULL,
+  receipt VARCHAR(2048) NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (dish_id),
+  FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE like
+(
+  user_id INT NOT NULL,
+  dish_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
+);
+
+CREATE TABLE ingredient
+(
+  ingredient_id INT NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  photo VARCHAR(400) NOT NULL,
+  protein FLOAT NOT NULL,
+  fat FLOAT NOT NULL,
+  carbohydrates FLOAT NOT NULL,
+  vitamins VARCHAR(1000) NOT NULL,
+  PRIMARY KEY (ingredient_id)
+);
+
+CREATE TABLE unit
+(
+  unit_id INT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  value FLOAT NOT NULL,
+  PRIMARY KEY (unit_id)
+);
+
+CREATE TABLE rating
+(
+  value FLOAT NOT NULL,
+  user_id INT NOT NULL,
+  dish_id INT NOT NULL,
+  tag_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
+  FOREIGN KEY (tag_id) REFERENCES tag(tag_id)
+);
+
+CREATE TABLE calendar
+(
+  date DATE NOT NULL,
+  amount FLOAT NOT NULL,
+  user_id INT NOT NULL,
+  dish_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES user(user_id),
+  FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
+);
+
+CREATE TABLE composition
+(
+  amount FLOAT NOT NULL,
+  dish_id INT NOT NULL,
+  ingredient_id INT NOT NULL,
+  unit_id INT NOT NULL,
+  FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
+  FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id),
+  FOREIGN KEY (unit_id) REFERENCES unit(unit_id)
+);
