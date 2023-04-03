@@ -36,6 +36,10 @@ class Like(models.Model):
                              blank=False,
                              on_delete=models.DO_NOTHING)
 
+    class Meta:
+        """ only one record: the user likes the dish """
+        unique_together = [['user', 'dish']]
+
 
 class Marking(models.Model):
     """ user tags for dishes """
