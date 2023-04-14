@@ -1,9 +1,8 @@
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const okButton = document.querySelector("#okButton");
-let jwtAccess;
-
-username.focus();
+const body = document.querySelector("body");
+body.addEventListener("loaded", () => username.focus());
 
 username.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
@@ -14,18 +13,17 @@ username.addEventListener("keypress", (event) => {
 password.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
     event.preventDefault();
-    loginDone(login);
+    login();
   }
 });
 
 okButton.addEventListener("click", (event) => {
   event.preventDefault();
-  loginDone(login);
+  login();
 });
 
 // try to login
 const login = () => {
-  console.log("login");
   // try to get new token
   fetch(API_URL + API_TOKEN_GET, {
     method: "POST",
@@ -44,7 +42,7 @@ const login = () => {
     }),
   })
     .then((response) => {
-      console.log(response);
+      //   console.log(response);
       if (response.status !== 200) throw new Error("Unathorized");
       return response.json();
     })
@@ -67,42 +65,10 @@ const loginDone = () => {
   window.open("./html/menu.html", "_self");
 };
 
-// get access jwt token
-const getAccessJwt = () => {
-  let jwtRefresh = localStorage.getItem(LS_JWT_REFRESH);
-
-  if (jwtRefresh === null || jwtRefresh === undefined) return;
-
-  // check
-  fetch(API_URL + API_TOKEN_REFRESH, {
-    method: "POST",
-
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify({
-      refresh: jwtRefresh,
-    }),
-  })
-    .then((response) => {
-      console.log(response);
-      if (response.status !== 200) throw new Error("Unathorized");
-      return response.json();
-    })
-    .then((jwt) => {
-      //   console.log(jwt.access);
-      jwtAccess = jwt.access;
-      loginDone();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return false;
-};
-
-getAccessJwt();
+getAccessJwt({
+  ok: loginDone,
+  error: () => {
+    body.classList.remove("d-none");
+    username.focus();
+  },
+});
