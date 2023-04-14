@@ -1,5 +1,3 @@
-
-Generate SQL
 CREATE TABLE user
 (
   user_id INT NOT NULL,
@@ -36,7 +34,8 @@ CREATE TABLE like
   dish_id INT NOT NULL,
   PRIMARY KEY (user_id, dish_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id),
-  FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
+  FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
+  UNIQUE (user_id, dish_id)
 );
 
 CREATE TABLE ingredient

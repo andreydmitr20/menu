@@ -28,7 +28,8 @@ class Auth(models.Model):
     password = models.CharField(max_length=50,
                                 blank=False,
                                 null=False)
-    jwt = models.CharField(max_length=400,
+    jwt = models.CharField(max_length=50,
                            blank=True,
                            null=True,
-                           unique=True)
+                           unique=True,
+                           db_index=True)

@@ -37,7 +37,16 @@ class Like(models.Model):
                              on_delete=models.DO_NOTHING)
 
     class Meta:
-        """ only one record: the user likes the dish """
+        """ THIS MAY BE REDUNDANT:
+        CREATE TABLE like
+            (
+            user_id INT NOT NULL,
+            dish_id INT NOT NULL,
+            PRIMARY KEY (user_id, dish_id),
+            FOREIGN KEY (user_id) REFERENCES user(user_id),
+            FOREIGN KEY (dish_id) REFERENCES dish(dish_id),
+            UNIQUE (user_id, dish_id)
+            );"""
         unique_together = [['user', 'dish']]
 
 
