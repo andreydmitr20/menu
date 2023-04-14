@@ -70,3 +70,13 @@ const checkAuth = () => {
     },
   });
 };
+
+// buttonPress animation
+const buttonPressEventListener = (event) => {
+  event.target.removeEventListener("animationend", buttonPressEventListener);
+  event.target.classList.remove("button-press");
+};
+const startButtonPressAnimation = (element) => {
+  element.addEventListener("animationend", buttonPressEventListener);
+  element.classList.add("button-press-animation");
+};

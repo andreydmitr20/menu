@@ -14,19 +14,36 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/menu.css" />
+    <link rel="stylesheet" href="../css/more.css" />
   </head>
+
   <body
     class="d-flex flex-row justify-content-center align-items-center m-0 p-0 vh-100"
   >
     <div
-      class="border border-primary rounded bg-warning d-flex flex-column flex-nowrap justify-content-center align-items-center p-3 m-2"
+      class="border border-primary rounded bg-warning d-flex flex-row flex-nowrap justify-content-center align-items-center p-3 m-2"
     >
-      <img class="img-fluid rounded w-25" src="../icon/favicon.png" />
+      <button
+        id="menu"
+        type="button"
+        class="btn btn-primary flex-column align-items-center"
+      >
+        <img class="img-fluid rounded" src="../icon/favicon.png" alt="menu" />
+        <p class="mt-2 h6">Menu</p>
+      </button>
 
-      <h1 class="text-center text-primary m-4 fs-1">Menu</h1>
-
-      <button id="more" type="button" class="btn btn-primary">More</button>
+      <button
+        id="ingredients"
+        type="button"
+        class="btn btn-primary flex-column align-items-center"
+      >
+        <img
+          class="img-fluid rounded"
+          src="../icon/ingredient.png"
+          alt="ingredients"
+        />
+        <p class="mt-2 h6">Ingredients</p>
+      </button>
     </div>
 
     <script
@@ -35,6 +52,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/common.js"></script>
-    <script src="../js/menu.js"></script>
+    <script src="../js/more.js"></script>
   </body>
 </html>

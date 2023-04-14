@@ -19,6 +19,7 @@ password.addEventListener("keypress", (event) => {
 
 okButton.addEventListener("click", (event) => {
   event.preventDefault();
+  startButtonPressAnimation(okButton);
   login();
 });
 
