@@ -10,3 +10,8 @@ ingredients.addEventListener("click", () => {
   startButtonPressAnimation(ingredients);
   window.open("./ingredients.html", "_self");
 });
+const settings = document.querySelector("#settings");
+settings.addEventListener("click", () => {
+  startButtonPressAnimation(settings);
+  window.open("./settings.html", "_self");
+});

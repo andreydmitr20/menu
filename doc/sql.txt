@@ -85,18 +85,6 @@ CREATE TABLE calendar
   FOREIGN KEY (dish_id) REFERENCES dish(dish_id)
 );
 
-CREATE TABLE auth
-(
-  login VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL,
-  jwt VARCHAR(400) NOT NULL,
-  user_id INT NOT NULL,
-  PRIMARY KEY (user_id),
-  FOREIGN KEY (user_id) REFERENCES user(user_id),
-  UNIQUE (login),
-  UNIQUE (jwt)
-);
-
 CREATE TABLE composition
 (
   amount FLOAT NOT NULL,
