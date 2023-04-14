@@ -31,23 +31,41 @@
         <h1 class="text-left text-primary m-4 me-5 fs-1">Settings</h1>
       </div>
 
-      <div class="fluid-container">
+      <!-- <form class="fluid-container fs-4 p-3"> -->
+      <form class="text-center text-primary fs-3 p-3" action="" method="post">
         <label for="username">Username:</label>
+        <img
+          id="iconImage"
+          class="img-fluid rounded w-25"
+          src=""
+          alt="user icon"
+        />
         <input
           class="container-fluid p-2 text-center rounded"
           type="text"
           id="username"
           name="username"
-          minlength="3"
-          required
+          disabled
         /><br />
 
+        <label for="password">Password:</label>
+        <input
+          class="container-fluid p-2 text-center rounded"
+          type="password"
+          id="password"
+          name="password"
+          minlength="8"
+          autocomplete="on"
+          placeholder="You may enter new password"
+          required
+        /><br />
         <label for="email">Email:</label>
         <input
           class="container-fluid p-2 text-center rounded"
           type="email"
           id="email"
           name="email"
+          placeholder="Enter your email"
         /><br />
 
         <label for="icon">Icon:</label>
@@ -56,14 +74,10 @@
           type="url"
           id="iconUrl"
           name="icon"
+          placeholder="Enter your icon URL"
         /><br />
-        <img
-          id="iconImage"
-          class="img-fluid rounded w-25"
-          src=""
-          alt="user icon"
-        />
-      </div>
+      </form>
+      <!-- </div> -->
       <!-- <button id="save" type="button" class="btn btn-primary">More</button> -->
     </div>
 

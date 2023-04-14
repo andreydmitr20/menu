@@ -26,48 +26,36 @@ okButton.addEventListener("click", (event) => {
 // try to login
 const login = () => {
   // try to get new token
-  fetch(API_URL + API_TOKEN_GET, {
-    method: "POST",
-
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify({
+  fetchAPI(
+    API_TOKEN,
+    {
       username: username.value,
       password: password.value,
-    }),
-  })
-    .then((response) => {
-      //   console.log(response);
-      if (response.status !== 200) throw new Error("Unathorized");
-      return response.json();
-    })
-    .then((jwt) => {
-      jwtAccess = jwt.access;
-      //   console.log(jwt.access);
-      localStorage.setItem(LS_JWT_REFRESH, jwt.refresh);
-      //   console.log(jwt.refresh);
-      loginDone();
-    })
-    .catch((error) => {
-      console.log(error);
-
-      password.value = "";
-      password.focus();
-    });
+    },
+    {
+      ok: (data) => {
+        sessionStorage.setItem(LS_JWT_ACCESS, data.access);
+        localStorage.setItem(LS_JWT_REFRESH, data.refresh);
+        loginDone();
+      },
+      error: () => {
+        password.value = "";
+        password.focus();
+      },
+    }
+  );
 };
 
 const loginDone = () => {
   window.open("./html/menu.html", "_self");
 };
 
+// check jwt
 getAccessJwt({
-  ok: loginDone,
+  ok: (data) => {
+    sessionStorage.setItem(LS_JWT_ACCESS, data.access);
+    loginDone();
+  },
   error: () => {
     body.classList.remove("d-none");
     username.focus();
