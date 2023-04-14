@@ -1,13 +1,19 @@
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const okButton = document.querySelector("#okButton");
+const registerButton = document.querySelector("#registerButton");
+
 const body = document.querySelector("body");
 body.addEventListener("loaded", () => username.focus());
 
 username.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
     event.preventDefault();
-    password.focus();
+    if (strIsEmpty(username.value)) {
+      username.focus();
+    } else {
+      password.focus();
+    }
   }
 });
 password.addEventListener("keypress", (event) => {
@@ -21,6 +27,19 @@ okButton.addEventListener("click", (event) => {
   event.preventDefault();
   startButtonPressAnimation(okButton);
   login();
+});
+
+registerButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  startButtonPressAnimation(registerButton);
+  // check username
+  let userName = username.value;
+  if (strIsEmpty(userName)) {
+    username.focus();
+    return;
+  }
+
+  //   fetchAPI()
 });
 
 // try to login

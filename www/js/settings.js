@@ -15,6 +15,7 @@ const getUserData = () => {
       ok: (data) => {
         console.log(data);
         userName.value = data.token_user_username;
+        userName.dataset.id = data.token_user_id;
         password.value = "";
         email.value = data.token_user_email;
         userName.iconUrl = data.token_user_icon;

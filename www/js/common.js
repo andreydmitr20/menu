@@ -113,3 +113,5 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
       }
     });
 };
+
+const strIsEmpty = (str) => str === null || str === undefined || str === "";
