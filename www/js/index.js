@@ -1,6 +1,7 @@
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const okButton = document.querySelector("#okButton");
+let jwtAccess;
 
 username.focus();
 
@@ -10,7 +11,19 @@ username.addEventListener("keypress", (event) => {
     password.focus();
   }
 });
+password.addEventListener("keypress", (event) => {
+  if (event.keyCode == 13) {
+    event.preventDefault();
+    loginDone(login);
+  }
+});
 
+okButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  loginDone(login);
+});
+
+// try to login
 const login = () => {
   console.log("login");
   // try to get new token
@@ -32,34 +45,36 @@ const login = () => {
   })
     .then((response) => {
       console.log(response);
+      if (response.status !== 200) throw new Error("Unathorized");
+      return response.json();
+    })
+    .then((jwt) => {
+      jwtAccess = jwt.access;
+      //   console.log(jwt.access);
+      localStorage.setItem(LS_JWT_REFRESH, jwt.refresh);
+      //   console.log(jwt.refresh);
+      loginDone();
     })
     .catch((error) => {
       console.log(error);
+
+      password.value = "";
+      password.focus();
     });
 };
 
-password.addEventListener("keypress", (event) => {
-  if (event.keyCode == 13) {
-    event.preventDefault();
-    login();
-  }
-});
+const loginDone = () => {
+  window.open("./html/menu.html", "_self");
+};
 
-okButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  login();
-});
+// get access jwt token
+const getAccessJwt = () => {
+  let jwtRefresh = localStorage.getItem(LS_JWT_REFRESH);
 
-// refresh jwt token
-const refreshJwtToken = () => {};
+  if (jwtRefresh === null || jwtRefresh === undefined) return;
 
-// check jwt token
-const checkJwtToken = () => {
-  let jwtToken = localStorage.getItem(LS_JWT_TOKEN);
-
-  if (jwtToken === null) return false;
   // check
-  fetch(API_URL + API_TOKEN_CHECK, {
+  fetch(API_URL + API_TOKEN_REFRESH, {
     method: "POST",
 
     mode: "cors", // no-cors, *cors, same-origin
@@ -70,17 +85,24 @@ const checkJwtToken = () => {
     },
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: {
-      username: username.value,
-      password: password.value,
-    },
+    body: JSON.stringify({
+      refresh: jwtRefresh,
+    }),
   })
     .then((response) => {
       console.log(response);
+      if (response.status !== 200) throw new Error("Unathorized");
+      return response.json();
+    })
+    .then((jwt) => {
+      //   console.log(jwt.access);
+      jwtAccess = jwt.access;
+      loginDone();
     })
     .catch((error) => {
       console.log(error);
     });
+  return false;
 };
 
-checkJwtToken();
+getAccessJwt();
