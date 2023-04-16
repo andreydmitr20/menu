@@ -10,7 +10,9 @@ const API_USER_CHANGE_PASSWORD = "user/change-password/";
 
 const API_URL = "http://127.0.0.1:8000/";
 
-const strIsEmpty = (str) => str === null || str === undefined || str === "";
+const strIsEmpty = (str) => {
+  return str === null || str === undefined || str === "";
+};
 
 // get access jwt token
 // if ok then call functionsObj.ok()
@@ -27,12 +29,14 @@ const getAccessJwt = (functionsObj) => {
     }
     return;
   }
+
   // check
   fetchAPI(
     API_TOKEN_REFRESH,
     {
       refresh: jwtRefresh,
     },
+
     functionsObj
   );
 };
@@ -60,7 +64,7 @@ const startButtonPressAnimation = (element) => {
 };
 
 // fetch data from api
-const fetchAPI = (api, body, functionsObj, jwtAuth) => {
+const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
   let headers = {
     "Content-Type": "application/json",
   };
@@ -68,8 +72,10 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
     headers["Authorization"] =
       "Bearer " + sessionStorage.getItem(SS_JWT_ACCESS);
   }
+
   //   console.log([headers]);
   let responseStatus = 200;
+
   fetch(API_URL + api, {
     method: "POST",
 
@@ -82,10 +88,14 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
     body: JSON.stringify(body),
   })
     .then((response) => {
+      responseStatus = response.status;
+
       //   console.log(response);
-      if (response.status === 401) {
-        // get new jwt access token
-        console.log("refresh token");
+      if (
+        (response.status === 401 || response.status === 400) &&
+        recursion !== true
+      ) {
+        // console.log("get access token");
         fetchAPI(
           API_TOKEN_REFRESH,
           {
@@ -93,19 +103,27 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
           },
           {
             ok: (data) => {
-              console.log("repeat fetch");
+              //   console.log("repeat fetch");
               sessionStorage.setItem(SS_JWT_ACCESS, data.access);
-              fetchAPI(api, body, functionsObj, jwtAuth);
+              fetchAPI(api, body, functionsObj, jwtAuth, (recursion = true));
             },
             error: (err) => {
+              console.log("err");
               sessionStorage.removeItem(SS_JWT_ACCESS);
+              if (
+                typeof functionsObj === "object" &&
+                functionsObj.hasOwnProperty("error")
+              ) {
+                functionsObj.error(err.message);
+              }
             },
-          }
-        );
-        return;
-      }
+          },
 
-      responseStatus = response.status;
+          (jwtAuth = false),
+          (recursion = true)
+        );
+        return new Promise(() => null);
+      }
 
       if (response.status >= 200 && response.status < 500) {
         return response.json();
@@ -113,18 +131,23 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
       throw new Error((message = response.responseText));
     })
     .then((data) => {
-      //   console.log(data);
-      if (responseStatus >= 400 && responseStatus < 500) {
-        throw new Error((message = JSON.stringify(data)));
-      }
-      if (
-        typeof functionsObj === "object" &&
-        functionsObj.hasOwnProperty("ok")
-      ) {
-        functionsObj.ok(data);
+      if (data !== null) {
+        //   console.log(data);
+        if (responseStatus >= 400 && responseStatus < 500) {
+          throw new Error((message = JSON.stringify(data)));
+        }
+        if (
+          typeof functionsObj === "object" &&
+          functionsObj.hasOwnProperty("ok")
+        ) {
+          functionsObj.ok(data);
+        }
+      } else {
+        console.log("null");
       }
     })
     .catch((error) => {
+      // to clear exit when use recursion
       console.log(error);
       if (
         typeof functionsObj === "object" &&
@@ -136,7 +159,7 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
 };
 
 // try to login
-const login = (username, password, okFunction, errorFunction) => {
+const login = (username, password, okFunction = null, errorFunction = null) => {
   // try to get new token
   fetchAPI(
     API_TOKEN,
