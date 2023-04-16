@@ -63,10 +63,11 @@ iconUrl.addEventListener("keypress", (event) => {
   }
 });
 
-okButton.addEventListener("click", () => {
+okButton.addEventListener("click", (event) => {
   startButtonPressAnimation(okButton);
   okButton.disabled = true;
-  // try to register
+
+  // try to register of user
   fetchAPI(
     API_USER_REGISTER,
     {

@@ -92,7 +92,7 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
 
       //   console.log(response);
       if (response.status === 401 && recursion !== true) {
-        // console.log("get access token");
+        console.log("get access token");
         fetchAPI(
           API_TOKEN_REFRESH,
           {
@@ -139,8 +139,6 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
         ) {
           functionsObj.ok(data);
         }
-      } else {
-        console.log("null");
       }
     })
     .catch((error) => {

@@ -82,8 +82,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5500",
-    "http://127.0.0.1:5500",
+    "http://localhost",
+    "http://127.0.0.1",
 ]
 ROOT_URLCONF = "menu.urls"
 
