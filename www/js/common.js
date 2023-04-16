@@ -91,10 +91,7 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
       responseStatus = response.status;
 
       //   console.log(response);
-      if (
-        (response.status === 401 || response.status === 400) &&
-        recursion !== true
-      ) {
+      if (response.status === 401 && recursion !== true) {
         // console.log("get access token");
         fetchAPI(
           API_TOKEN_REFRESH,
@@ -179,4 +176,22 @@ const login = (username, password, okFunction = null, errorFunction = null) => {
       },
     }
   );
+};
+
+// get error text from error message
+const getErrorTextFromMessage = (err, propertyArray) => {
+  let errorText = "Invalid data";
+  try {
+    let obj = JSON.parse(err.replace("Error:", "").trim());
+    if (typeof obj === "object") {
+      for (let property of propertyArray) {
+        if (obj.hasOwnProperty(property[0])) {
+          errorText = obj[property[0]];
+          property[1].focus();
+          break;
+        }
+      }
+    }
+  } catch (e) {}
+  return errorText;
 };

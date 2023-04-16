@@ -17,7 +17,7 @@ viewPassword.addEventListener("click", () => {
   }
 });
 
-username.focus();
+userName.focus();
 
 const menu = document.querySelector("#menu");
 menu.addEventListener("click", () => {
@@ -31,6 +31,36 @@ iconImage.addEventListener("error", () => {
 
 iconUrl.addEventListener("input", () => {
   iconImage.src = iconUrl.value;
+});
+
+userName.addEventListener("keypress", (event) => {
+  if (event.keyCode == 13) {
+    if (!strIsEmpty(userName.value)) {
+      password.focus();
+    }
+  }
+});
+
+password.addEventListener("keypress", (event) => {
+  if (event.keyCode == 13) {
+    if (!strIsEmpty(password.value)) {
+      email.focus();
+    }
+  }
+});
+
+email.addEventListener("keypress", (event) => {
+  if (event.keyCode == 13) {
+    if (!strIsEmpty(email.value)) {
+      icon.focus();
+    }
+  }
+});
+
+iconUrl.addEventListener("keypress", (event) => {
+  if (event.keyCode == 13) {
+    okButton.click();
+  }
 });
 
 okButton.addEventListener("click", () => {
@@ -51,27 +81,24 @@ okButton.addEventListener("click", () => {
 
         console.log("registered");
         okButton.disabled = false;
-        // TODO autologin
-        // window.open("../index.html", "_self");
+        // auto login
+        login(
+          userName.value,
+          password.value,
+          () => {
+            window.open("../html/menu.html", "_self");
+          },
+          () => {
+            window.open("../index.html", "_self");
+          }
+        );
       },
       error: (err) => {
-        let obj = JSON.parse(err.replace("Error:", "").trim());
-        let text = "Invalid data";
-        if (typeof obj === "object") {
-          if (obj.hasOwnProperty("email")) {
-            text = obj.email[0];
-            email.focus();
-          }
-          if (obj.hasOwnProperty("username")) {
-            text = obj.username[0];
-            userName.focus();
-          }
-          if (obj.hasOwnProperty("password")) {
-            text = obj.password[0];
-            password.focus();
-          }
-        }
-        error.textContent = text;
+        error.textContent = getErrorTextFromMessage(err, [
+          ["username", userName],
+          ["password", password],
+          ["email", email],
+        ]);
         okButton.disabled = false;
       },
     },
