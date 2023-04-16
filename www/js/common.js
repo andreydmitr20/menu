@@ -134,3 +134,26 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
       }
     });
 };
+
+// try to login
+const login = (username, password, okFunction, errorFunction) => {
+  // try to get new token
+  fetchAPI(
+    API_TOKEN,
+    {
+      username: username,
+      password: password,
+    },
+    {
+      ok: (data) => {
+        sessionStorage.setItem(SS_JWT_ACCESS, data.access);
+        localStorage.setItem(LS_JWT_REFRESH, data.refresh);
+        if (okFunction !== null && okFunction !== undefined) okFunction();
+      },
+      error: () => {
+        if (errorFunction !== null && errorFunction !== undefined)
+          errorFunction();
+      },
+    }
+  );
+};

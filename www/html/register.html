@@ -44,7 +44,16 @@
           placeholder="name"
         /><br />
 
-        <label for="password">Password:</label>
+        <div class="d-flex flex-row justify-content-center align-items-center">
+          <label for="password">Password:</label>
+          <img
+            id="view-password"
+            class="img-fluid rounded w-25 p-2"
+            src="../icon/view.png"
+            alt="view icon"
+          />
+        </div>
+
         <input
           class="container-fluid p-2 text-center rounded"
           type="password"
@@ -54,7 +63,9 @@
           autocomplete="on"
           placeholder="password"
           required
-        /><br />
+        />
+
+        <br />
         <label for="email">Email:</label>
         <input
           class="container-fluid p-2 text-center rounded"

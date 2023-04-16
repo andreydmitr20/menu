@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User
+from re import match
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,12 +18,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        """
-        Check that username <=3 characters
-        """
-        if len(data['username']) < 3:
+        # Check username
+        if not match("^[A-Za-z0-9_]{3,50}$", data['username']):
             raise serializers.ValidationError(
-                {"username": "Username should be at least 3 chars"})
+                {"username": "Username should be 3-50 chars and has no spaces."})
+        # Check password
+        if not match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,50}$", data['password']):
+            raise serializers.ValidationError(
+                {"password": "Password should be 8-50 chars and has one uppercase, one lowercase chars, one digit and one special character #?!@$%^&*-"})
         return data
 
     def save(self):

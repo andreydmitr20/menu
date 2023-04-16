@@ -11,3 +11,4 @@ Icons:
 <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/ingredient" title="ingredient icons">Ingredient icons created by SetitikPixelStudio - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/salad" title="salad icons">Salad icons created by Mihimihi - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/eye" title="eye icons">Eye icons created by Kiranshastry - Flaticon</a>

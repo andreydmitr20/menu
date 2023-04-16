@@ -5,8 +5,20 @@ const iconUrl = document.querySelector("#iconUrl");
 const iconImage = document.querySelector("#iconImage");
 const okButton = document.querySelector("#ok");
 const error = document.querySelector("#error");
+const viewPassword = document.querySelector("#view-password");
+
+viewPassword.addEventListener("click", () => {
+  startButtonPressAnimation(viewPassword);
+
+  if (password.type === "password") {
+    password.type = "text";
+  } else {
+    password.type = "password";
+  }
+});
 
 username.focus();
+
 const menu = document.querySelector("#menu");
 menu.addEventListener("click", () => {
   startButtonPressAnimation(menu);
