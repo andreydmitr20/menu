@@ -1,50 +1,61 @@
-from django.contrib.auth.models import User as UserDjango
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseServerError
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render
-from rest_framework import permissions
+from rest_framework import status, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import User
+from .serializers import (PasswordChangeSerializer, RegistrationSerializer,
+                          UserSerializer)
 
 
-class ViewUserProfile(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+class UserViewSet(APIView):
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-        profile = User.objects.filter(pk=request.user.id)
-        token_user_icon = ''
-        token_user_email = ''
-        if profile.count() > 0:
-            token_user_icon = profile.icon
-            token_user_email = profile.email
-        return JsonResponse({'token_user_id': request.user.id,
-                             'token_user_username': request.user.username,
-                             'token_user_icon': token_user_icon,
-                             'token_user_email': token_user_email,
-                             })
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get(self, request):
+        queryset = User.objects.filter(pk=request.user.id)
+        # added string
+        serializer = UserSerializer(queryset)
+        return Response(serializer.data)
+
+    def post(self, request):
+        user = User.objects.filter(pk=request.user.id)
+        serializer = UserSerializer(user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ViewUserRegister(APIView):
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+class RegistrationView(APIView):
+    def post(self, request):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, format=None):
-        print(request.username)
-        user = UserDjango.objects.filter(username=request.username)
-        if user.count() > 0:
-            # same name user exists
-            return HttpResponseBadRequest({'Same name user exists'})
-        try:
-            userDjango = UserDjango(username=request.username,
-                                    password=request.password)
-            userDjango.save()
-            user = User(id=userDjango.id, email=request.email,
-                        icon=request.icon)
-            user.save()
-        except:
-            return HttpResponseServerError({'Error creating new user'})
 
-        return JsonResponse({'token_user_id': user.id,
-                             'token_user_username': userDjango.username,
-                             'token_user_icon': user.icon,
-                             'token_user_email': user.email,
-                             })
+class LogoutView(APIView):
+    def post(self, request):
+        logout(request)
+        return Response({'msg': 'Successfully Logged out'}, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request):
+        serializer = PasswordChangeSerializer(
+            context={'request': request}, data=request.data)
+        #
+        serializer.is_valid(raise_exception=True)
+        request.user.set_password(serializer.validated_data['new_password'])
+        request.user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)

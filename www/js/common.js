@@ -1,10 +1,16 @@
 const LS_JWT_REFRESH = "jwt_refresh";
-const LS_JWT_ACCESS = "jwt_access";
+const SS_JWT_ACCESS = "jwt_access";
 
-const API_TOKEN = "api/token/";
-const API_TOKEN_REFRESH = "api/token/refresh/";
-const API_USER_PROFILE = "api/user/profile/";
+const API_TOKEN = "user/token/";
+const API_TOKEN_REFRESH = "user/token/refresh/";
+
+const API_USER_LOGOUT = "user/logout/";
+const API_USER_REGISTER = "user/register/";
+const API_USER_CHANGE_PASSWORD = "user/change-password/";
+
 const API_URL = "http://127.0.0.1:8000/";
+
+const strIsEmpty = (str) => str === null || str === undefined || str === "";
 
 // get access jwt token
 // if ok then call functionsObj.ok()
@@ -33,11 +39,14 @@ const getAccessJwt = (functionsObj) => {
 
 // if not authenticated, goto index.html
 const checkAuth = () => {
-  getAccessJwt({
-    error: () => {
-      window.open("../index.html", "_self");
-    },
-  });
+  //   getAccessJwt({
+  //     error: () => {
+  //       window.open("../index.html", "_self");
+  //     },
+  //   });
+  if (strIsEmpty(sessionStorage.getItem(SS_JWT_ACCESS))) {
+    window.open("../index.html", "_self");
+  }
 };
 
 // buttonPress animation
@@ -57,9 +66,10 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
   };
   if (jwtAuth) {
     headers["Authorization"] =
-      "Bearer " + sessionStorage.getItem(LS_JWT_ACCESS);
+      "Bearer " + sessionStorage.getItem(SS_JWT_ACCESS);
   }
   //   console.log([headers]);
+  let responseStatus = 200;
   fetch(API_URL + api, {
     method: "POST",
 
@@ -84,18 +94,29 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
           {
             ok: (data) => {
               console.log("repeat fetch");
-              sessionStorage.setItem(LS_JWT_ACCESS, data.access);
+              sessionStorage.setItem(SS_JWT_ACCESS, data.access);
               fetchAPI(api, body, functionsObj, jwtAuth);
+            },
+            error: (err) => {
+              sessionStorage.removeItem(SS_JWT_ACCESS);
             },
           }
         );
         return;
       }
-      if (response.status !== 200) throw new Error(response.responseText);
-      return response.json();
+
+      responseStatus = response.status;
+
+      if (response.status >= 200 && response.status < 500) {
+        return response.json();
+      }
+      throw new Error((message = response.responseText));
     })
     .then((data) => {
-      // console.log(data);
+      //   console.log(data);
+      if (responseStatus >= 400 && responseStatus < 500) {
+        throw new Error((message = JSON.stringify(data)));
+      }
       if (
         typeof functionsObj === "object" &&
         functionsObj.hasOwnProperty("ok")
@@ -109,9 +130,7 @@ const fetchAPI = (api, body, functionsObj, jwtAuth) => {
         typeof functionsObj === "object" &&
         functionsObj.hasOwnProperty("error")
       ) {
-        functionsObj.error();
+        functionsObj.error(error.message);
       }
     });
 };
-
-const strIsEmpty = (str) => str === null || str === undefined || str === "";

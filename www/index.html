@@ -37,26 +37,34 @@
           required
         /><br /><br />
         <label for="password">Password:</label>
-        <input
-          class="container-fluid p-2 text-center rounded"
-          type="password"
-          id="password"
-          name="password"
-          minlength="8"
-          autocomplete="on"
-          required
-        /><br /><br />
-        <input
-          class="rounded p-3 mx-2 mb-4 text-center text-primary"
+        <div>
+          <input
+            class="container-fluid p-2 text-center rounded"
+            type="password"
+            id="password"
+            name="password"
+            minlength="8"
+            autocomplete="on"
+            required
+          />
+        </div>
+        <br />
+
+        <button
           id="okButton"
-          type="submit"
-          value="Ok"
-        /><input
-          class="rounded p-3 mx-2 mb-4 text-center text-primary"
+          type="button"
+          class="btn btn-primary fs-3 p-3 mx-2"
+        >
+          Ok
+        </button>
+
+        <button
           id="registerButton"
-          type="submit"
-          value="Register"
-        />
+          type="button"
+          class="btn btn-primary fs-3 p-3 mx-2"
+        >
+          Register
+        </button>
       </form>
     </div>
 

@@ -32,14 +32,7 @@ okButton.addEventListener("click", (event) => {
 registerButton.addEventListener("click", (event) => {
   event.preventDefault();
   startButtonPressAnimation(registerButton);
-  // check username
-  let userName = username.value;
-  if (strIsEmpty(userName)) {
-    username.focus();
-    return;
-  }
-
-  //   fetchAPI()
+  window.open("./html/register.html", "_self");
 });
 
 // try to login
@@ -53,7 +46,7 @@ const login = () => {
     },
     {
       ok: (data) => {
-        sessionStorage.setItem(LS_JWT_ACCESS, data.access);
+        sessionStorage.setItem(SS_JWT_ACCESS, data.access);
         localStorage.setItem(LS_JWT_REFRESH, data.refresh);
         loginDone();
       },
@@ -72,7 +65,7 @@ const loginDone = () => {
 // check jwt
 getAccessJwt({
   ok: (data) => {
-    sessionStorage.setItem(LS_JWT_ACCESS, data.access);
+    sessionStorage.setItem(SS_JWT_ACCESS, data.access);
     loginDone();
   },
   error: () => {
