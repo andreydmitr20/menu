@@ -1,21 +1,21 @@
 checkAuth();
-const menu = document.querySelector("#menu");
-menu.addEventListener("click", () => {
-  startButtonPressAnimation(menu);
+
+btnAction("menu", () => {
   window.open("./menu.html", "_self");
 });
-const dishes = document.querySelector("#dishes");
-dishes.addEventListener("click", () => {
-  startButtonPressAnimation(dishes);
+
+btnAction("dishes", () => {
   window.open("./dishes.html", "_self");
 });
-const ingredients = document.querySelector("#ingredients");
-ingredients.addEventListener("click", () => {
-  startButtonPressAnimation(ingredients);
+
+btnAction("ingredients", () => {
   window.open("./ingredients.html", "_self");
 });
-const settings = document.querySelector("#settings");
-settings.addEventListener("click", () => {
-  startButtonPressAnimation(settings);
+
+btnAction("settings", () => {
   window.open("./settings.html", "_self");
+});
+
+btnAction("units", () => {
+  window.open("./units.html", "_self");
 });

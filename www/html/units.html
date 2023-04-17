@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Menu</title>
+    <title>Settings</title>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
 
     <link
@@ -14,19 +14,26 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/menu.css" />
+    <link rel="stylesheet" href="../css/units.css" />
   </head>
   <body
     class="d-flex flex-row justify-content-center align-items-center m-0 p-0 vh-100"
   >
     <div
-      class="border border-primary rounded bg-warning d-flex flex-column flex-nowrap justify-content-center align-items-center p-3 m-2"
+      class="border border-primary rounded bg-warning d-flex flex-column flex-nowrap justify-content-center align-items-center"
     >
-      <img class="img-fluid rounded w-25" src="../icon/favicon.png" />
+      <div
+        class="d-flex flex-row flex-nowrap justify-content-center align-items-center p-2 m-1"
+      >
+        <a id="menu" class="d-flex justify-content-center">
+          <img class="img-fluid rounded w-25" src="../icon/favicon.png" />
+        </a>
+        <h1 class="text-left text-primary m-4 me-5 fs-1">Units</h1>
+      </div>
 
-      <h1 class="text-center text-primary m-4 fs-1">Menu</h1>
-
-      <button id="more" type="button" class="btn btn-primary fs-3">More</button>
+      <!-- <div id="units" class="d-flex justify-content-center overflow-auto"></div> -->
+      <div id="units" class="accordion overflow-auto h-100" >
+       
     </div>
 
     <script
@@ -35,6 +42,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="../js/common.js"></script>
-    <script src="../js/menu.js"></script>
+    <script src="../js/units.js"></script>
   </body>
 </html>

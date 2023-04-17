@@ -12,5 +12,6 @@ urlpatterns = [
 
 
     path('', include('user.urls', namespace='user')),
+    path('', include('dish.urls', namespace='dish')),
 
 ]

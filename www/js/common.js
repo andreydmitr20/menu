@@ -1,3 +1,5 @@
+const API_URL = "http://127.0.0.1:8000/";
+
 const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
 
@@ -9,9 +11,11 @@ const API_USER_REGISTER = "user/register/";
 const API_USER_CHANGE_PASSWORD = "user/change-password/";
 const API_USER = "user/";
 
-const API_URL = "http://127.0.0.1:8000/";
+const API_DISH_UNITS = "dish/units/";
 
 const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
+
+const TEXT_ERROR_SERVER_ERROR = "Server error";
 
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
@@ -76,7 +80,7 @@ const btnAction = (id, clickFunction) => {
   const btn = document.querySelector("#" + id);
   btn.addEventListener("click", (event) => {
     startButtonPressAnimation(btn);
-    setTimeout(clickFunction, 100, event);
+    setTimeout(clickFunction, 50, event);
   });
   return btn;
 };

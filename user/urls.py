@@ -10,11 +10,11 @@ urlpatterns = [
     path('user/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('user/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('user/register/', RegistrationView.as_view(), name='register'),
-    path('user/logout/', LogoutView.as_view(), name='logout'),
+    path('user/register/', RegistrationView.as_view(), name='user_register'),
+    path('user/logout/', LogoutView.as_view(), name='user_logout'),
     path('user/change-password/',
-         ChangePasswordView.as_view(), name='change password'),
+         ChangePasswordView.as_view(), name='user_change_password'),
 
-    path('user/', UserView.as_view(), name='user info'),
+    path('user/', UserView.as_view(), name='user_info'),
 
 ]
