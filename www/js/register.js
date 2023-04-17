@@ -4,7 +4,7 @@ const email = document.querySelector("#email");
 const iconUrl = document.querySelector("#iconUrl");
 const iconImage = document.querySelector("#iconImage");
 const okButton = document.querySelector("#ok");
-const error = document.querySelector("#error");
+const errorText = document.querySelector("#error-text");
 const viewPassword = document.querySelector("#view-password");
 
 viewPassword.addEventListener("click", () => {
@@ -52,7 +52,7 @@ password.addEventListener("keypress", (event) => {
 email.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
     if (!strIsEmpty(email.value)) {
-      icon.focus();
+      iconUrl.focus();
     }
   }
 });
@@ -78,7 +78,7 @@ okButton.addEventListener("click", (event) => {
     },
     {
       ok: () => {
-        error.textContent = "";
+        errorText.textContent = "";
 
         console.log("registered");
         okButton.disabled = false;
@@ -95,7 +95,7 @@ okButton.addEventListener("click", (event) => {
         );
       },
       error: (err) => {
-        error.textContent = getErrorTextFromMessage(err, [
+        errorText.textContent = getErrorTextFromMessage(err, [
           ["username", userName],
           ["password", password],
           ["email", email],

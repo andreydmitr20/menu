@@ -10,10 +10,16 @@ const API_USER_CHANGE_PASSWORD = "user/change-password/";
 
 const API_URL = "http://127.0.0.1:8000/";
 
+const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
+
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
 };
 
+const userLogout = () => {
+  sessionStorage.removeItem(SS_JWT_ACCESS);
+  localStorage.removeItem(LS_JWT_REFRESH);
+};
 // get access jwt token
 // if ok then call functionsObj.ok()
 // if error then call functionsObj.error()
@@ -56,11 +62,11 @@ const checkAuth = () => {
 // buttonPress animation
 const buttonPressEventListener = (event) => {
   event.target.removeEventListener("animationend", buttonPressEventListener);
-  event.target.classList.remove("button-press");
+  event.target.classList.remove(CSS_BUTTON_PRESS_ANIMATION);
 };
 const startButtonPressAnimation = (element) => {
   element.addEventListener("animationend", buttonPressEventListener);
-  element.classList.add("button-press-animation");
+  element.classList.add(CSS_BUTTON_PRESS_ANIMATION);
 };
 
 // fetch data from api

@@ -17,16 +17,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def validate(self, data):
+    def validate(self, attrs):
         # Check username
-        if not match("^[A-Za-z0-9_]{3,50}$", data['username']):
+        if not match("^[A-Za-z0-9_]{3,50}$", attrs['username']):
             raise serializers.ValidationError(
                 {"username": "Username should be 3-50 chars and has no spaces."})
         # Check password
-        if not match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,50}$", data['password']):
+        if not match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,50}$", attrs['password']):
             raise serializers.ValidationError(
                 {"password": "Password should be 8-50 chars and has one uppercase, one lowercase chars, one digit and one special character #?!@$%^&*-"})
-        return data
+        return attrs
 
     def save(self):
         user = User(
