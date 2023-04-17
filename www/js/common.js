@@ -7,6 +7,7 @@ const API_TOKEN_REFRESH = "user/token/refresh/";
 const API_USER_LOGOUT = "user/logout/";
 const API_USER_REGISTER = "user/register/";
 const API_USER_CHANGE_PASSWORD = "user/change-password/";
+const API_USER = "user/";
 
 const API_URL = "http://127.0.0.1:8000/";
 
@@ -39,6 +40,7 @@ const getAccessJwt = (functionsObj) => {
   // check
   fetchAPI(
     API_TOKEN_REFRESH,
+    "post",
     {
       refresh: jwtRefresh,
     },
@@ -70,7 +72,16 @@ const startButtonPressAnimation = (element) => {
 };
 
 // fetch data from api
-const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
+const fetchAPI = (
+  apiLink,
+  apiMethod,
+  body,
+  functionsObj,
+  jwtAuth = false,
+  recursion
+) => {
+  // console.log("body", body);
+
   let headers = {
     "Content-Type": "application/json",
   };
@@ -81,9 +92,8 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
 
   //   console.log([headers]);
   let responseStatus = 200;
-
-  fetch(API_URL + api, {
-    method: "POST",
+  let request = {
+    method: apiMethod,
 
     mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -91,8 +101,15 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
     headers: headers,
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(body),
-  })
+  };
+
+  if (apiMethod.toLowerCase() !== "get") {
+    request["body"] = JSON.stringify(body);
+  }
+
+  // console.log(headers);
+
+  fetch(API_URL + apiLink, request)
     .then((response) => {
       responseStatus = response.status;
 
@@ -101,17 +118,26 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
         console.log("get access token");
         fetchAPI(
           API_TOKEN_REFRESH,
+          "post",
+
           {
             refresh: localStorage.getItem(LS_JWT_REFRESH),
           },
           {
             ok: (data) => {
-              //   console.log("repeat fetch");
+              console.log("repeat fetch");
               sessionStorage.setItem(SS_JWT_ACCESS, data.access);
-              fetchAPI(api, body, functionsObj, jwtAuth, (recursion = true));
+              fetchAPI(
+                apiLink,
+                apiMethod,
+                body,
+                functionsObj,
+                (jwtAuth = true),
+                (recursion = true)
+              );
             },
             error: (err) => {
-              console.log("err");
+              // console.log("err");
               sessionStorage.removeItem(SS_JWT_ACCESS);
               if (
                 typeof functionsObj === "object" &&
@@ -129,13 +155,15 @@ const fetchAPI = (api, body, functionsObj, jwtAuth = false, recursion) => {
       }
 
       if (response.status >= 200 && response.status < 500) {
+        // console.log(response);
+        if (response.status === 204) return new Promise(() => {});
         return response.json();
       }
       throw new Error((message = response.responseText));
     })
     .then((data) => {
       if (data !== null) {
-        //   console.log(data);
+        // console.log("json", data);
         if (responseStatus >= 400 && responseStatus < 500) {
           throw new Error((message = JSON.stringify(data)));
         }
@@ -164,6 +192,8 @@ const login = (username, password, okFunction = null, errorFunction = null) => {
   // try to get new token
   fetchAPI(
     API_TOKEN,
+    "post",
+
     {
       username: username,
       password: password,

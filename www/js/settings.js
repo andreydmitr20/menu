@@ -7,11 +7,21 @@ const iconImage = document.querySelector("#iconImage");
 const logout = document.querySelector("#logout");
 const errorText = document.querySelector("#error-text");
 
+iconImage.addEventListener("error", () => {
+  iconImage.src = "../icon/salad.png";
+});
+
+iconUrl.addEventListener("input", () => {
+  iconImage.src = iconUrl.value;
+});
+
 logout.addEventListener("click", () => {
   startButtonPressAnimation(logout);
   console.log("!");
   fetchAPI(
     API_USER_LOGOUT,
+    "post",
+
     {},
     {
       ok: () => {
@@ -23,25 +33,26 @@ logout.addEventListener("click", () => {
     }
   );
 });
+
 // get user data
-// const getUserData = () => {
-//   fetchAPI(
-//     API_USER_PROFILE,
-//     {},
-//     {
-//       ok: (data) => {
-//         console.log(data);
-//         userName.value = data.token_user_username;
-//         userName.dataset.id = data.token_user_id;
-//         password.value = "";
-//         email.value = data.token_user_email;
-//         userName.iconUrl = data.token_user_icon;
-//       },
-//     },
-//     true
-//   );
-// };
-// getUserData();
+const getUserData = () => {
+  fetchAPI(
+    API_USER,
+    "get",
+    {},
+    {
+      ok: (data) => {
+        // console.log(data);
+        userName.value = data.username;
+        // userName.dataset.id = data.token_user_id;
+        email.value = data.email;
+        iconUrl.value = data.icon;
+      },
+    },
+    true
+  );
+};
+getUserData();
 
 username.focus();
 const menu = document.querySelector("#menu");
@@ -50,6 +61,25 @@ menu.addEventListener("click", () => {
   window.open("./menu.html", "_self");
 });
 
-window.addEventListener("beforeunload", (event) => {
+const save = document.querySelector("#save");
+save.addEventListener("click", (event) => {
   console.log("save");
+  fetchAPI(
+    API_USER,
+    "post",
+    { username: userName.value, email: email.value, icon: iconUrl.value },
+    {
+      ok: (data) => {
+        console.log(":", data);
+      },
+      error: (err) => {
+        // console.log(err);
+        errorText.textContent = getErrorTextFromMessage(err, [
+          ["email", email],
+          ["icon", iconUrl],
+        ]);
+      },
+    },
+    true
+  );
 });

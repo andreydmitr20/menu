@@ -57,3 +57,6 @@ class User (AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = 'auth_user'
+
+    def __str__(self):
+        return self.username+' '+self.email+' '+self.icon

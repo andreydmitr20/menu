@@ -70,6 +70,8 @@ okButton.addEventListener("click", (event) => {
   // try to register of user
   fetchAPI(
     API_USER_REGISTER,
+    "post",
+
     {
       username: userName.value,
       password: password.value,
