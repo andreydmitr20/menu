@@ -19,3 +19,7 @@ btnAction("settings", () => {
 btnAction("units", () => {
   window.open("./units.html", "_self");
 });
+
+btnAction("tags", () => {
+  window.open("./tags.html", "_self");
+});

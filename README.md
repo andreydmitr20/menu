@@ -15,3 +15,4 @@ Icons:
 <a href="https://www.flaticon.com/free-icons/food-and-restaurant" title="food and restaurant icons">Food and restaurant icons created by Icon home - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by Alfredo Hernandez - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/spoon" title="spoon icons">Spoon icons created by Triangle Squad - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/brands" title="brands icons">Brands icons created by Freepik - Flaticon</a>

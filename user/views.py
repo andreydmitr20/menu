@@ -12,8 +12,6 @@ from .models import User
 from .serializers import (PasswordChangeSerializer, RegistrationSerializer,
                           UserSerializer)
 
-# print(f'\n\n{request.data}\n\n')
-
 
 class UserView(APIView):
     permission_classes = [IsAuthenticated]

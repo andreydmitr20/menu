@@ -1,7 +1,7 @@
 checkAuth();
 
 btnAction("menu", () => {
-  window.open("./menu.html", "_self");
+  window.open("./more.html", "_self");
 });
 
 units = document.querySelector("#units");

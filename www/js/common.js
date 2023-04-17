@@ -12,6 +12,7 @@ const API_USER_CHANGE_PASSWORD = "user/change-password/";
 const API_USER = "user/";
 
 const API_DISH_UNITS = "dish/units/";
+const API_DISH_TAGS = "dish/tags/";
 
 const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 

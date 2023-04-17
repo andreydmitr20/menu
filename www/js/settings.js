@@ -1,4 +1,9 @@
 checkAuth();
+
+btnAction("menu", () => {
+  window.open("./more.html", "_self");
+});
+
 const userName = document.querySelector("#username");
 const password = document.querySelector("#password");
 const email = document.querySelector("#email");
@@ -125,12 +130,6 @@ const changePasswordAction = btnAction("change-password-action", () => {
     },
     true
   );
-});
-
-const menu = document.querySelector("#menu");
-menu.addEventListener("click", () => {
-  startButtonPressAnimation(menu);
-  window.open("./menu.html", "_self");
 });
 
 const save = document.querySelector("#save");
