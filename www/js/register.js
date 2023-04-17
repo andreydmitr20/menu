@@ -34,7 +34,7 @@ iconUrl.addEventListener("input", () => {
 });
 
 userName.addEventListener("keypress", (event) => {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     if (!strIsEmpty(userName.value)) {
       password.focus();
     }
@@ -42,7 +42,7 @@ userName.addEventListener("keypress", (event) => {
 });
 
 password.addEventListener("keypress", (event) => {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     if (!strIsEmpty(password.value)) {
       email.focus();
     }
@@ -50,7 +50,7 @@ password.addEventListener("keypress", (event) => {
 });
 
 email.addEventListener("keypress", (event) => {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     if (!strIsEmpty(email.value)) {
       iconUrl.focus();
     }
@@ -58,7 +58,7 @@ email.addEventListener("keypress", (event) => {
 });
 
 iconUrl.addEventListener("keypress", (event) => {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     okButton.click();
   }
 });

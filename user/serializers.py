@@ -2,6 +2,24 @@ from rest_framework import serializers
 from .models import User
 from re import match
 
+# Check username
+
+
+def checkUsername(username: str):
+    return match("^[A-Za-z0-9_]{3,50}$", username)
+
+
+checkUsernameError = "Username should be 3-50 chars and has no spaces."
+
+# Check password
+
+
+def checkPassword(password: str):
+    return match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,50}$", password)
+
+
+checkPasswordError = "Password should be 8-50 chars and has one uppercase, one lowercase chars, one digit and one special character #?!@$%^&*-"
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,16 +35,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def validate(self, attrs):
-        # Check username
-        if not match("^[A-Za-z0-9_]{3,50}$", attrs['username']):
-            raise serializers.ValidationError(
-                {"username": "Username should be 3-50 chars and has no spaces."})
-        # Check password
-        if not match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,50}$", attrs['password']):
-            raise serializers.ValidationError(
-                {"password": "Password should be 8-50 chars and has one uppercase, one lowercase chars, one digit and one special character #?!@$%^&*-"})
-        return attrs
+    def validate_username(self, value):
+
+        if not checkUsername(value):
+            raise serializers.ValidationError([checkUsernameError])
+        return value
+
+    def validate_password(self, value):
+        if not checkPassword(value):
+            raise serializers.ValidationError([checkPasswordError])
+        return value
 
     def save(self):
         user = User(
@@ -48,8 +66,16 @@ class PasswordChangeSerializer(serializers.ModelSerializer):
     new_password = serializers.CharField(
         style={"input_type": "password"}, required=True)
 
+    class Meta:
+        model = User
+        fields = ['current_password', 'new_password']
+
     def validate_current_password(self, value):
         if not self.context['request'].user.check_password(value):
-            raise serializers.ValidationError(
-                {'current_password': 'Does not match'})
+            raise serializers.ValidationError(['Does not match'])
+        return value
+
+    def validate_new_password(self, value):
+        if not checkPassword(value):
+            raise serializers.ValidationError([checkPasswordError])
         return value

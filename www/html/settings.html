@@ -31,22 +31,84 @@
         <h1 class="text-left text-primary m-4 me-5 fs-1">Settings</h1>
       </div>
 
-      <form class="text-center text-primary fs-3 p-3" action="" method="post">
-        <!-- <label for="username">Username:</label> -->
-        <img
-          id="iconImage"
-          class="img-fluid rounded-circle w-25 p-2"
-          src="../icon/salad.png"
-          alt="user icon"
-        />
+      <!-- The Modal -->
+      <div id="passwordModal" class="modal fade-in-animation">
+        <!-- Modal content -->
+        <div class="modal-content bg-warning fs-3">
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+          >
+            <label for="current-password">Current password:</label>
+            <img
+              id="view-password"
+              class="img-fluid rounded w-25 p-2 m-2"
+              src="../icon/view.png"
+              alt="view icon"
+            />
+          </div>
+          <input
+            class="container-fluid p-2 text-center rounded m-2"
+            type="password"
+            id="current-password"
+            name="current-password"
+            autocomplete="on"
+            placeholder=""
+            required
+          />
 
-        <input
-          class="container-fluid p-2 text-center rounded"
-          type="text"
-          id="username"
-          name="username"
-          disabled
-        /><br />
+          <label for="new-password">New password:</label>
+          <input
+            class="container-fluid p-2 text-center rounded m-2"
+            type="password"
+            id="new-password"
+            name="new-password"
+            autocomplete="on"
+            placeholder=""
+            required
+          />
+
+          <p id="error-password-text" class="text-danger m-2"></p>
+
+          <div class="d-flex flex-row">
+            <button
+              id="change-password-action"
+              type="button"
+              class="btn btn-primary m-2 fs-4"
+            >
+              Change password
+            </button>
+            <img
+              id="cancel"
+              class="img-fluid w-25 contain m-2"
+              src="../icon/multiply.png"
+              alt="cancel"
+            />
+          </div>
+        </div>
+      </div>
+
+      <form
+        id="settings-form"
+        class="text-center text-primary fs-3 p-3"
+        action=""
+        method="post"
+      >
+        <div class="d-flex flex-row m-2">
+          <img
+            id="iconImage"
+            class="img-fluid rounded-circle w-25 p-2"
+            src="../icon/salad.png"
+            alt="user icon"
+          />
+
+          <input
+            class="border-0 container-fluid p-2 text-center rounded"
+            type="text"
+            id="username"
+            name="username"
+            disabled
+          />
+        </div>
         <div class="d-flex flex-row m-2">
           <button id="logout" type="button" class="btn btn-primary m-2 fs-3">
             Logout
@@ -58,52 +120,6 @@
           >
             Change password
           </button>
-          <!-- The Modal -->
-          <div id="passwordModal" class="modal fade-in-animation">
-            <!-- Modal content -->
-            <div class="modal-content bg-warning">
-              <div>
-                <label for="current-password">Current password:</label>
-                <input
-                  class="container-fluid p-2 text-center rounded"
-                  type="password"
-                  id="current-password"
-                  name="current-password"
-                  autocomplete="on"
-                  placeholder=""
-                  required
-                /><br />
-
-                <label for="password1">New password:</label>
-                <input
-                  class="container-fluid p-2 text-center rounded"
-                  type="password"
-                  id="password1"
-                  name="password1"
-                  autocomplete="on"
-                  placeholder=""
-                  required
-                /><br />
-
-                <p id="error-password-text" class="text-danger"></p>
-                <div>
-                  <button
-                    id="change-password-action"
-                    type="button"
-                    class="btn btn-primary m-2 fs-4"
-                  >
-                    Change password
-                  </button>
-                  <img
-                    id="cancel"
-                    class="img-fluid rounded-circle w-25 p-2"
-                    src="../icon/multiply.png"
-                    alt="cancel"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <label for="email">Email:</label>
@@ -115,7 +131,7 @@
           placeholder="Enter your email"
         /><br />
 
-        <label for="icon">Icon:</label>
+        <label for="icon">Icon URL:</label>
         <input
           class="container-fluid p-2 text-center rounded"
           type="url"

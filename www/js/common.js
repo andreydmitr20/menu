@@ -71,12 +71,14 @@ const startButtonPressAnimation = (element) => {
   element.classList.add(CSS_BUTTON_PRESS_ANIMATION);
 };
 
+// action for button click with animation
 const btnAction = (id, clickFunction) => {
   const btn = document.querySelector("#" + id);
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (event) => {
     startButtonPressAnimation(btn);
-    setTimeout(clickFunction, 100);
+    setTimeout(clickFunction, 100, event);
   });
+  return btn;
 };
 
 // fetch data from api
@@ -159,19 +161,20 @@ const fetchAPI = (
           (jwtAuth = false),
           (recursion = true)
         );
-        return new Promise(() => null);
+        return;
       }
 
       if (response.status >= 200 && response.status < 500) {
         // console.log(response);
-        if (response.status === 204) return new Promise(() => {});
+        if (response.status === 204) return;
         return response.json();
       }
       throw new Error((message = response.responseText));
     })
     .then((data) => {
+      // console.log("json", data);
+
       if (data !== null) {
-        // console.log("json", data);
         if (responseStatus >= 400 && responseStatus < 500) {
           throw new Error((message = JSON.stringify(data)));
         }
