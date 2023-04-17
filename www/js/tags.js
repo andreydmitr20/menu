@@ -13,7 +13,7 @@ const getTags = () => {
     {},
     {
       ok: (data) => {
-        console.log(data);
+        // console.log(data);
         let html = "";
         let index = 0;
         let index100 = 0;
@@ -28,9 +28,9 @@ const getTags = () => {
               html += `</div></div>`;
             }
             groupId = id;
-            html += `<div class="accordion-item">
+            html += `<div class="accordion-item bg-primary mt-1">
             <h2 class="accordion-header " id="h${groupId}">
-              <button class="accordion-button bg-warning fs-3 px-5 mx-5" type="button" 
+              <button class="accordion-button bg-warning fs-3 " type="button" 
                 data-bs-toggle="collapse"
                 data-bs-target="#c${groupId}" aria-expanded="true" 
                 aria-controls="c${groupId}">
@@ -43,8 +43,6 @@ const getTags = () => {
              
                 <div id="a${groupId}" class="accordion accordion-body">`;
             beginGroup = false;
-            index100 += 1;
-            index = 1;
           } else {
             html += `
           <div class="accordion-item">
@@ -65,7 +63,6 @@ const getTags = () => {
             </div>
           </div>
           `;
-            index += 1;
           }
         }
         if (!beginGroup) {

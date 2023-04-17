@@ -18,9 +18,9 @@ const getUnits = () => {
         let index = 0;
         for (let unit of data) {
           html += `
-          <div class="accordion-item">
+          <div class="accordion-item mt-1">
             <h2 class="accordion-header " id="h${index}">
-              <button class="accordion-button bg-warning fs-3 px-5 mx-5" type="button" 
+              <button class="accordion-button bg-warning bg-gradient fs-3 " type="button" 
                 data-bs-toggle="collapse"
                 data-bs-target="#c${index}" aria-expanded="true" 
                 aria-controls="c${index}">
