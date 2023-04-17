@@ -47,6 +47,7 @@ const getUserData = () => {
         // userName.dataset.id = data.token_user_id;
         email.value = data.email;
         iconUrl.value = data.icon;
+        iconImage.src = iconUrl.value;
       },
     },
     true
@@ -63,14 +64,13 @@ menu.addEventListener("click", () => {
 
 const save = document.querySelector("#save");
 save.addEventListener("click", (event) => {
-  console.log("save");
   fetchAPI(
     API_USER,
     "post",
     { username: userName.value, email: email.value, icon: iconUrl.value },
     {
       ok: (data) => {
-        console.log(":", data);
+        console.log("settings saved");
       },
       error: (err) => {
         // console.log(err);
