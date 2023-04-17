@@ -71,6 +71,14 @@ const startButtonPressAnimation = (element) => {
   element.classList.add(CSS_BUTTON_PRESS_ANIMATION);
 };
 
+const btnAction = (id, clickFunction) => {
+  const btn = document.querySelector("#" + id);
+  btn.addEventListener("click", () => {
+    startButtonPressAnimation(btn);
+    setTimeout(clickFunction, 100);
+  });
+};
+
 // fetch data from api
 const fetchAPI = (
   apiLink,

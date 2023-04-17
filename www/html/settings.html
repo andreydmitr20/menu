@@ -33,17 +33,12 @@
 
       <form class="text-center text-primary fs-3 p-3" action="" method="post">
         <!-- <label for="username">Username:</label> -->
-        <div>
-          <img
-            id="iconImage"
-            class="img-fluid rounded-circle w-25 p-2"
-            src="../icon/salad.png"
-            alt="user icon"
-          />
-          <button id="logout" type="button" class="btn btn-primary m-4 fs-3">
-            Logout
-          </button>
-        </div>
+        <img
+          id="iconImage"
+          class="img-fluid rounded-circle w-25 p-2"
+          src="../icon/salad.png"
+          alt="user icon"
+        />
 
         <input
           class="container-fluid p-2 text-center rounded"
@@ -52,18 +47,65 @@
           name="username"
           disabled
         /><br />
+        <div class="d-flex flex-row m-2">
+          <button id="logout" type="button" class="btn btn-primary m-2 fs-3">
+            Logout
+          </button>
+          <button
+            id="change-password"
+            type="button"
+            class="btn btn-primary m-2 fs-4"
+          >
+            Change password
+          </button>
+          <!-- The Modal -->
+          <div id="passwordModal" class="modal fade-in-animation">
+            <!-- Modal content -->
+            <div class="modal-content bg-warning">
+              <div>
+                <label for="current-password">Current password:</label>
+                <input
+                  class="container-fluid p-2 text-center rounded"
+                  type="password"
+                  id="current-password"
+                  name="current-password"
+                  autocomplete="on"
+                  placeholder=""
+                  required
+                /><br />
 
-        <!-- <label for="password">Password:</label>
-        <input
-          class="container-fluid p-2 text-center rounded"
-          type="password"
-          id="password"
-          name="password"
-          minlength="8"
-          autocomplete="on"
-          placeholder="You may enter new password"
-          required
-        /><br /> -->
+                <label for="password1">New password:</label>
+                <input
+                  class="container-fluid p-2 text-center rounded"
+                  type="password"
+                  id="password1"
+                  name="password1"
+                  autocomplete="on"
+                  placeholder=""
+                  required
+                /><br />
+
+                <p id="error-password-text" class="text-danger"></p>
+                <div>
+                  <button
+                    id="change-password-action"
+                    type="button"
+                    class="btn btn-primary m-2 fs-4"
+                  >
+                    Change password
+                  </button>
+                  <img
+                    id="cancel"
+                    class="img-fluid rounded-circle w-25 p-2"
+                    src="../icon/multiply.png"
+                    alt="cancel"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <label for="email">Email:</label>
         <input
           class="container-fluid p-2 text-center rounded"

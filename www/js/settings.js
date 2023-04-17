@@ -34,6 +34,24 @@ logout.addEventListener("click", () => {
   );
 });
 
+// change password
+const modal = document.querySelector("#passwordModal");
+
+btnAction("cancel", () => {
+  modal.style.display = "none";
+});
+btnAction("change-password-action", () => {
+  modal.style.display = "none";
+  console.log("!");
+});
+
+const changePassword = document.querySelector("#change-password");
+changePassword.addEventListener("click", () => {
+  startButtonPressAnimation(changePassword);
+
+  modal.style.display = "block";
+});
+
 // get user data
 const getUserData = () => {
   fetchAPI(
@@ -55,7 +73,8 @@ const getUserData = () => {
 };
 getUserData();
 
-username.focus();
+email.focus();
+
 const menu = document.querySelector("#menu");
 menu.addEventListener("click", () => {
   startButtonPressAnimation(menu);
@@ -64,13 +83,14 @@ menu.addEventListener("click", () => {
 
 const save = document.querySelector("#save");
 save.addEventListener("click", (event) => {
+  errorText.textContent = "";
   fetchAPI(
     API_USER,
     "post",
     { username: userName.value, email: email.value, icon: iconUrl.value },
     {
       ok: (data) => {
-        console.log("settings saved");
+        errorText.textContent = "Settings were saved";
       },
       error: (err) => {
         // console.log(err);
