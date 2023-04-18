@@ -22,13 +22,47 @@
     <div
       class="border border-primary rounded bg-warning d-flex flex-column flex-nowrap justify-content-center align-items-center p-3 m-2"
     >
-      <img class="img-fluid rounded w-25" src="../icon/favicon.png" />
+      <!-- <img class="img-fluid rounded w-25" src="../icon/favicon.png" /> -->
+      <div
+        id="top-menu"
+        class="d-flex flex-row justify-content-center align-items-center m-0 p-0"
+      >
+        <button
+          id="tags"
+          type="button"
+          class="btn btn-warning bg-gradient fs-4 m-1"
+        >
+          <img class="img-fluid rounded w-50" src="../icon/tags.png" />
+          <!-- Tags -->
+        </button>
 
-      <h1 class="text-center text-primary m-4 fs-1">Menu</h1>
-      <p class="fs-1">
-        Dishes filtered by daytime, tags, likes, health, existing ingredients
-      </p>
-      <button id="more" type="button" class="btn btn-primary fs-3">More</button>
+        <button
+          id="menu"
+          type="button"
+          class="btn btn-warning bg-gradient rounded fs-3 m-2"
+        >
+          <img class="img-fluid rounded w-50" src="../icon/favicon.png" />
+          <!-- Menu -->
+        </button>
+
+        <button
+          id="more"
+          type="button"
+          class="btn btn-warning bg-gradient fs-4 m-1"
+        >
+          <img class="img-fluid rounded w-50" src="../icon/application.png" />
+          <!-- More -->
+        </button>
+      </div>
+
+      <div id="filtered-dishes">
+        <hr />
+        <p class="fs-1 text-center">
+          Here will be dishes filtered by tags, likes, etc. Application will
+          select dishes for you and save history to avoid eating the same two
+          days in a row.
+        </p>
+      </div>
     </div>
 
     <script

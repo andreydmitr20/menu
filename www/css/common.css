@@ -1,10 +1,16 @@
-.btn {
+.btn,
+input,
+input:checked {
   box-shadow: 5px 5px 5px;
 }
 
 body > div {
   width: 400px;
 }
+
+/* .my-shadow {
+  box-shadow: 0px 0px 8px;
+} */
 
 .modal {
   width: 400px;

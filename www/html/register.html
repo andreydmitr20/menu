@@ -33,63 +33,67 @@
       >
         <img
           id="iconImage"
-          class="img-fluid rounded-circle w-25 p-2"
+          class="img-fluid rounded-circle w-25 p-2 me-4"
           src="../icon/salad.png"
           alt="user icon"
         />
 
         <label for="username">Username:</label>
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="text"
           id="username"
           name="username"
-          placeholder="name"
+          placeholder=""
         /><br />
 
         <div class="d-flex flex-row justify-content-center align-items-center">
           <label for="password">Password:</label>
           <img
             id="view-password"
-            class="img-fluid rounded w-25 p-2"
+            class="img-fluid rounded w-25 ms-4 p-2"
             src="../icon/view.png"
             alt="view icon"
           />
         </div>
 
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="password"
           id="password"
           name="password"
           minlength="8"
           autocomplete="on"
-          placeholder="password"
+          placeholder=""
           required
         />
 
         <br />
         <label for="email">Email:</label>
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="email"
           id="email"
           name="email"
-          placeholder="email"
+          placeholder=""
         /><br />
 
         <label for="icon">Icon URL:</label>
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="url"
           id="iconUrl"
           name="icon"
-          placeholder="icon URL"
+          placeholder=""
         /><br />
 
         <p id="error-text" class="text-danger m-2"></p>
 
-        <button id="ok" type="button" class="btn btn-primary m-3 p-3 fs-3">
+        <button
+          id="ok"
+          type="button"
+          class="btn btn-warning bg-gradient m-3 p-3 fs-3"
+        >
           Ok
         </button>
       </form>

@@ -25,9 +25,13 @@
       <div
         class="d-flex flex-row flex-nowrap justify-content-center align-items-center p-2 m-1"
       >
-        <a id="menu" class="d-flex justify-content-center">
+        <button
+          id="menu"
+          type="button"
+          class="btn btn-warning bg-gradient fs-4 m-1"
+        >
           <img class="img-fluid rounded w-25" src="../icon/settings.png" />
-        </a>
+        </button>
         <h1 class="text-left text-primary m-4 me-5 fs-1">Settings</h1>
       </div>
 
@@ -73,16 +77,23 @@
             <button
               id="change-password-action"
               type="button"
-              class="btn btn-primary m-2 fs-4"
+              class="btn btn-warning bg-gradient m-2 fs-4"
             >
               Change password
             </button>
-            <img
+
+            <button
               id="cancel"
-              class="img-fluid w-25 contain m-2"
-              src="../icon/multiply.png"
-              alt="cancel"
-            />
+              type="button"
+              class="btn btn-warning bg-gradient m-2 fs-4"
+            >
+              <img
+                class="img-fluid w-50 contain m-2"
+                src="../icon/multiply.png"
+                alt="cancel"
+              />
+              Cancel
+            </button>
           </div>
         </div>
       </div>
@@ -109,40 +120,53 @@
             disabled
           />
         </div>
+
+        <br />
+
         <div class="d-flex flex-row m-2">
-          <button id="logout" type="button" class="btn btn-primary m-2 fs-3">
+          <button
+            id="logout"
+            type="button"
+            class="btn btn-warning bg-gradient m-3 fs-3"
+          >
             Logout
           </button>
           <button
             id="change-password"
             type="button"
-            class="btn btn-primary m-2 fs-4"
+            class="btn btn-warning bg-gradient m3 fs-3"
           >
             Change password
           </button>
         </div>
 
+        <br />
+
         <label for="email">Email:</label>
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="email"
           id="email"
           name="email"
-          placeholder="Enter your email"
+          placeholder=""
         /><br />
 
         <label for="icon">Icon URL:</label>
         <input
-          class="container-fluid p-2 text-center rounded"
+          class="container-fluid p-2 text-center rounded m-2"
           type="url"
           id="iconUrl"
           name="icon"
-          placeholder="Enter your icon URL"
+          placeholder=""
         /><br />
 
         <p id="error-text" class="text-danger"></p>
 
-        <button id="save" type="button" class="btn btn-primary m-2 fs-3">
+        <button
+          id="save"
+          type="button"
+          class="btn btn-warning bg-gradient m-2 fs-3 p-3"
+        >
           Save
         </button>
       </form>

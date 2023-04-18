@@ -15,12 +15,15 @@ const getTags = () => {
       ok: (data) => {
         // console.log(data);
         let html = "";
-        let index = 0;
-        let index100 = 0;
+
+        let checkTag = "check-tag";
+
         let beginGroup = true;
         let groupId;
+
         for (let tag of data) {
           let id = tag["id"];
+
           if (id % 100 === 0) {
             // group
             if (!beginGroup) {
@@ -28,12 +31,15 @@ const getTags = () => {
               html += `</div></div>`;
             }
             groupId = id;
-            html += `<div class="accordion-item bg-primary mt-1">
+            html += `<div class="accordion-item  mt-1">
             <h2 class="accordion-header " id="h${groupId}">
               <button class="accordion-button bg-warning fs-3 " type="button" 
                 data-bs-toggle="collapse"
                 data-bs-target="#c${groupId}" aria-expanded="true" 
                 aria-controls="c${groupId}">
+
+                <input class="${checkTag} form-check-input me-4 rounded p-1" type="checkbox" value="" id="cb${id}" >
+
                 ${tag["name"]}
               </button>
             </h2>
@@ -51,6 +57,9 @@ const getTags = () => {
                 data-bs-toggle="collapse"
                 data-bs-target="#c${id}" aria-expanded="true" 
                 aria-controls="c${id}">
+
+                <input class="${checkTag} form-check-input me-4 rounded p-1" type="checkbox" value="" id="cb${id}" >
+                
                 ${tag["name"]}
               </button>
             </h2>
@@ -70,6 +79,7 @@ const getTags = () => {
           html += `</div></div>`;
         }
         tags.innerHTML = html;
+        // TODO addEventListener for #checkTag
       },
       error: (err) => {
         console.log(err);
