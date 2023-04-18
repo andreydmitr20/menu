@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from rest_framework import status, viewsets
+from django.core.paginator import Paginator
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -64,6 +65,15 @@ class IngredientsView(APIView):
                 )).order_by('name')
 
         # print(queryset.query)
-        # print(queryset)
-        serializer = IngredientSerializer(queryset, many=True)
-        return Response(serializer.data)
+        print(queryset)
+        print(self.request.query_params)
+        page_number = self.request.query_params.get('page_number', 1)
+        page_size = self.request.query_params.get('page_size', 10)
+        print(page_number, page_size)
+
+        paginator = Paginator(queryset, page_size)
+        serializer = IngredientSerializer(paginator.page(
+            page_number), many=True, context={'request': self.request})
+        print(serializer.data)
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        return response

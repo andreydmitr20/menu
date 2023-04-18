@@ -19,6 +19,8 @@ const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
 const TEXT_ERROR_SERVER_ERROR = "Server error";
 
+const INGREDIENTS_PAGE_SIZE = 2;
+
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
 };

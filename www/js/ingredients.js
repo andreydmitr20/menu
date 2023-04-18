@@ -4,54 +4,65 @@ btnAction("menu", () => {
   window.open("./more.html", "_self");
 });
 
+const ingredients = document.querySelector("#ingredients");
+let page = 1;
+let pageOne = btnAction("page-one", () => {
+  page = 1;
+  goToPage(1, INGREDIENTS_PAGE_SIZE);
+});
+const pagePrev = btnAction("page-prev", () => {
+  goToPage(page - 1, INGREDIENTS_PAGE_SIZE);
+});
+const pageCurrent = document.querySelector("#page-current");
+const pageFirst = btnAction("page-next", () => {
+  goToPage(page + 1, INGREDIENTS_PAGE_SIZE);
+});
+
 // search
-const doSearch = (searchText) => {
-  console.log("search: ", searchText);
-  getIngredients(searchText);
+const goToPage = (page) => {
+  getIngredients(searchInput.value, page, INGREDIENTS_PAGE_SIZE);
 };
 
 const search = btnAction("search", () => {
-  if (!strIsEmpty(searchInput.value)) {
-    doSearch(searchInput.value);
-  }
+  if (!strIsEmpty(searchInput.value)) goToPage(1);
 });
 const searchInput = document.querySelector("#search-input");
 searchInput.addEventListener("keypress", (event) => {
-  if (event.keyCode === 13 && !strIsEmpty(searchInput.value)) {
-    doSearch(searchInput.value);
-  }
+  if (event.keyCode === 13 && !strIsEmpty(searchInput.value)) goToPage(1);
 });
 
-const ingredients = document.querySelector("#ingredients");
 // get user data
-const getIngredients = (searchText) => {
+const getIngredients = (searchText, pageToGo, pageSize) => {
+  if (pageToGo === 0) return;
+
   let searchTextPlus = searchText;
+
   while (true) {
     let index = searchTextPlus.indexOf(" ");
     if (index === -1) break;
     searchTextPlus = searchTextPlus.replace(" ", "+");
     searchTextPlus = searchTextPlus.replace("++", "+");
   }
+
   fetchAPI(
     API_DISH_INGREDIENTS,
     "get",
-    `?search=${searchTextPlus}`,
+    `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}`,
     {
       ok: (data) => {
         console.log(data);
-        // let html = `
-        // <nav aria-label="...">
-        //   <ul class="pagination pagination-sm">
-        //     <li class="page-item active" aria-current="page">
-        //       <span class="page-link">1</span>
-        //     </li>
-        //     <li class="page-item"><a class="page-link" href="#">2</a></li>
-        //     <li class="page-item"><a class="page-link" href="#">3</a></li>
-        //   </ul>
-        // </nav>
-        // `;
-        let html = `
-        <table class="table">
+        if (data.length === 0) {
+          ingredients.innerHTML = "";
+          return;
+        }
+        page = pageToGo;
+        pageCurrent.innerHTML = pageToGo.toString();
+
+        let html = "";
+
+        // table header
+        html += `
+        <table class="table w-100 ">
           <thead>
             <tr>
               <th scope="col">Ingredient</th>
