@@ -4,7 +4,20 @@ To collect dishes which you like. <br> To find fast what to cook from existing
 ingredients. <br> To feed yourself healthy dishes. <br> To share dishes
 receipts.
 
-Icons:
+## Debug
+
+> pip3 install -r requirements.txt
+> python3 manage.py runserver
+
+Then open in your browser (put your path instead of "....."):
+
+file:///...../menu/www/index.html
+
+## Relational schema
+
+<img src="./doc/rs.png">
+
+## Icons:
 
 <a href="https://www.flaticon.com/free-icons/menu" title="menu icons">Menu icons created by Becris - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
