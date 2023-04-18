@@ -18,23 +18,23 @@ class UnitAdmin(admin.ModelAdmin):
     """ Unit admin
     ENTERED BY ADMIN
     """
-    list_display = ['name']
-    list_filter = ['name']
-    search_fields = ['name']
+    list_display = ['id', 'name', 'description']
+    search_fields = ['id', 'name', 'description']
 
 
 admin.site.register(Unit, UnitAdmin)
 
 
-# class IngredientAdmin(admin.ModelAdmin):
-#     """ Ingredient admin"""
-#     list_display = ['name', 'photo', 'protein',
-#                     'fat', 'carbohydrates', 'vitamins', 'user']
-#     list_filter = ['name', 'user']
-#     search_fields = ['name', 'user']
+class IngredientAdmin(admin.ModelAdmin):
+    """ Ingredient admin"""
+    list_display = ['name', 'photo', 'protein',
+                    'fat', 'carbohydrates', 'vitamins', 'user']
+    list_filter = ['name', 'user']
+    search_fields = ['name']
+    # search_fields = ['id', 'name', 'user']
 
 
-# admin.site.register(Ingredient, IngredientAdmin)
+admin.site.register(Ingredient, IngredientAdmin)
 
 
 # class CompositionAdmin(admin.ModelAdmin):
@@ -47,13 +47,13 @@ admin.site.register(Unit, UnitAdmin)
 # admin.site.register(Composition, CompositionAdmin)
 
 
-# class TagAdmin(admin.ModelAdmin):
-#     """ Tag admin
-#     ENTERED BY ADMIN
-#     """
-#     list_display = ['name']
-#     list_filter = ['name']
-#     search_fields = ['name']
+class TagAdmin(admin.ModelAdmin):
+    """ Tag admin
+    ENTERED BY ADMIN
+    """
+    list_display = ['id', 'name', 'description']
+    list_filter = ['description']
+    search_fields = ['id', 'name', 'description']
 
 
-# admin.site.register(Tag, TagAdmin)
+admin.site.register(Tag, TagAdmin)

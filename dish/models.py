@@ -151,6 +151,9 @@ class Ingredient(models.Model):
                              blank=False,
                              on_delete=models.DO_NOTHING)
 
+    def __str__(self):
+        return self.name+' by '+self.user.username
+
 
 class Composition(models.Model):
     """ compositions """

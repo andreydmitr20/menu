@@ -40,12 +40,12 @@ class User (AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         max_length=100,
         unique=True,
-        verbose_name='email address'
-
+        verbose_name='email address',
+        default=''
     )
 
     icon = models.CharField(max_length=400,
-                            blank=True, null=True)
+                            blank=True, default='')
 
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -59,4 +59,4 @@ class User (AbstractBaseUser, PermissionsMixin):
         db_table = 'auth_user'
 
     def __str__(self):
-        return self.username+' '+self.email+' '+self.icon
+        return self.username+' '+self.email

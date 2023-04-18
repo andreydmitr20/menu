@@ -10,7 +10,7 @@ const getTags = () => {
   fetchAPI(
     API_DISH_TAGS,
     "get",
-    {},
+    "",
     {
       ok: (data) => {
         // console.log(data);

@@ -10,7 +10,7 @@ const getUnits = () => {
   fetchAPI(
     API_DISH_UNITS,
     "get",
-    {},
+    "",
     {
       ok: (data) => {
         // console.log(data);

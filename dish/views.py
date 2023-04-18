@@ -41,11 +41,13 @@ class IngredientsView(APIView):
 
         queryset = Ingredient.objects.filter(
 
-            Q(name__icontains=search_text)
+            Q(
+                name__icontains=search_text
+            )
 
         ).order_by('name')
+        print(queryset.query)
 
-        # queryset = Ingredient.objects.all().order_by('id')
         print(queryset)
         serializer = IngredientSerializer(queryset, many=True)
         return Response(serializer.data)

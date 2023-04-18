@@ -18,7 +18,7 @@ const getUserData = () => {
   fetchAPI(
     API_USER,
     "get",
-    {},
+    "",
     {
       ok: (data) => {
         // console.log(data);
@@ -46,7 +46,8 @@ iconUrl.addEventListener("input", () => {
 
 logout.addEventListener("click", () => {
   startButtonPressAnimation(logout);
-  console.log("!");
+  errorText.textContent = "";
+  userLogout();
   fetchAPI(
     API_USER_LOGOUT,
     "post",
@@ -54,9 +55,9 @@ logout.addEventListener("click", () => {
     {},
     {
       ok: () => {
-        errorText.textContent = "";
-
-        userLogout();
+        window.open("../index.html", "_self");
+      },
+      error: () => {
         window.open("../index.html", "_self");
       },
     }
