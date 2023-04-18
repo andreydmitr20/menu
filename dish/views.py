@@ -37,7 +37,7 @@ class IngredientsView(APIView):
     def get(self, format=None):
         search_text = self.request.query_params.get('search')
         search_text = search_text.strip().split(' ')
-        print('search:', search_text)
+        # print('search:', search_text)
         search_text_len = len(search_text)
         if (search_text_len == 0):
             queryset = Ingredient.objects.all().order_by('name')
@@ -63,8 +63,7 @@ class IngredientsView(APIView):
                     name__icontains=search_text[2].strip()
                 )).order_by('name')
 
-        print(queryset.query)
-
-        print(queryset)
+        # print(queryset.query)
+        # print(queryset)
         serializer = IngredientSerializer(queryset, many=True)
         return Response(serializer.data)

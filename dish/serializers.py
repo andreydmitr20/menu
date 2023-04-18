@@ -15,6 +15,10 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class IngredientSerializer(serializers.ModelSerializer):
+    creator = serializers.CharField(
+        source='user.username')  # , allow_null = True)
+
     class Meta:
         model = Ingredient
-        fields = '__all__'
+        fields = ['id', 'name', 'photo', 'creator', 'protein',
+                  'fat', 'carbohydrates', 'vitamins']

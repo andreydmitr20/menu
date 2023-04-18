@@ -8,6 +8,9 @@ body > div {
   width: 400px;
 }
 
+.w80 {
+  width: 80px;
+}
 /* .my-shadow {
   box-shadow: 0px 0px 8px;
 } */
