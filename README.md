@@ -32,3 +32,4 @@ file:///...../menu/www/index.html
 <a href="https://www.flaticon.com/free-icons/brands" title="brands icons">Brands icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/more" title="more icons">More icons created by Anggara - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Maxim Basinski Premium - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icons created by Vectors Market - Flaticon</a>

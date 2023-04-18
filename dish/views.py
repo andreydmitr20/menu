@@ -38,7 +38,6 @@ class IngredientsView(APIView):
     def get(self, format=None):
         search_text = self.request.query_params.get('search')
         search_text = search_text.strip().split(' ')
-        # print('search:', search_text)
         search_text_len = len(search_text)
         if (search_text_len == 0):
             queryset = Ingredient.objects.all().order_by('name')
@@ -64,16 +63,11 @@ class IngredientsView(APIView):
                     name__icontains=search_text[2].strip()
                 )).order_by('name')
 
-        # print(queryset.query)
-        print(queryset)
-        print(self.request.query_params)
         page_number = self.request.query_params.get('page_number', 1)
         page_size = self.request.query_params.get('page_size', 10)
-        print(page_number, page_size)
-
         paginator = Paginator(queryset, page_size)
         serializer = IngredientSerializer(paginator.page(
             page_number), many=True, context={'request': self.request})
-        print(serializer.data)
+
         response = Response(serializer.data, status=status.HTTP_200_OK)
         return response
