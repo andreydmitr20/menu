@@ -13,6 +13,7 @@ const API_USER = "user/";
 
 const API_DISH_UNITS = "dish/units/";
 const API_DISH_TAGS = "dish/tags/";
+const API_DISH_INGREDIENTS = "dish/ingredients/";
 
 const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
@@ -96,6 +97,7 @@ const fetchAPI = (
   recursion
 ) => {
   // console.log("body", body);
+  let fullUrl = API_URL + apiLink;
 
   let headers = {
     "Content-Type": "application/json",
@@ -118,13 +120,15 @@ const fetchAPI = (
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
   };
 
-  if (apiMethod.toLowerCase() !== "get") {
+  if (apiMethod.toLowerCase() === "get") {
+    if (!strIsEmpty(body)) fullUrl += body;
+  } else {
     request["body"] = JSON.stringify(body);
   }
 
-  // console.log(headers);
+  console.log(fullUrl);
 
-  fetch(API_URL + apiLink, request)
+  fetch(fullUrl, request)
     .then((response) => {
       responseStatus = response.status;
 
