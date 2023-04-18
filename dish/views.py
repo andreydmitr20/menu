@@ -36,16 +36,33 @@ class IngredientsView(APIView):
 
     def get(self, format=None):
         search_text = self.request.query_params.get('search')
-        search_text = search_text.split(' ')
+        search_text = search_text.strip().split(' ')
         print('search:', search_text)
+        search_text_len = len(search_text)
+        if (search_text_len == 0):
+            queryset = Ingredient.objects.all().order_by('name')
+        elif (search_text_len == 1):
+            queryset = Ingredient.objects.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                )).order_by('name')
+        elif (search_text_len == 2):
+            queryset = Ingredient.objects.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                ) | Q(
+                    name__icontains=search_text[1].strip()
+                )).order_by('name')
+        else:
+            queryset = Ingredient.objects.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                ) | Q(
+                    name__icontains=search_text[1].strip()
+                ) | Q(
+                    name__icontains=search_text[2].strip()
+                )).order_by('name')
 
-        queryset = Ingredient.objects.filter(
-
-            Q(
-                name__icontains=search_text
-            )
-
-        ).order_by('name')
         print(queryset.query)
 
         print(queryset)
