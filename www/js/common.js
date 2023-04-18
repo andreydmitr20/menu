@@ -11,6 +11,7 @@ const API_USER_REGISTER = "user/register/";
 const API_USER_CHANGE_PASSWORD = "user/change-password/";
 const API_USER = "user/";
 
+const API_DISH_VITAMINS = "dish/vitamins/";
 const API_DISH_UNITS = "dish/units/";
 const API_DISH_TAGS = "dish/tags/";
 const API_DISH_INGREDIENTS = "dish/ingredients/";
@@ -19,7 +20,7 @@ const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
 const TEXT_ERROR_SERVER_ERROR = "Server error";
 
-const INGREDIENTS_PAGE_SIZE = 2;
+const INGREDIENTS_PAGE_SIZE = 4;
 
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";

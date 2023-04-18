@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Unit, Tag, Ingredient
+from .models import Vitamin, Unit, Tag, Ingredient
+
+
+class VitaminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vitamin
+        fields = '__all__'
 
 
 class UnitSerializer(serializers.ModelSerializer):
@@ -20,5 +26,5 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'photo', 'creator', 'protein',
-                  'fat', 'carbohydrates', 'vitamins']
+        fields = ['id', 'name', 'photo', 'creator', 'proteins',
+                  'fats', 'carbohydrates', 'vitamins']

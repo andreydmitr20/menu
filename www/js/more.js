@@ -23,3 +23,7 @@ btnAction("units", () => {
 btnAction("tags", () => {
   window.open("./tags.html", "_self");
 });
+
+btnAction("vitamins", () => {
+  window.open("./vitamins.html", "_self");
+});

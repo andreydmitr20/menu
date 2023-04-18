@@ -1,7 +1,7 @@
 """ admin """
 from django.contrib import admin
 
-from .models import Dish, Unit, Ingredient, Tag, Composition
+from .models import Dish, Unit, Ingredient, Tag, Vitamin, Composition
 
 
 # class DishAdmin(admin.ModelAdmin):
@@ -12,6 +12,16 @@ from .models import Dish, Unit, Ingredient, Tag, Composition
 
 
 # admin.site.register(Dish, DishAdmin)
+
+class VitaminAdmin(admin.ModelAdmin):
+    """ Vitamin admin
+    ENTERED BY ADMIN
+    """
+    list_display = ['id', 'name', 'description']
+    search_fields = ['id', 'name', 'description']
+
+
+admin.site.register(Vitamin, VitaminAdmin)
 
 
 class UnitAdmin(admin.ModelAdmin):
@@ -27,8 +37,8 @@ admin.site.register(Unit, UnitAdmin)
 
 class IngredientAdmin(admin.ModelAdmin):
     """ Ingredient admin"""
-    list_display = ['name', 'photo', 'protein',
-                    'fat', 'carbohydrates', 'vitamins', 'user']
+    list_display = ['name', 'photo', 'proteins',
+                    'fats', 'carbohydrates', 'vitamins', 'user']
     list_filter = ['name', 'user']
     search_fields = ['name']
     # search_fields = ['id', 'name', 'user']

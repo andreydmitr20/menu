@@ -10,8 +10,17 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Ingredient, Tag, Unit
-from .serializers import IngredientSerializer, TagSerializer, UnitSerializer
+from .models import Ingredient, Tag, Unit, Vitamin
+from .serializers import IngredientSerializer, TagSerializer, UnitSerializer, VitaminSerializer
+
+
+class VitaminsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, format=None):
+        queryset = Vitamin.objects.all().order_by('name')
+        serializer = VitaminSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class UnitsView(APIView):

@@ -4,6 +4,9 @@ btnAction("menu", () => {
   window.open("./more.html", "_self");
 });
 
+const newIngredient = document.querySelector("#new-ingredient");
+const searchDiv = document.querySelector("#search-div");
+const pagination = document.querySelector("#pagination");
 const ingredients = document.querySelector("#ingredients");
 let page = 1;
 let pageOne = btnAction("page-one", () => {
@@ -107,3 +110,10 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
 };
 
 searchInput.focus();
+
+const add = btnAction("add", () => {
+  searchDiv.classList.add("d-none");
+  pagination.classList.add("d-none");
+  ingredients.classList.add("d-none");
+  newIngredient.classList.remove("d-none");
+});

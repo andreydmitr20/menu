@@ -3,6 +3,45 @@ from django.db import models
 from user.models import User
 
 
+class Vitamin(models.Model):
+    """ vitamins """
+
+    choices = {0: ['A', ''],
+               1: ['C', ''],
+               2: ['D', ''],
+               3: ['E', ''],
+               4: ['K', ''],
+               5: ['B1', 'thiamin'],
+               6: ['B2', 'riboflavin'],
+               7: ['B3', 'niacin'],
+               8: ['B5', 'pantothenic acid'],
+               9: ['B6', 'pyridoxine'],
+               10: ['B7', 'biotin'],
+               11: ['B9', 'folate or folic acid'],
+               12: ['B12', 'cobalamin'],
+               }
+
+    id = models.IntegerField(
+        primary_key=True, null=False, blank=False, unique=True)
+    name = models.CharField(max_length=20,
+                            null=False,
+                            blank=False,
+                            unique=True)
+    description = models.CharField(
+        max_length=50, null=True, blank=True, default='')
+
+    def __str__(self):
+        return self.name+' '+self.description
+
+    def fill(self):
+        """ fill model with choices"""
+
+        for key, value in self.choices.items():
+            vitamin = Vitamin(
+                id=key, name=value[0], description=value[1])
+            vitamin.save()
+
+
 class Unit(models.Model):
     """ units """
 
@@ -137,10 +176,10 @@ class Ingredient(models.Model):
                              null=False,
                              blank=False)
 
-    protein = models.FloatField(null=True,
-                                blank=True)
-    fat = models.FloatField(null=True,
-                            blank=True)
+    proteins = models.FloatField(null=True,
+                                 blank=True)
+    fats = models.FloatField(null=True,
+                             blank=True)
     carbohydrates = models.FloatField(null=True,
                                       blank=True)
     vitamins = models.JSONField(null=True,

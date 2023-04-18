@@ -35,7 +35,81 @@
         <h1 class="text-left text-primary mx-5 fs-1">Ingredients</h1>
       </div>
 
+      <!-- new ingredient -->
       <div
+        id="new-ingredient"
+        class="d-none container-fluid shadow align-items-center justify-content-center text-center text-primary fs-3 pe-4"
+      >
+        <label class="m-2" for="ingredient-name">New ingredient name:</label>
+        <input
+          class="container-fluid p-2 text-center rounded me-2"
+          type="text"
+          id="ingredient-name"
+          name="ingredient-name"
+          required
+        />
+
+        <div class="d-flex flex-row align-items-center m-2">
+          <img
+            id="ingredient-photo"
+            class="img-fluid rounded w80 p-2"
+            src="../icon/ingredient.png"
+            alt="user icon"
+          />
+
+          <label class="ms-4" for="ingredient-photo-url">Photo URL:</label>
+        </div>
+
+        <input
+          class="container-fluid p-2 text-center rounded"
+          type="text"
+          id="ingredient-photo"
+          name="ingredient-photo"
+          required
+        />
+
+        <div class="d-flex flex-row align-items-center m-2">
+          <label class="fs-4 m-2" for="ingredient-proteins"
+            >Proteins in 100 g:
+          </label>
+          <input
+            class="container-fluid p-2 text-center rounded"
+            type="number"
+            step="0.01"
+            min="0"
+            id="ingredient-proteins"
+            name="ingredient-proteins"
+          />
+        </div>
+        <div class="d-flex flex-row align-items-center m-2">
+          <label class="fs-4 m-2" for="ingredient-fats">Fats in 100 g: </label>
+          <input
+            class="container-fluid p-2 text-center rounded"
+            type="number"
+            step="0.01"
+            min="0"
+            id="ingredient-fats"
+            name="ingredient-fats"
+          />
+        </div>
+        <div class="d-flex flex-row align-items-center m-2">
+          <label class="fs-4 m-2" for="ingredient-carbohydrates"
+            >Carbohydrates in 100 g:
+          </label>
+          <input
+            class="container-fluid p-2 text-center rounded"
+            type="number"
+            step="0.01"
+            min="0"
+            id="ingredient-carbohydrates"
+            name="ingredient-carbohydrates"
+          />
+        </div>
+      </div>
+
+      <!-- search -->
+      <div
+        id="search-div"
         class="d-flex flex-row flex-nowrap justify-content-center align-items-center"
       >
         <input
@@ -52,7 +126,11 @@
         />
       </div>
 
-      <div class="d-flex flex-row justify-content-end shadow fs-2 w-100 mb-2">
+      <!-- pagination -->
+      <div
+        id="pagination"
+        class="d-flex flex-row justify-content-end shadow fs-2 w-100 mb-2"
+      >
         <button
           id="add"
           type="button"
@@ -95,6 +173,7 @@
         </button>
       </div>
 
+      <!-- ingredients -->
       <div
         id="ingredients"
         class="d-flex flex-column justify-content-center align-items-center w-100"
