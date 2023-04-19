@@ -8,6 +8,7 @@ const newIngredient = document.querySelector("#new-ingredient");
 const searchDiv = document.querySelector("#search-div");
 const pagination = document.querySelector("#pagination");
 const ingredients = document.querySelector("#ingredients");
+const vitamins = document.querySelector("#vitamins");
 let page = 1;
 let pageOne = btnAction("page-one", () => {
   page = 1;
@@ -116,4 +117,12 @@ const add = btnAction("add", () => {
   pagination.classList.add("d-none");
   ingredients.classList.add("d-none");
   newIngredient.classList.remove("d-none");
+  getDict(API_DISH_VITAMINS, {
+    ok: (data) => {
+      console.log(data);
+    },
+    error: (err) => {
+      console.log(err);
+    },
+  });
 });

@@ -1,9 +1,6 @@
 const LS_SS_PREFIX = "menu__";
 const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
-const SS_UNITS = "jwt_access";
-const SS_VITAMINS = "jwt_access";
-const SS_TAGS = "jwt_access";
 
 // api
 const API_URL = "http://127.0.0.1:8000/";
@@ -16,6 +13,7 @@ const API_USER_REGISTER = "user/register/";
 const API_USER_CHANGE_PASSWORD = "user/change-password/";
 const API_USER = "user/";
 
+const GET_SHORT = "?short=1";
 const API_DISH_VITAMINS = "dish/vitamins/";
 const API_DISH_UNITS = "dish/units/";
 const API_DISH_TAGS = "dish/tags/";
@@ -25,10 +23,41 @@ const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
 const TEXT_ERROR_SERVER_ERROR = "Server error";
 
-const INGREDIENTS_PAGE_SIZE = 4;
+const INGREDIENTS_PAGE_SIZE = 6;
 
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
+};
+
+// get dictionary one time and keep them saved in sessionStorage
+const getDict = (api, functionsObj) => {
+  let dictString = sessionStorage.getItem(LS_SS_PREFIX + api);
+  if (!strIsEmpty(dictString)) {
+    try {
+      let obj = JSON.parse(dictString);
+      callFunctionFrom(functionsObj, "ok", obj);
+      return;
+    } catch (e) {}
+  }
+  // load
+  fetchAPI(
+    api,
+    "get",
+    GET_SHORT,
+    {
+      ok: (data) => {
+        try {
+          sessionStorage.setItem(LS_SS_PREFIX + api, JSON.stringify(data));
+          callFunctionFrom(functionsObj, "ok", data);
+        } catch (e) {
+          sessionStorage.removeItem(ssDict);
+          callFunctionFrom(functionsObj, "error", TEXT_ERROR_SERVER_ERROR);
+        }
+      },
+      error: (err) => callFunctionFrom(functionsObj, "error", err),
+    },
+    true
+  );
 };
 
 const userLogout = () => {

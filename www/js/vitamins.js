@@ -29,7 +29,7 @@ const getVitamins = () => {
             </h2>
             <div  id="c${index}" class="accordion-collapse collapse " 
               aria-labelledby="h${index}" 
-              data-bs-parent="#units">
+              data-bs-parent="#vitamins">
               <div class="accordion-body fs-4">
               ${vitamin["description"]}
               </div>

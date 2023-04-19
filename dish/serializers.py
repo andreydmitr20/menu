@@ -8,16 +8,34 @@ class VitaminSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class VitaminShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vitamin
+        fields = ['id', 'name']
+
+
 class UnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unit
         fields = '__all__'
 
 
+class UnitShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Unit
+        fields = ['id', 'name']
+
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
+
+
+class TagShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name']
 
 
 class IngredientSerializer(serializers.ModelSerializer):

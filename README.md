@@ -34,3 +34,4 @@ file:///...../menu/www/index.html
 <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Maxim Basinski Premium - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icons created by Vectors Market - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/vitamins" title="vitamins icons">Vitamins icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/tick" title="tick icons">Tick icons created by Octopocto - Flaticon</a>
