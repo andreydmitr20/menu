@@ -87,7 +87,6 @@ CORS_ALLOWED_ORIGINS = [
     # "http://localhost",
     # "http://127.0.0.1",
     "null",
-    "memenu.me",
     "http://memenu.me",
 ]
 ROOT_URLCONF = "menu.urls"
