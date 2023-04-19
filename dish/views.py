@@ -21,16 +21,18 @@ class VitaminsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, format=None):
-        short = self.request.query_params.get('short')
-        if (short == '1'):
-            queryset = Vitamin.objects.all().values(
-                *VitaminShortSerializer.Meta.fields
-            ).order_by('name')
-            # print(queryset.query)
-            serializer = VitaminShortSerializer(queryset, many=True)
-        else:
-            queryset = Vitamin.objects.all().order_by('name')
-            serializer = VitaminSerializer(queryset, many=True)
+
+        serializerClass = (VitaminSerializer
+                           if (self.request.query_params.get('short') != '1')
+                           else VitaminShortSerializer)
+
+        fields = serializerClass.Meta.fields
+
+        queryset = (Vitamin.objects.all()
+                    if (type(fields) is str)
+                    else Vitamin.objects.all().values(*fields)).order_by('name')
+
+        serializer = serializerClass(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -38,15 +40,17 @@ class UnitsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, format=None):
-        short = self.request.query_params.get('short')
-        if (short == '1'):
-            queryset = Unit.objects.all().values(
-                *UnitShortSerializer.Meta.fields
-            ).order_by('name')
-            serializer = UnitShortSerializer(queryset, many=True)
-        else:
-            queryset = Unit.objects.all().order_by('name')
-            serializer = UnitSerializer(queryset, many=True)
+        serializerClass = (UnitSerializer
+                           if (self.request.query_params.get('short') != '1')
+                           else UnitShortSerializer)
+
+        fields = serializerClass.Meta.fields
+
+        queryset = (Unit.objects.all()
+                    if (type(fields) is str)
+                    else Unit.objects.all().values(*fields)).order_by('name')
+
+        serializer = serializerClass(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -54,15 +58,17 @@ class TagsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, format=None):
-        short = self.request.query_params.get('short')
-        if (short == '1'):
-            queryset = Tag.objects.all().values(
-                *TagShortSerializer.Meta.fields
-            ).order_by('id')
-            serializer = TagShortSerializer(queryset, many=True)
-        else:
-            queryset = Tag.objects.all().order_by('id')
-            serializer = TagSerializer(queryset, many=True)
+        serializerClass = (TagSerializer
+                           if (self.request.query_params.get('short') != '1')
+                           else TagShortSerializer)
+
+        fields = serializerClass.Meta.fields
+
+        queryset = (Tag.objects.all()
+                    if (type(fields) is str)
+                    else Tag.objects.all().values(*fields)).order_by('id')
+
+        serializer = serializerClass(queryset, many=True)
         return Response(serializer.data)
 
 
