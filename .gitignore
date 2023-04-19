@@ -2,6 +2,6 @@
 **/.vscode
 **/.token
 **/.env
-**/__init__.py
+# **/__init__.py
 **/__pycache__
 **/db.sqlite3
