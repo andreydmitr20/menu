@@ -127,13 +127,13 @@ const add = btnAction("add", () => {
           html += `
         <div
           id="flush-collapseOne"
-          class="accordion-collapse collapse text-start"
+          class="accordion-collapse collapse text-start "
           aria-labelledby="flush-headingOne"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body">
+          <div class="accordion-body d-flex flex-row flex-nowrap text-primary justify-content-between border border-warning rounded">
             ${element["name"]}
-            <input type="number" id="v${element["id"]}" min="0" step="0.001">
+            <input class="w-50 p-2 text-end " type="number" id="v${element["id"]}" min="0" step="0.001">
           </div>
         </div>`;
         });
