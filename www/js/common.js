@@ -1,7 +1,12 @@
-const API_URL = "http://127.0.0.1:8000/";
-
+const LS_SS_PREFIX = "menu__";
 const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
+const SS_UNITS = "jwt_access";
+const SS_VITAMINS = "jwt_access";
+const SS_TAGS = "jwt_access";
+
+// api
+const API_URL = "http://127.0.0.1:8000/";
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
@@ -27,22 +32,24 @@ const strIsEmpty = (str) => {
 };
 
 const userLogout = () => {
-  sessionStorage.removeItem(SS_JWT_ACCESS);
-  localStorage.removeItem(LS_JWT_REFRESH);
+  sessionStorage.removeItem(LS_SS_PREFIX + SS_JWT_ACCESS);
+  localStorage.removeItem(LS_SS_PREFIX + LS_JWT_REFRESH);
 };
+
+//
+const callFunctionFrom = (functionsObj, property, params) => {
+  if (typeof functionsObj === "object" && functionsObj.hasOwnProperty(property))
+    functionsObj[property](params);
+};
+
 // get access jwt token
 // if ok then call functionsObj.ok()
 // if error then call functionsObj.error()
-const getAccessJwt = (functionsObj) => {
-  let jwtRefresh = localStorage.getItem(LS_JWT_REFRESH);
-
+// if saveJvt===true then save access token
+const getAccessJwt = (functionsObj, saveJwt) => {
+  let jwtRefresh = localStorage.getItem(LS_SS_PREFIX + LS_JWT_REFRESH);
   if (jwtRefresh === null || jwtRefresh === undefined) {
-    if (
-      typeof functionsObj === "object" &&
-      functionsObj.hasOwnProperty("error")
-    ) {
-      functionsObj.error();
-    }
+    callFunctionFrom(functionsObj, "error");
     return;
   }
 
@@ -53,8 +60,14 @@ const getAccessJwt = (functionsObj) => {
     {
       refresh: jwtRefresh,
     },
-
-    functionsObj
+    {
+      ok: (data) => {
+        if (saveJwt)
+          sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
+        callFunctionFrom(functionsObj, "ok");
+      },
+      error: () => callFunctionFrom(functionsObj, "error"),
+    }
   );
 };
 
@@ -65,7 +78,7 @@ const checkAuth = () => {
   //       window.open("../index.html", "_self");
   //     },
   //   });
-  if (strIsEmpty(sessionStorage.getItem(SS_JWT_ACCESS))) {
+  if (strIsEmpty(sessionStorage.getItem(LS_SS_PREFIX + SS_JWT_ACCESS))) {
     window.open("../index.html", "_self");
   }
 };
@@ -107,7 +120,7 @@ const fetchAPI = (
   };
   if (jwtAuth) {
     headers["Authorization"] =
-      "Bearer " + sessionStorage.getItem(SS_JWT_ACCESS);
+      "Bearer " + sessionStorage.getItem(LS_SS_PREFIX + SS_JWT_ACCESS);
   }
 
   //   console.log([headers]);
@@ -143,12 +156,12 @@ const fetchAPI = (
           "post",
 
           {
-            refresh: localStorage.getItem(LS_JWT_REFRESH),
+            refresh: localStorage.getItem(LS_SS_PREFIX + LS_JWT_REFRESH),
           },
           {
             ok: (data) => {
               console.log("repeat fetch");
-              sessionStorage.setItem(SS_JWT_ACCESS, data.access);
+              sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
               fetchAPI(
                 apiLink,
                 apiMethod,
@@ -160,13 +173,8 @@ const fetchAPI = (
             },
             error: (err) => {
               // console.log("err");
-              sessionStorage.removeItem(SS_JWT_ACCESS);
-              if (
-                typeof functionsObj === "object" &&
-                functionsObj.hasOwnProperty("error")
-              ) {
-                functionsObj.error(err.message);
-              }
+              sessionStorage.removeItem(LS_SS_PREFIX + SS_JWT_ACCESS);
+              callFunctionFrom(functionsObj, "error", err.message);
             },
           },
 
@@ -190,28 +198,18 @@ const fetchAPI = (
         if (responseStatus >= 400 && responseStatus < 500) {
           throw new Error((message = JSON.stringify(data)));
         }
-        if (
-          typeof functionsObj === "object" &&
-          functionsObj.hasOwnProperty("ok")
-        ) {
-          functionsObj.ok(data);
-        }
+        callFunctionFrom(functionsObj, "ok", data);
       }
     })
     .catch((error) => {
       // to clear exit when use recursion
       console.log(error);
-      if (
-        typeof functionsObj === "object" &&
-        functionsObj.hasOwnProperty("error")
-      ) {
-        functionsObj.error(error.message);
-      }
+      callFunctionFrom(functionsObj, "error", error.message);
     });
 };
 
 // try to login
-const login = (username, password, okFunction = null, errorFunction = null) => {
+const login = (username, password, functionsObj) => {
   // try to get new token
   fetchAPI(
     API_TOKEN,
@@ -223,14 +221,11 @@ const login = (username, password, okFunction = null, errorFunction = null) => {
     },
     {
       ok: (data) => {
-        sessionStorage.setItem(SS_JWT_ACCESS, data.access);
-        localStorage.setItem(LS_JWT_REFRESH, data.refresh);
-        if (okFunction !== null && okFunction !== undefined) okFunction();
+        sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
+        localStorage.setItem(LS_SS_PREFIX + LS_JWT_REFRESH, data.refresh);
+        callFunctionFrom(functionsObj, "ok", data);
       },
-      error: () => {
-        if (errorFunction !== null && errorFunction !== undefined)
-          errorFunction();
-      },
+      error: (err) => callFunctionFrom(functionsObj, "error", err),
     }
   );
 };

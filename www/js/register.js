@@ -85,16 +85,14 @@ okButton.addEventListener("click", (event) => {
         console.log("registered");
         okButton.disabled = false;
         // auto login
-        login(
-          userName.value,
-          password.value,
-          () => {
+        login(userName.value, password.value, {
+          ok: () => {
             window.open("../html/menu.html", "_self");
           },
-          () => {
+          error: () => {
             window.open("../index.html", "_self");
-          }
-        );
+          },
+        });
       },
       error: (err) => {
         errorText.textContent = getErrorTextFromMessage(err, [

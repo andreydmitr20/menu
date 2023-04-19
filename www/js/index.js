@@ -7,17 +7,15 @@ const body = document.querySelector("body");
 body.addEventListener("loaded", () => username.focus());
 
 const loginDone = () => {
-  login(
-    username.value,
-    password.value,
-    () => {
+  login(username.value, password.value, {
+    ok: () => {
       window.open("./html/menu.html", "_self");
     },
-    () => {
+    error: () => {
       password.value = "";
       password.focus();
-    }
-  );
+    },
+  });
 };
 username.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
@@ -49,14 +47,15 @@ registerButton.addEventListener("click", (event) => {
 });
 
 // check jwt
-getAccessJwt({
-  ok: (data) => {
-    sessionStorage.setItem(SS_JWT_ACCESS, data.access);
-
-    window.open("./html/menu.html", "_self");
+getAccessJwt(
+  {
+    ok: (data) => {
+      window.open("./html/menu.html", "_self");
+    },
+    error: () => {
+      body.classList.remove("d-none");
+      username.focus();
+    },
   },
-  error: () => {
-    body.classList.remove("d-none");
-    username.focus();
-  },
-});
+  true
+);
