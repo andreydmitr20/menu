@@ -54,7 +54,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
     `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}`,
     {
       ok: (data) => {
-        console.log(data);
+        // console.log(data);
         if (data.length === 0) {
           ingredients.innerHTML = "";
           return;

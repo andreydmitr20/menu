@@ -8,11 +8,16 @@ receipts.
 
 pip3 install -r requirements.txt
 
+Change appropriate api URL in common.js:
+
+// const API_URL = "http://memenu.me:8000/";
+const API_URL = "http://127.0.0.1:8000/";
+
 python3 manage.py runserver
 
 Then open in your browser (put your path instead of "....."):
 
-file:///...../menu/www/index.html
+file:///...../menu/static/index.html
 
 ## Relational schema
 
