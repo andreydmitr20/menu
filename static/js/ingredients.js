@@ -9,6 +9,7 @@ const searchDiv = document.querySelector("#search-div");
 const pagination = document.querySelector("#pagination");
 const ingredients = document.querySelector("#ingredients");
 const vitamins = document.querySelector("#vitamins");
+const vitaminsList = document.querySelector("#vitamins-list");
 let page = 1;
 let pageOne = btnAction("page-one", () => {
   page = 1;
@@ -120,6 +121,24 @@ const add = btnAction("add", () => {
   getDict(API_DISH_VITAMINS, {
     ok: (data) => {
       console.log(data);
+      if (data.length > 0) {
+        html = "";
+        data.forEach((element) => {
+          html += `
+        <div
+          id="flush-collapseOne"
+          class="accordion-collapse collapse text-start"
+          aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample"
+        >
+          <div class="accordion-body">
+            ${element["name"]}
+            <input type="number" id="v${element["id"]}" min="0" step="0.001">
+          </div>
+        </div>`;
+        });
+        vitaminsList.innerHTML = html;
+      }
     },
     error: (err) => {
       console.log(err);
