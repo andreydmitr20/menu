@@ -14,7 +14,7 @@ services:
     volumes:
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/:ro
-      - web_www:/code/www/:ro
+      - ./www/:/code/www:ro
     ports:
       #- "80:80"
       - "80:80"
@@ -28,13 +28,10 @@ services:
       sh -c "python3 manage.py collectstatic --noinput
       && uwsgi --ini uwsgi.ini"
     volumes:
-      - ./www/:/code/www:ro
       - ./env/:/code/env:ro
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
-      - web_www:/code/www/:ro
 
 volumes:
   uwsgi_data:
   web_static:
-  web_www:
