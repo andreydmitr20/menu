@@ -51,10 +51,12 @@ getAccessJwt(
   {
     ok: (data) => {
       window.open("./html/menu.html", "_self");
+      console.log("ok");
     },
     error: () => {
       body.classList.remove("d-none");
       username.focus();
+      console.log("error");
     },
   },
   true
