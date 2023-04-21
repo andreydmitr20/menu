@@ -4,14 +4,31 @@ input:checked {
   box-shadow: 5px 5px 5px;
 }
 
-body > div {
-  width: 400px;
-  overflow-y: scroll;
+body {
+  max-width: 600px;
+  overflow: auto;
+  min-height: 600px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .w80 {
   width: 80px;
 }
+
+.fill-bottom {
+  height: 100%;
+  overflow: hidden;
+}
+
+body > div {
+  overflow: auto;
+}
+
 /* .my-shadow {
   box-shadow: 0px 0px 8px;
 } */
