@@ -16,7 +16,7 @@ services:
       - web_static:/code/static/:ro
       - web_www:/code/www/:ro
     ports:
-      - "80:80"
+      #- "80:80"
       - "8000:80"
     depends_on:
       - django
