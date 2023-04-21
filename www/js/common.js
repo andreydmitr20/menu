@@ -3,9 +3,9 @@ const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
 
 // api
-// const API_URL = "http://memenu.me:8000/";
-// const API_URL = "http://127.0.0.1:8000/";
-const API_URL = "http://3.213.174.126:8000/";
+// const API_URL = "http://memenu.me:8000/api/";
+// const API_URL = "http://127.0.0.1:8000/api/";
+const API_URL = "http://3.213.174.126:8000/api/";
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
