@@ -1,4 +1,4 @@
-checkAuth();
+// checkAuth();
 
 btnAction("menu", () => {
   window.open("./menu.html", "_self");
