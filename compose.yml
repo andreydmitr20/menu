@@ -16,7 +16,7 @@ services:
       - web_static:/var/www/menu/assets/:ro
     ports:
 # 8000:80
-      - "8000:8000"
+      - "80:8000"
     depends_on:
       - django
 
