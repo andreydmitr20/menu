@@ -3,9 +3,9 @@ const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
 
 // api
-// const API_URL = "http://memenu.me:8000/";
+const API_URL = "http://memenu.me:8000/";
 // const API_URL = "http://127.0.0.1:8000/";
-const API_URL = "http://3.213.174.126:8000/";
+// const API_URL = "http://3.213.174.126:8000/";
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
@@ -28,13 +28,15 @@ const TEXT_ERROR_SERVER_ERROR = "Server error";
 const INGREDIENTS_PAGE_SIZE = 6;
 
 // border border-primary rounded
-const BODY_STYLE = "bg-warning";
+// const BODY_STYLE = "bg-warning";
 
 // set same background-color
-const bodyClassList = document.querySelector("body").classList;
-BODY_STYLE.split(" ").forEach((style) => {
-  bodyClassList.add(style);
-});
+// const commonBody = document.querySelector("body");
+// commonBody.addEventListener("loaded", () => {
+//   BODY_STYLE.split(" ").forEach((style) => {
+//     body.classList.add(style);
+//   });
+// });
 
 //
 const strIsEmpty = (str) => {
