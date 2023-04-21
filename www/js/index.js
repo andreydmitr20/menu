@@ -6,6 +6,7 @@ const registerButton = document.querySelector("#registerButton");
 const body = document.querySelector("body");
 body.addEventListener("loaded", () => username.focus());
 
+//
 const loginDone = () => {
   login(username.value, password.value, {
     ok: () => {
