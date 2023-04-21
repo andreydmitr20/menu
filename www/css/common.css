@@ -6,6 +6,7 @@ input:checked {
 
 body > div {
   width: 400px;
+  overflow-y: scroll;
 }
 
 .w80 {
