@@ -9,7 +9,7 @@ body.addEventListener("loaded", () => username.focus());
 const loginDone = () => {
   login(username.value, password.value, {
     ok: () => {
-      window.open("./html/menu.html", "_self");
+      window.open("../html/menu.html", "_self");
     },
     error: () => {
       password.value = "";
@@ -43,20 +43,18 @@ okButton.addEventListener("click", (event) => {
 registerButton.addEventListener("click", (event) => {
   event.preventDefault();
   startButtonPressAnimation(registerButton);
-  window.open("./html/register.html", "_self");
+  window.open("../html/register.html", "_self");
 });
 
 // check jwt
 getAccessJwt(
   {
     ok: (data) => {
-      window.open("./html/menu.html", "_self");
-      console.log("ok");
+      window.open("../html/menu.html", "_self");
     },
     error: () => {
       body.classList.remove("d-none");
       username.focus();
-      console.log("error");
     },
   },
   true

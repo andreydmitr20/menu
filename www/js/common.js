@@ -118,11 +118,11 @@ const getAccessJwt = (functionsObj, saveJwt) => {
 const checkAuth = () => {
   //   getAccessJwt({
   //     error: () => {
-  //       window.open("../index.html", "_self");
+  //       window.open("../html/index.html", "_self");
   //     },
   //   });
   if (strIsEmpty(sessionStorage.getItem(LS_SS_PREFIX + SS_JWT_ACCESS))) {
-    window.open("../index.html", "_self");
+    window.open("../html/index.html", "_self");
   }
 };
 
