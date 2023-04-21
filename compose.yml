@@ -1,5 +1,5 @@
-# For other django project you should change 
-# all occurrence 'menu' in: 
+# For other django project you should change
+# all occurrence 'menu' in:
 # 1. compose.yml (this file)
 # 2.1 django/Dockerfile
 # 2.2 django/uwsgi.ini
@@ -13,10 +13,11 @@ services:
     restart: always
     volumes:
       - uwsgi_data:/tmp/uwsgi/
-      - web_static:/var/www/menu/assets/:ro
+      - web_static:/code/static/:ro
+      - web_www:/code/www/:ro
     ports:
-# 8000:80
-      - "80:8000"
+      # 8000:80
+      - "8000:80"
     depends_on:
       - django
 
@@ -27,12 +28,13 @@ services:
       sh -c "python3 manage.py collectstatic --noinput
       && uwsgi --ini uwsgi.ini"
     volumes:
-      - uwsgi_data:/tmp/uwsgi/
-      - web_static:/code/static/
-      - web_static:/var/www/menu/assets/
       - ./www/:/code/www:ro
       - ./env/:/code/env:ro
+      - uwsgi_data:/tmp/uwsgi/
+      - web_static:/code/static/:ro
+      - web_www:/code/www/:ro
+
 volumes:
   uwsgi_data:
   web_static:
-
+  web_www:
