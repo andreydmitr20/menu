@@ -27,6 +27,16 @@ const TEXT_ERROR_SERVER_ERROR = "Server error";
 
 const INGREDIENTS_PAGE_SIZE = 6;
 
+// border border-primary rounded
+const BODY_STYLE = "bg-warning";
+
+// set same background-color
+const bodyClassList = document.querySelector("body").classList;
+BODY_STYLE.split(" ").forEach((style) => {
+  bodyClassList.add(style);
+});
+
+//
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
 };
