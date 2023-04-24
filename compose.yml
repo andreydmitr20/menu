@@ -21,7 +21,7 @@ services:
     depends_on:
       - django
     command: >
-      sh -c "ls -a && cd code/www && ls -a"
+      sh -c "ls -a && cd /var/jenkins_home/workspace/menu/www && ls -a"
 
   django:
     build: ./django/
