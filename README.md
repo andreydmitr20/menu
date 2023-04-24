@@ -39,6 +39,18 @@ After that you can run commans inside container like this:
 
 \# python3 manage.py migrate
 
+To create new database db.sqlite3:
+\# python3 manage.py migrate
+\# python3 m shell
+
+> > > from dish.models import Unit,Tag,Vitamin
+> > > o=Unit()
+> > > o.fill()
+> > > o=Tag()
+> > > o.fill()
+> > > o=Vitamin()
+> > > o.fill()
+
 ## Debug on a local computer.
 
 1. Make .venv
