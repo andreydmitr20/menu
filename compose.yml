@@ -34,18 +34,18 @@ services:
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
 
-  jenkins:
-    image: jenkins_and_docker:lts
-    restart: unless-stopped
-    privileged: true
-    user: root
-    ports:
-      - "8080:8080"
-    container_name: jenkins
-    volumes:
-      - ~/jenkins:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
+#  jenkins:
+#    image: jenkins_and_docker:lts
+#    restart: unless-stopped
+#    privileged: true
+#    user: root
+#    ports:
+#      - "8080:8080"
+#    container_name: jenkins
+#    volumes:
+#      - ~/jenkins:/var/jenkins_home
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /usr/bin/docker:/usr/bin/docker
 
 volumes:
   uwsgi_data:
