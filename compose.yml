@@ -6,6 +6,7 @@
 # 3.1 nginx/Dockerfile
 # 3.2 nginx/nginx.conf
 # 3.3 nginx/django.nginx.conf
+
 version: "3.9"
 services:
   nginx:
@@ -16,7 +17,6 @@ services:
       - web_static:/code/static/:ro
       - ./www/:/code/www:ro
     ports:
-      #- "80:80"
       - "80:80"
     depends_on:
       - django
@@ -29,6 +29,8 @@ services:
       && uwsgi --ini uwsgi.ini"
     volumes:
       - ./env/:/code/env:ro
+      - ./django/:/code
+      - ./db/:/code/db
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
 
