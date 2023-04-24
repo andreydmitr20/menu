@@ -87,10 +87,10 @@ okButton.addEventListener("click", (event) => {
         // auto login
         login(userName.value, password.value, {
           ok: () => {
-            window.open("../html/menu.html", "_self");
+            window.open("../html/index.html", "_self");
           },
           error: () => {
-            window.open("../html/index.html", "_self");
+            window.open("../html/login.html", "_self");
           },
         });
       },

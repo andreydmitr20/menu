@@ -1,7 +1,7 @@
 checkAuth();
 
 btnAction("menu", () => {
-  window.open("./menu.html", "_self");
+  window.open("./index.html", "_self");
 });
 
 // btnAction("dishes", () => {

@@ -55,10 +55,10 @@ logout.addEventListener("click", () => {
     {},
     {
       ok: () => {
-        window.open("../html/index.html", "_self");
+        window.open("../html/login.html", "_self");
       },
       error: () => {
-        window.open("../html/index.html", "_self");
+        window.open("../html/login.html", "_self");
       },
     }
   );

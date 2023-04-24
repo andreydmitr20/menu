@@ -16,58 +16,51 @@
     <link rel="stylesheet" href="../css/common.css" />
     <link rel="stylesheet" href="../css/index.css" />
   </head>
-  <body class="d-none bg-warning">
+  <body class="bg-warning">
     <div
       class="d-flex flex-column flex-nowrap justify-content-center align-items-center p-3 m-2"
     >
-      <img
-        class="img-fluid rounded w-25"
-        src="../icon/favicon.png"
-        alt="logo"
-      />
-
-      <h1 class="text-center text-primary m-4 fs-1">MeNU</h1>
-
-      <form class="text-center text-primary fs-3">
-        <label for="username">Username:</label>
-        <input
-          class="container-fluid p-2 text-center rounded"
-          type="text"
-          id="username"
-          name="username"
-          minlength="3"
-          required
-        /><br /><br />
-        <label for="password">Password:</label>
-        <div>
-          <input
-            class="container-fluid p-2 text-center rounded"
-            type="password"
-            id="password"
-            name="password"
-            minlength="8"
-            autocomplete="on"
-            required
-          />
-        </div>
-        <br />
-
+      <!-- <img class="img-fluid rounded w-25" src="../icon/favicon.png" /> -->
+      <div
+        id="top-menu"
+        class="d-flex flex-row justify-content-center align-items-center m-0 p-0"
+      >
         <button
-          id="okButton"
+          id="tags"
           type="button"
-          class="btn btn-warning bg-gradient fs-3 p-3 mx-2"
+          class="btn btn-warning bg-gradient fs-4 m-1"
         >
-          Ok
+          <img class="img-fluid rounded w-50" src="../icon/tags.png" />
+          <!-- Tags -->
         </button>
 
         <button
-          id="registerButton"
+          id="menu"
           type="button"
-          class="btn btn-warning bg-gradient fs-3 p-3 mx-2"
+          class="btn btn-warning bg-gradient rounded fs-3 m-2"
         >
-          Register
+          <img class="img-fluid rounded w-50" src="../icon/favicon.png" />
+          <!-- Menu -->
         </button>
-      </form>
+
+        <button
+          id="more"
+          type="button"
+          class="btn btn-warning bg-gradient fs-4 m-1"
+        >
+          <img class="img-fluid rounded w-50" src="../icon/application.png" />
+          <!-- More -->
+        </button>
+      </div>
+
+      <div id="filtered-dishes">
+        <hr />
+        <p class="fs-1 text-center">
+          Here will be dishes filtered by tags, likes, etc. Application will
+          select dishes for you and save history to avoid eating the same two
+          days in a row.
+        </p>
+      </div>
     </div>
 
     <script

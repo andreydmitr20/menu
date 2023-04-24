@@ -1,11 +1,26 @@
+// storage
 const LS_SS_PREFIX = "menu__";
+const sessionStorageSet = (key, value) =>
+  sessionStorage.setItem(LS_SS_PREFIX + key, value);
+const sessionStorageGet = (key) => sessionStorage.getItem(LS_SS_PREFIX + key);
+const sessionStorageRemove = (key) =>
+  sessionStorage.removeItem(LS_SS_PREFIX + key);
+const localStorageSet = (key, value) =>
+  localStorage.setItem(LS_SS_PREFIX + key, value);
+const localStorageGet = (key) => localStorage.getItem(LS_SS_PREFIX + key);
+const localStorageRemove = (key) => localStorage.removeItem(LS_SS_PREFIX + key);
+
 const LS_JWT_REFRESH = "jwt_refresh";
 const SS_JWT_ACCESS = "jwt_access";
 
+const SS_API_URL = "API_URL";
+
 // api
-// const API_URL = "http://memenu.me:80/api/";
-const API_URL = "http://127.0.0.1:8000/api/";
-// const API_URL = "http://3.213.174.126/api/";
+let apiUrl = sessionStorageGet(SS_API_URL);
+
+const API_URL_REMOTE = "http://memenu.me:80/api/";
+const API_URL_LOCAL = "http://127.0.0.1:8000/api/";
+// const API_URL_REMOTE = "http://3.213.174.126/api/";
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
@@ -45,7 +60,7 @@ const strIsEmpty = (str) => {
 
 // get dictionary one time and keep them saved in sessionStorage
 const getDict = (api, functionsObj) => {
-  let dictString = sessionStorage.getItem(LS_SS_PREFIX + api);
+  let dictString = sessionStorageGet(api);
   if (!strIsEmpty(dictString)) {
     try {
       let obj = JSON.parse(dictString);
@@ -53,7 +68,8 @@ const getDict = (api, functionsObj) => {
       return;
     } catch (e) {}
   }
-  // load
+
+  //
   fetchAPI(
     api,
     "get",
@@ -61,10 +77,10 @@ const getDict = (api, functionsObj) => {
     {
       ok: (data) => {
         try {
-          sessionStorage.setItem(LS_SS_PREFIX + api, JSON.stringify(data));
+          sessionStorageSet(api, JSON.stringify(data));
           callFunctionFrom(functionsObj, "ok", data);
         } catch (e) {
-          sessionStorage.removeItem(ssDict);
+          sessionStorageRemove(ssDict);
           callFunctionFrom(functionsObj, "error", TEXT_ERROR_SERVER_ERROR);
         }
       },
@@ -75,8 +91,8 @@ const getDict = (api, functionsObj) => {
 };
 
 const userLogout = () => {
-  sessionStorage.removeItem(LS_SS_PREFIX + SS_JWT_ACCESS);
-  localStorage.removeItem(LS_SS_PREFIX + LS_JWT_REFRESH);
+  sessionStorageRemove(SS_JWT_ACCESS);
+  localStorageRemove(LS_JWT_REFRESH);
 };
 
 //
@@ -90,7 +106,7 @@ const callFunctionFrom = (functionsObj, property, params) => {
 // if error then call functionsObj.error()
 // if saveJvt===true then save access token
 const getAccessJwt = (functionsObj, saveJwt) => {
-  let jwtRefresh = localStorage.getItem(LS_SS_PREFIX + LS_JWT_REFRESH);
+  let jwtRefresh = localStorageGet(LS_JWT_REFRESH);
   if (jwtRefresh === null || jwtRefresh === undefined) {
     callFunctionFrom(functionsObj, "error");
     return;
@@ -105,8 +121,7 @@ const getAccessJwt = (functionsObj, saveJwt) => {
     },
     {
       ok: (data) => {
-        if (saveJwt)
-          sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
+        if (saveJwt) sessionStorageSet(SS_JWT_ACCESS, data.access);
         callFunctionFrom(functionsObj, "ok");
       },
       error: () => callFunctionFrom(functionsObj, "error"),
@@ -114,15 +129,41 @@ const getAccessJwt = (functionsObj, saveJwt) => {
   );
 };
 
-// if not authenticated, goto index.html
-const checkAuth = () => {
-  //   getAccessJwt({
-  //     error: () => {
-  //       window.open("../html/index.html", "_self");
-  //     },
-  //   });
-  if (strIsEmpty(sessionStorage.getItem(LS_SS_PREFIX + SS_JWT_ACCESS))) {
-    window.open("../html/index.html", "_self");
+// if not authenticated, goto login.html
+const checkAuth = (isIndex) => {
+  if (isIndex === true) {
+    // index.html
+    // find API_URL
+    sessionStorageRemove(SS_API_URL);
+    apiUrl = API_URL_LOCAL;
+    fetchAPI(API_TEST, "get", "", {
+      ok: () => {
+        sessionStorageSet(SS_API_URL, apiUrl);
+        getAccessJwt(
+          {
+            error: () => {
+              window.open("./html/login.html", "_self");
+            },
+          },
+          true
+        );
+      },
+      error: () => {
+        apiUrl = API_URL_REMOTE;
+        sessionStorageSet(SS_API_URL, apiUrl);
+        getAccessJwt(
+          {
+            error: () => {
+              window.open("./html/login.html", "_self");
+            },
+          },
+          true
+        );
+      },
+    });
+  } else if (strIsEmpty(sessionStorageGet(SS_JWT_ACCESS))) {
+    // not index.html
+    window.open("../html/login.html", "_self");
   }
 };
 
@@ -156,14 +197,13 @@ const fetchAPI = (
   recursion
 ) => {
   // console.log("body", body);
-  let fullUrl = API_URL + apiLink;
+  let fullUrl = apiUrl + apiLink;
 
   let headers = {
     "Content-Type": "application/json",
   };
   if (jwtAuth) {
-    headers["Authorization"] =
-      "Bearer " + sessionStorage.getItem(LS_SS_PREFIX + SS_JWT_ACCESS);
+    headers["Authorization"] = "Bearer " + sessionStorageGet(SS_JWT_ACCESS);
   }
 
   //   console.log([headers]);
@@ -199,12 +239,12 @@ const fetchAPI = (
           "post",
 
           {
-            refresh: localStorage.getItem(LS_SS_PREFIX + LS_JWT_REFRESH),
+            refresh: localStorageGet(LS_JWT_REFRESH),
           },
           {
             ok: (data) => {
               console.log("repeat fetch");
-              sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
+              sessionStorageSet(SS_JWT_ACCESS, data.access);
               fetchAPI(
                 apiLink,
                 apiMethod,
@@ -216,7 +256,7 @@ const fetchAPI = (
             },
             error: (err) => {
               // console.log("err");
-              sessionStorage.removeItem(LS_SS_PREFIX + SS_JWT_ACCESS);
+              sessionStorageRemove(SS_JWT_ACCESS);
               callFunctionFrom(functionsObj, "error", err.message);
             },
           },
@@ -264,8 +304,8 @@ const login = (username, password, functionsObj) => {
     },
     {
       ok: (data) => {
-        sessionStorage.setItem(LS_SS_PREFIX + SS_JWT_ACCESS, data.access);
-        localStorage.setItem(LS_SS_PREFIX + LS_JWT_REFRESH, data.refresh);
+        sessionStorageSet(SS_JWT_ACCESS, data.access);
+        localStorageSet(LS_JWT_REFRESH, data.refresh);
         callFunctionFrom(functionsObj, "ok", data);
       },
       error: (err) => callFunctionFrom(functionsObj, "error", err),

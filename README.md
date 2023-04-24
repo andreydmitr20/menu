@@ -61,13 +61,9 @@ To create new database db.sqlite3:
 
 3. > pip3 install -r requirements.txt
 
-4. Change appropriate api URL in /www/js/common.js:
-   // const API_URL = "http://memenu.me:8000/";
-   const API_URL = "http://127.0.0.1:8000/";
+4. > python3 manage.py runserver
 
-5. > python3 manage.py runserver
-
-6. Then open in your browser (put your path instead of "....."):
+5. Then open in your browser (put your path instead of "....."):
    file:///...../menu/www/html/index.html
 
 ## Relational schema
