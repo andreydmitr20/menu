@@ -25,12 +25,12 @@ services:
     build: ./django/
     restart: always
     command: >
-      sh -c "ls -a && cd .. && ls -a && python3 ./manage.py collectstatic --noinput
+      sh -c "ls -a && cd db && ls -a && cd .. && cd .. && ls -a && python3 ./manage.py collectstatic --noinput
       && uwsgi --ini uwsgi.ini"
     volumes:
-      - ./django/:/code
-      - ./env/:/code/env:ro
-      - ./db/:/code/db
+      - ./django/:/code/
+      - ./env/:/code/env/:ro
+      - ./db/:/code/db/
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
 
