@@ -1,23 +1,62 @@
-## Menu
+## Menu.
 
-To collect dishes which you like. <br> To find fast what to cook from existing
-ingredients. <br> To feed yourself healthy dishes. <br> To share dishes
+MVP.
+To collect dishes which you like. <br>
+To find fast what to cook from existing
+ingredients. <br>
+To feed yourself healthy dishes. <br>
+To share dishes
 receipts.
 
-## Debug
+## Install on a server.
 
-pip3 install -r requirements.txt
+1.  > gh repo clone andreydmitr20/menu
 
-Change appropriate api URL in common.js:
+2.  Create .env file inside /env folder.
+    It should contain something like that:
+    SECRET_KEY = "yfYAF5eGCekxO8eobSN0ChAdscF5ygbntIa6ud0JVTQ6JgSsmN"
+    DEBUG=True
 
-// const API_URL = "http://memenu.me:8000/";
-const API_URL = "http://127.0.0.1:8000/";
+3.  Copy /utils/test_db.sqlite3 into /db/db.sqlite3
 
-python3 manage.py runserver
+4.  Run
 
-Then open in your browser (put your path instead of "....."):
+    > docker compose build
 
-file:///...../menu/static/index.html
+5.  Run
+
+    > docker compose up
+
+6.  f you need do make some operations on database, use:
+    > docker ps -a
+    > to find the docker-menu container id.
+
+Then run:
+
+> docker exec -it <docker-menu container id> /in/sh
+
+After that you can run commans inside container like this:
+
+\# python3 manage.py migrate
+
+## Debug on a local computer.
+
+1. Make .venv
+
+   > python3 -m venv .venv
+
+2. > source .venv/bin/activate
+
+3. > pip3 install -r requirements.txt
+
+4. Change appropriate api URL in /www/js/common.js:
+   // const API_URL = "http://memenu.me:8000/";
+   const API_URL = "http://127.0.0.1:8000/";
+
+5. > python3 manage.py runserver
+
+6. Then open in your browser (put your path instead of "....."):
+   file:///...../menu/www/html/index.html
 
 ## Relational schema
 
