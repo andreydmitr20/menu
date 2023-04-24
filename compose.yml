@@ -15,8 +15,7 @@ services:
     volumes:
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/:ro
-      #      - ./www/:/code/www:ro
-      - /var/jenkins_home/workspace/menu/www/:/code/www:ro
+      - ./www/:/code/www:ro
     ports:
       - "80:80"
     depends_on:
@@ -29,12 +28,9 @@ services:
       sh -c "ls -a && python3 manage.py collectstatic --noinput
       && uwsgi --ini uwsgi.ini"
     volumes:
-      #      - ./django/:/code/
-      #      - ./env/:/code/env/:ro
-      #      - ./db/:/code/db/
-      - /var/jenkins_home/workspace/menu/django/:/code
-      - /var/jenkins_home/workspace/menu/env/:/code/env:ro
-      - /var/jenkins_home/workspace/menu/db/:/code/db
+      - ./django/:/code/
+      - ./env/:/code/env/:ro
+      - ./db/:/code/db/
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
 
