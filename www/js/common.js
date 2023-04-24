@@ -143,7 +143,7 @@ const checkAuth = (isIndex) => {
         getAccessJwt(
           {
             error: () => {
-              window.open("./login.html", "_self");
+              window.open("../html/login.html", "_self");
             },
           },
           true

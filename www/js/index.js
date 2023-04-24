@@ -1,9 +1,9 @@
 checkAuth(true);
 
 btnAction("tags", () => {
-  window.open("./tags.html", "_self");
+  window.open("../html/tags.html", "_self");
 });
 
 btnAction("more", () => {
-  window.open("./more.html", "_self");
+  window.open("../html/more.html", "_self");
 });
