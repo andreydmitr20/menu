@@ -20,6 +20,8 @@ services:
       - "80:80"
     depends_on:
       - django
+    command: >
+      sh -c "ls -a && cd code/www && ls -a"
 
   django:
     build: ./django/
