@@ -25,6 +25,7 @@ const API_URL_LOCAL = "http://127.0.0.1:8000/api/";
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
 
+const API_USER_TEST_URL = "user/test-url/";
 const API_USER_LOGOUT = "user/logout/";
 const API_USER_REGISTER = "user/register/";
 const API_USER_CHANGE_PASSWORD = "user/change-password/";
@@ -136,7 +137,7 @@ const checkAuth = (isIndex) => {
     // find API_URL
     sessionStorageRemove(SS_API_URL);
     apiUrl = API_URL_LOCAL;
-    fetchAPI(API_TEST, "get", "", {
+    fetchAPI(API_USER_TEST_URL, "get", "", {
       ok: () => {
         sessionStorageSet(SS_API_URL, apiUrl);
         getAccessJwt(
