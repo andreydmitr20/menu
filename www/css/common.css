@@ -5,7 +5,6 @@ input:checked {
 }
 
 body {
-  max-width: 600px;
   overflow: auto;
   min-height: 600px;
   display: flex;
@@ -16,18 +15,19 @@ body {
   padding: 0;
 }
 
+body > div {
+  overflow: auto;
+  max-width: 600px;
+}
+
 .w80 {
   width: 80px;
 }
 
-.fill-bottom {
+/* .fill-bottom {
   height: 100%;
   overflow: hidden;
-}
-
-body > div {
-  overflow: auto;
-}
+} */
 
 /* .my-shadow {
   box-shadow: 0px 0px 8px;
