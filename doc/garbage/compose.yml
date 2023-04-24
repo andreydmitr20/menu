@@ -1,0 +1,39 @@
+# For other django project you should change
+# all occurrence 'menu' in:
+# 1. compose.yml (this file)
+# 2.1 django/Dockerfile
+# 2.2 django/uwsgi.ini
+# 3.1 nginx/Dockerfile
+# 3.2 nginx/nginx.conf
+# 3.3 nginx/django.nginx.conf
+
+version: "3.9"
+services:
+  nginx:
+    build: ./nginx/
+    restart: always
+    volumes:
+      - uwsgi_data:/tmp/uwsgi/
+      - web_static:/code/static/:ro
+      - ./www/:/code/www:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+  django:
+    build: ./django/
+    restart: always
+    command: >
+      sh -c "ls -a && python3 manage.py collectstatic --noinput
+      && uwsgi --ini uwsgi.ini"
+    volumes:
+      - ./django/:/code/
+      - ./env/:/code/env/:ro
+      - ./db/:/code/db/
+      - uwsgi_data:/tmp/uwsgi/
+      - web_static:/code/static/
+
+volumes:
+  uwsgi_data:
+  web_static:
