@@ -15,7 +15,7 @@ services:
     volumes:
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/:ro
-      - ./www/:/code/www:ro
+      - /www/:/code/www:ro
     ports:
       - "80:80"
     depends_on:
@@ -28,24 +28,11 @@ services:
       sh -c "python3 manage.py collectstatic --noinput
       && uwsgi --ini uwsgi.ini"
     volumes:
-      - ./env/:/code/env:ro
-      - ./django/:/code
-      - ./db/:/code/db
+      - /env/:/code/env:ro
+      - /django/:/code
+      - /db/:/code/db
       - uwsgi_data:/tmp/uwsgi/
       - web_static:/code/static/
-
-#  jenkins:
-#    image: jenkins_and_docker:lts
-#    restart: unless-stopped
-#    privileged: true
-#    user: root
-#    ports:
-#      - "8080:8080"
-#    container_name: jenkins
-#    volumes:
-#      - ~/jenkins:/var/jenkins_home
-#      - /var/run/docker.sock:/var/run/docker.sock
-#      - /usr/bin/docker:/usr/bin/docker
 
 volumes:
   uwsgi_data:

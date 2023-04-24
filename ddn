@@ -1,1 +1,1 @@
-docker compose down
+/home/user1/.docker/cli-plugins/docker-compose down
