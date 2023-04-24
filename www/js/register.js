@@ -22,7 +22,7 @@ userName.focus();
 const menu = document.querySelector("#menu");
 menu.addEventListener("click", () => {
   startButtonPressAnimation(menu);
-  window.open("../html/index.html", "_self");
+  window.open("./login.html", "_self");
 });
 
 iconImage.addEventListener("error", () => {
