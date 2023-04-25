@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: nginx_cont
+    build: ./nginx/
+    restart: always
+    volumes:
+      - /var/log/nginx/:/var/log/nginx
+      - /etc/ssl/certs/cert_memenu.pem:/etc/ssl/certs/cert_memenu.pem:ro
+      - /etc/ssl/private/key_memenu.pem:/etc/ssl/private/key_memenu.pem:ro
+      - uwsgi_data:/tmp/uwsgi/
+      - web_static:/code/static/:ro
+      - ./menu/www/:/code/www:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+#      - "80:80"
+      - "443:443"
+    networks:
+      - jenkins
+
+  jenkins:
+    image: jenkins_and_docker:lts
+    restart: always
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    container_name: jenkins_cont
+    volumes:
+      - ~/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+
+volumes:
+  uwsgi_data:
+  web_static:
+networks:
+  jenkins:
+    driver: bridge
+
+#  mongodb_container:
+#    image: mongo:latest
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: You22never
+#    ports:
+#      - 27017:27017
+#    volumes:
+#      - mongodb_data_container:/data/db
+#
+#volumes:
+#  mongodb_data_container:
+
