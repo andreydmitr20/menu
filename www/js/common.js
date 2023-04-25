@@ -151,6 +151,7 @@ const checkAuth = (isIndex) => {
       },
       error: () => {
         let url = window.location.href.toLowerCase();
+        console.log(url);
         if (url.indexOf("www.") !== -1) {
           apiUrl = API_URL_REMOTE.replace("://", "://www.");
         } else {
