@@ -3,6 +3,7 @@ RUN mkdir /code
 WORKDIR /code
 COPY ./uwsgi.ini /code
 COPY ./requirements.txt /code
+RUN apt-get --assume-yes update
 RUN apt-get --assume-yes install python3
 RUN apt-get --assume-yes install uwsgi
 RUN python3 -m pip install --upgrade pip
