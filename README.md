@@ -10,7 +10,7 @@ receipts.
 
 ## Install on a server.
 
-1.  > gh repo clone andreydmitr20/menu
+1.      > gh repo clone andreydmitr20/menu
 
 2.  Create .env file inside /env folder.
     It should contain something like that:
@@ -40,7 +40,7 @@ to find the docker-menu container id.
 
 Then run:
 
-    > docker exec -it <docker-menu container id> /bin/sh
+        > docker exec -it <docker-menu container id> /bin/sh
 
 After that you can run commands inside the container.
 
@@ -58,18 +58,18 @@ To create new database db.sqlite3:
 
 ## Debug on a local computer.
 
-1. Make .venv
+1.  Make .venv
 
-   > python3 -m venv .venv
+        > python3 -m venv .venv
 
-2. > source .venv/bin/activate
+2.       > source .venv/bin/activate
 
-3. > pip3 install -r requirements.txt
+3.       > pip3 install -r requirements.txt
 
-4. > python3 manage.py runserver
+4.       > python3 manage.py runserver
 
-5. Then open in your browser (put your path instead of "....."):
-   file:///...../menu/www/html/index.html
+5.  Then open in your browser (put your path instead of "....."):
+    file:///...../menu/www/html/index.html
 
 ## Relational schema
 
