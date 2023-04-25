@@ -19,37 +19,42 @@ receipts.
 
 3.  Copy /utils/test_db.sqlite3 into /db/db.sqlite3
 
-4.  Run
+4.  In Jenkins add new task to execute shell script.
+    Here is an example o a script.
 
-    > docker compose build
+        docker build ./django -t django_menu
 
-5.  Run
+        docker build ./nginx -t nginx_menu
 
-    > docker compose up
+        docker rm -f django_menu_cont
+        docker rm -f nginx_menu_cont
 
-6.  f you need do make some operations on database, use:
-    > docker ps -a
-    > to find the docker-menu container id.
+        docker run -d --name nginx_menu_cont -p 80:80 -p 443:443 -v /home/user1/jenkins/workspace/menu1/www/:/code/www:ro -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -v /etc/ssl/certs/cert_memenu.pem:/etc/ssl/certs/cert_memenu.pem:ro -v /etc/ssl/private/key_memenu.pem:/etc/ssl/private/key_memenu.pem:ro -i nginx_menu
+
+        docker run -d --name django_menu_cont -v /home/user1/jenkins/workspace/menu1/django/:/code -v /home/user1/jenkins/workspace/menu1/env/:/code/env:ro -v /home/user1/jenkins/workspace/menu1/db/:/code/db -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -i django_menu sh -c "python3 manage.py collectstatic --noinput && uwsgi --ini uwsgi.ini"
+
+5.  Run Jenkins task
+
+If you need do make some operations on database, use: > docker ps -a
+to find the docker-menu container id.
 
 Then run:
 
-> docker exec -it <docker-menu container id> /in/sh
+    > docker exec -it <docker-menu container id> /bin/sh
 
-After that you can run commans inside container like this:
-
-\# python3 manage.py migrate
+After that you can run commands inside the container.
 
 To create new database db.sqlite3:
 \# python3 manage.py migrate
 \# python3 m shell
 
-> > > from dish.models import Unit,Tag,Vitamin
-> > > o=Unit()
-> > > o.fill()
-> > > o=Tag()
-> > > o.fill()
-> > > o=Vitamin()
-> > > o.fill()
+    >>> from dish.models import Unit,Tag,Vitamin
+    >>> o=Unit()
+    >>> o.fill()
+    >>> o=Tag()
+    >>> o.fill()
+    >>> o=Vitamin()
+    >>> o.fill()
 
 ## Debug on a local computer.
 
