@@ -20,7 +20,7 @@ let apiUrl = sessionStorageGet(SS_API_URL);
 
 const API_URL_REMOTE = "https://memenu.me/api/";
 const API_URL_LOCAL = "http://127.0.0.1:8000/api/";
-// const API_URL_REMOTE = "http://3.213.174.126/api/";
+// 3.213.174.126
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
