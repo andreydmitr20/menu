@@ -47,7 +47,7 @@ class RegistrationView(APIView):
 
 class TestView(APIView):
     def get(self, request, format=None):
-        return Response({ok: "ok"}, status=status.HTTP_200_OK)
+        return Response({"test": "ok"}, status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):
