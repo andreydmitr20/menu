@@ -1,0 +1,11 @@
+ls -a
+docker build ./django -t django_menu
+
+docker build ./nginx -t nginx_menu
+
+docker rm -f django_menu_cont
+docker rm -f nginx_menu_cont
+
+docker run -d --name nginx_menu_cont -p 80:80 -v /home/user1/jenkins/workspace/menu1/www/:/code/www:ro -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -i nginx_menu
+
+docker run -d --name django_menu_cont -v /home/user1/jenkins/workspace/menu1/django/:/code -v /home/user1/jenkins/workspace/menu1/env/:/code/env:ro -v /home/user1/jenkins/workspace/menu1/db/:/code/db -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -i django_menu sh -c "python3 manage.py collectstatic --noinput && uwsgi --ini uwsgi.ini"

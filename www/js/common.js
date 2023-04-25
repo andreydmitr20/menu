@@ -150,7 +150,12 @@ const checkAuth = (isIndex) => {
         );
       },
       error: () => {
-        apiUrl = API_URL_REMOTE;
+        let url = window.location.href.toLowerCase();
+        if (url.indexOf("www.") !== -1) {
+          apiUrl = API_URL_REMOTE.replace("://", "://www.");
+        } else {
+          apiUrl = API_URL_REMOTE;
+        }
         sessionStorageSet(SS_API_URL, apiUrl);
         getAccessJwt(
           {
