@@ -133,13 +133,16 @@ const getAccessJwt = (functionsObj, saveJwt) => {
 //
 const getApiUrl = () => {
   let link = window.location.href.toLowerCase();
+  console.log("***", link);
   if (link.indexOf("file:") === 0) {
     return API_URL_LOCAL;
   } else {
     if (link.indexOf("www.") !== -1) {
       link = link.replace("://", "://www.");
     }
-    let thirdSlashIndex = link.indexOf("/", link.indexOf(":") + 2);
+    let colonIndex = link.indexOf(":");
+
+    let thirdSlashIndex = link.indexOf("/", colonIndex + 2);
     if (thirdSlashIndex !== -1) {
       link = link.substring(0, thirdSlashIndex) + "api/";
     } else {
