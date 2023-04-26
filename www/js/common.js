@@ -136,7 +136,7 @@ const getApiUrl = () => {
   if (link.indexOf("file:") === 0) {
     return API_URL_LOCAL;
   } else {
-    if (url.indexOf("www.") !== -1) {
+    if (link.indexOf("www.") !== -1) {
       link = link.replace("://", "://www.");
     }
     let thirdSlashIndex = link.indexOf("/", link.indexOf(":") + 2);
