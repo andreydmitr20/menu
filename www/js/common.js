@@ -143,7 +143,7 @@ const checkAuth = (isIndex) => {
         getAccessJwt(
           {
             error: () => {
-              window.open("./login.html", "_self");
+              window.open("../html/login.html", "_self");
             },
           },
           true
@@ -161,7 +161,7 @@ const checkAuth = (isIndex) => {
         getAccessJwt(
           {
             error: () => {
-              window.open("./login.html", "_self");
+              window.open("../html/login.html", "_self");
             },
           },
           true
@@ -170,7 +170,7 @@ const checkAuth = (isIndex) => {
     });
   } else if (strIsEmpty(sessionStorageGet(SS_JWT_ACCESS))) {
     // not index.html
-    window.open("./login.html", "_self");
+    window.open("../html/login.html", "_self");
   }
 };
 
