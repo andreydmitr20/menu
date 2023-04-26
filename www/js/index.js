@@ -1,4 +1,4 @@
-checkAuth(true);
+checkAuth();
 
 btnAction("tags", () => {
   window.open("../html/tags.html", "_self");

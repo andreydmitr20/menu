@@ -16,11 +16,9 @@ const SS_JWT_ACCESS = "jwt_access";
 const SS_API_URL = "API_URL";
 
 // api
-let apiUrl = sessionStorageGet(SS_API_URL);
 
-const API_URL_REMOTE = "https://memenu.me/api/";
-const API_URL_LOCAL = "http://127.0.0.1:8000/api/";
-// 3.213.174.126
+const API_URL_PREFIX = "api/";
+const API_URL_LOCAL = "http://127.0.0.1:8000/" + API_URL_PREFIX;
 
 const API_TOKEN = "user/token/";
 const API_TOKEN_REFRESH = "user/token/refresh/";
@@ -53,6 +51,23 @@ const INGREDIENTS_PAGE_SIZE = 6;
 //     body.classList.add(style);
 //   });
 // });
+
+//
+const getApiUrl = () => {
+  let link = window.location.href.toLowerCase();
+  if (link.indexOf("file:") === 0) {
+    return API_URL_LOCAL;
+  } else {
+    if (link.indexOf("www.") !== -1) link = link.replace("www.", "");
+    let colonIndex = link.indexOf(":");
+    let thirdSlashIndex = link.indexOf("/", colonIndex + 3);
+    if (thirdSlashIndex === -1) thirdSlashIndex = 10000;
+    link = link.substring(0, thirdSlashIndex) + "/" + API_URL_PREFIX;
+    return link;
+  }
+};
+//
+let apiUrl = getApiUrl();
 
 //
 const strIsEmpty = (str) => {
@@ -130,69 +145,9 @@ const getAccessJwt = (functionsObj, saveJwt) => {
   );
 };
 
-//
-const getApiUrl = () => {
-  let link = window.location.href.toLowerCase();
-  console.log("***", link);
-  if (link.indexOf("file:") === 0) {
-    return API_URL_LOCAL;
-  } else {
-    if (link.indexOf("www.") !== -1) {
-      link = link.replace("://", "://www.");
-    }
-    let colonIndex = link.indexOf(":");
-
-    let thirdSlashIndex = link.indexOf("/", colonIndex + 2);
-    if (thirdSlashIndex !== -1) {
-      link = link.substring(0, thirdSlashIndex) + "api/";
-    } else {
-      link = link.substring(0) + "/api/";
-    }
-    return link;
-  }
-};
-
 // if not authenticated, goto login.html
-const checkAuth = (isIndex) => {
-  console.log(">", getApiUrl());
-  if (isIndex === true) {
-    // index.html
-    // find API_URL
-    sessionStorageRemove(SS_API_URL);
-    apiUrl = API_URL_LOCAL;
-    fetchAPI(API_USER_TEST, "get", "", {
-      ok: () => {
-        sessionStorageSet(SS_API_URL, apiUrl);
-        getAccessJwt(
-          {
-            error: () => {
-              window.open("../html/login.html", "_self");
-            },
-          },
-          true
-        );
-      },
-      error: () => {
-        let url = window.location.href.toLowerCase();
-        console.log(url);
-        if (url.indexOf("www.") !== -1) {
-          apiUrl = API_URL_REMOTE.replace("://", "://www.");
-        } else {
-          apiUrl = API_URL_REMOTE;
-        }
-        sessionStorageSet(SS_API_URL, apiUrl);
-        getAccessJwt(
-          {
-            error: () => {
-              window.open("../html/login.html", "_self");
-            },
-          },
-          true
-        );
-      },
-    });
-  } else if (strIsEmpty(sessionStorageGet(SS_JWT_ACCESS))) {
-    // not index.html
+const checkAuth = () => {
+  if (strIsEmpty(sessionStorageGet(SS_JWT_ACCESS))) {
     window.open("../html/login.html", "_self");
   }
 };
