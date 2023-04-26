@@ -130,8 +130,28 @@ const getAccessJwt = (functionsObj, saveJwt) => {
   );
 };
 
+//
+const getApiUrl = () => {
+  let link = window.location.href.toLowerCase();
+  if (link.indexOf("file:") === 0) {
+    return API_URL_LOCAL;
+  } else {
+    if (url.indexOf("www.") !== -1) {
+      link = link.replace("://", "://www.");
+    }
+    let thirdSlashIndex = link.indexOf("/", link.indexOf(":") + 2);
+    if (thirdSlashIndex !== -1) {
+      link = link.substring(0, thirdSlashIndex) + "api/";
+    } else {
+      link = link.substring(0) + "/api/";
+    }
+    return link;
+  }
+};
+
 // if not authenticated, goto login.html
 const checkAuth = (isIndex) => {
+  console.log(">", getApiUrl());
   if (isIndex === true) {
     // index.html
     // find API_URL
