@@ -148,7 +148,14 @@ const getAccessJwt = (functionsObj, saveJwt) => {
 // if not authenticated, goto login.html
 const checkAuth = () => {
   if (strIsEmpty(sessionStorageGet(SS_JWT_ACCESS))) {
-    window.open("../html/login.html", "_self");
+    getAccessJwt(
+      {
+        error: () => {
+          window.open("../html/login.html", "_self");
+        },
+      },
+      true
+    );
   }
 };
 
