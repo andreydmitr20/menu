@@ -109,7 +109,7 @@ const changePasswordAction = btnAction("change-password-action", () => {
   errorPasswordText.textContent = "";
   fetchAPI(
     API_USER_CHANGE_PASSWORD,
-    "post",
+    "put",
     {
       current_password: currentPassword.value,
       new_password: newPassword.value,
