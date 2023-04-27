@@ -21,16 +21,13 @@
       class="d-flex flex-column flex-nowrap justify-content-center align-items-center"
     >
       <div
-        class="d-flex flex-row flex-nowrap justify-content-center align-items-center p-2 m-1"
+        class="d-flex flex-row flex-nowrap justify-content-center align-items-center p-2"
       >
-        <button
-          id="menu"
-          type="button"
-          class="btn btn-warning bg-gradient fs-4 m-1"
-        >
-          <img class="img-fluid rounded w-25" src="../icon/settings.png" />
-        </button>
-        <h1 class="text-left text-primary m-4 me-5 fs-1">Settings</h1>
+        <a id="menu" href="">
+          <img class="img-fluid rounded-circle w80" src="../icon/reply.png" />
+        </a>
+        <h1 class="text-left text-primary mx-4 fs-1">Settings</h1>
+        <img class="img-fluid rounded w80 p-1" src="../icon/settings.png" />
       </div>
 
       <!-- The Modal -->
@@ -102,24 +99,22 @@
         action=""
         method="post"
       >
-        <div class="d-flex flex-row m-2">
+        <div class="d-flex flex-row">
           <img
             id="iconImage"
-            class="img-fluid rounded-circle w-25 p-2"
+            class="img-fluid rounded-circle w80 p-2"
             src="../icon/salad.png"
             alt="user icon"
           />
 
           <input
-            class="border-0 container-fluid p-2 text-center rounded"
+            class="border-0 container-fluid text-center rounded mx-2"
             type="text"
             id="username"
             name="username"
             disabled
           />
         </div>
-
-        <br />
 
         <div class="d-flex flex-row m-2">
           <button
@@ -137,7 +132,6 @@
             Change password
           </button>
         </div>
-
         <br />
 
         <label for="email">Email:</label>

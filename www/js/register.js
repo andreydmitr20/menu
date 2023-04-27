@@ -19,9 +19,7 @@ viewPassword.addEventListener("click", () => {
 
 userName.focus();
 
-const menu = document.querySelector("#menu");
-menu.addEventListener("click", () => {
-  startButtonPressAnimation(menu);
+btnAction("menu", () => {
   window.open("./login.html", "_self");
 });
 

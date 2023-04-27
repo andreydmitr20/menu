@@ -173,6 +173,7 @@ const startButtonPressAnimation = (element) => {
 const btnAction = (id, clickFunction) => {
   const btn = document.querySelector("#" + id);
   btn.addEventListener("click", (event) => {
+    event.preventDefault();
     startButtonPressAnimation(btn);
     setTimeout(clickFunction, 50, event);
   });
