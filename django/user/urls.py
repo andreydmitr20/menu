@@ -7,16 +7,16 @@ from .views import ChangePasswordView, LogoutView, RegistrationView, UserView, T
 app_name = 'user'
 
 urlpatterns = [
-    path('user/test/', TestView.as_view(), name='test'),
+    path('test/', TestView.as_view(), name='test'),
 
-    path('user/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('user/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('user/register/', RegistrationView.as_view(), name='user_register'),
-    path('user/logout/', LogoutView.as_view(), name='user_logout'),
-    path('user/change-password/',
+    path('register/', RegistrationView.as_view(), name='user_register'),
+    path('logout/', LogoutView.as_view(), name='user_logout'),
+    path('change-password/',
          ChangePasswordView.as_view(), name='user_change_password'),
 
-    path('user/', UserView.as_view(), name='user_info'),
+    path('', UserView.as_view(), name='user_info'),
 
 ]
