@@ -19,6 +19,7 @@ from .serializers import (IngredientSerializer,
 
 class VitaminsView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = VitaminSerializer
 
     def get(self, format=None):
 
@@ -38,6 +39,7 @@ class VitaminsView(APIView):
 
 class UnitsView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UnitSerializer
 
     def get(self, format=None):
         serializerClass = (UnitSerializer
@@ -56,6 +58,7 @@ class UnitsView(APIView):
 
 class TagsView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = TagSerializer
 
     def get(self, format=None):
         serializerClass = (TagSerializer
@@ -74,6 +77,7 @@ class TagsView(APIView):
 
 class IngredientsView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = IngredientSerializer
 
     def get(self, format=None):
         search_text = self.request.query_params.get('search')

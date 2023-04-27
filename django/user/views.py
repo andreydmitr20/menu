@@ -1,12 +1,14 @@
 
+from rest_framework import status, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.schemas import AutoSchema
+from rest_framework.views import APIView
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
-from rest_framework import status, viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .models import User
 from .serializers import (PasswordChangeSerializer, RegistrationSerializer,
@@ -15,6 +17,7 @@ from .serializers import (PasswordChangeSerializer, RegistrationSerializer,
 
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
 
     def get_object(self, request):
         try:
@@ -37,6 +40,8 @@ class UserView(APIView):
 
 
 class RegistrationView(APIView):
+    serializer_class = RegistrationSerializer
+
     def post(self, request, format=None):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -46,12 +51,15 @@ class RegistrationView(APIView):
 
 
 class TestView(APIView):
+    serializer_class = None
+
     def get(self, request, format=None):
         return Response({"test": "ok"}, status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = None
 
     def post(self, request, format=None):
         logout(request)
@@ -60,6 +68,7 @@ class LogoutView(APIView):
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated, ]
+    serializer_class = PasswordChangeSerializer
 
     def put(self, request, format=None):
         serializer = PasswordChangeSerializer(
