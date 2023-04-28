@@ -1,7 +1,6 @@
 """ All about dishes and ingredients"""
 from django.db import models
 from user.models import User
-import datetime
 
 
 class Vitamin(models.Model):
@@ -166,7 +165,7 @@ class Dish(models.Model):
                              blank=False,
                              on_delete=models.DO_NOTHING)
     created = models.DateTimeField(
-        null=False, blank=True, default=datetime.datetime.now)
+        null=False, blank=True, auto_now_add=True)
 
     def __str__(self):
         return self.name+' by '+self.user.username
@@ -196,7 +195,7 @@ class Ingredient(models.Model):
                              blank=False,
                              on_delete=models.DO_NOTHING)
     created = models.DateTimeField(
-        null=False, blank=True, default=datetime.datetime.now)
+        null=False, blank=True, auto_now_add=True)
 
     def __str__(self):
         return self.name+' by '+self.user.username
