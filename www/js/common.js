@@ -224,7 +224,7 @@ const fetchAPI = (
     .then((response) => {
       responseStatus = response.status;
 
-      //   console.log(response);
+      console.log("response:", response);
       if (response.status === 401 && recursion !== true) {
         console.log("get access token");
         fetchAPI(
@@ -248,7 +248,7 @@ const fetchAPI = (
               );
             },
             error: (err) => {
-              // console.log("err");
+              console.log(err, "get access token error");
               sessionStorageRemove(SS_JWT_ACCESS);
               callFunctionFrom(functionsObj, "error", err.message);
             },
@@ -268,7 +268,7 @@ const fetchAPI = (
       throw new Error((message = response.responseText));
     })
     .then((data) => {
-      // console.log("json", data);
+      console.log("json", data);
 
       if (data !== null) {
         if (responseStatus >= 400 && responseStatus < 500) {
@@ -280,7 +280,8 @@ const fetchAPI = (
     .catch((error) => {
       // to clear exit when use recursion
       console.log(error);
-      callFunctionFrom(functionsObj, "error", error.message);
+      if (recursion !== true)
+        callFunctionFrom(functionsObj, "error", error.message);
     });
 };
 

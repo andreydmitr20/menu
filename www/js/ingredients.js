@@ -4,6 +4,28 @@ btnAction("menu", () => {
   window.open("./more.html", "_self");
 });
 
+// get user data
+const getUserData = (varUserId) => {
+  fetchAPI(
+    API_USER,
+    "get",
+    "",
+    {
+      ok: (data) => {
+        varUserId = data.user_id;
+        console.log(varUserId);
+      },
+      error: () => {
+        console.log("in error");
+        window.open("./login.html", "_self");
+      },
+    },
+    true
+  );
+};
+let userId;
+getUserData(userId);
+
 const newIngredient = document.querySelector("#new-ingredient");
 const searchDiv = document.querySelector("#search-div");
 const pagination = document.querySelector("#pagination");
@@ -55,7 +77,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
     `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}`,
     {
       ok: (data) => {
-        // console.log(data);
+        console.log(data);
         if (data.length === 0) {
           ingredients.innerHTML = "";
           return;
@@ -113,6 +135,22 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
 
 searchInput.focus();
 
+// set focus to next in data-next="field-id" when press enter
+const setFocusToNextField = (event) => {
+  if (event.keyCode == 13) {
+    let nextId = event.target.dataset.next;
+    if (!strIsEmpty(nextId)) {
+      event.preventDefault();
+      if (nextId === "*") {
+        console.log("ok");
+      } else {
+        document.querySelector("#" + nextId).focus();
+      }
+    }
+  }
+};
+
+// add ingredient
 const add = btnAction("add", () => {
   searchDiv.classList.add("d-none");
   pagination.classList.add("d-none");
@@ -144,4 +182,10 @@ const add = btnAction("add", () => {
       console.log(err);
     },
   });
+  document.querySelector("#ingredient-name").focus();
+  document
+    .querySelector("#new-ingredient")
+    .addEventListener("keypress", (event) => {
+      setFocusToNextField(event);
+    });
 });

@@ -24,7 +24,7 @@ checkPasswordError = "Password should be 8-50 chars and has one uppercase, one l
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'icon']
+        fields = ['id', 'username', 'email', 'icon']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

@@ -39,7 +39,7 @@ admin.site.register(Unit, UnitAdmin)
 class IngredientAdmin(admin.ModelAdmin):
     """ Ingredient admin"""
     list_display = ['name', 'photo', 'proteins',
-                    'fats', 'carbohydrates', 'vitamins', 'user']
+                    'fats', 'carbohydrates', 'vitamins', 'user', 'created']
     list_filter = ['name', 'user']
     search_fields = ['name']
     # search_fields = ['id', 'name', 'user']

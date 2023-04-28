@@ -40,6 +40,7 @@
           class="container-fluid p-2 text-center rounded me-2"
           type="text"
           id="ingredient-name"
+          data-next="ingredient-photo-url"
           name="ingredient-name"
           required
         />
@@ -58,50 +59,62 @@
         <input
           class="container-fluid p-2 text-center rounded"
           type="text"
-          id="ingredient-photo"
+          id="ingredient-photo-url"
+          data-next="ingredient-proteins"
           name="ingredient-photo"
           required
         />
 
+        <p class="m-2 text-center">In 100 grams:</p>
+
         <div class="d-flex flex-row align-items-center m-2">
-          <label class="fs-4 m-2" for="ingredient-proteins"
-            >Proteins in 100 g:
+          <label class="fs-4 m-2 w-50 text-start" for="ingredient-proteins"
+            >Proteins:
           </label>
           <input
-            class="container-fluid p-2 text-center rounded"
+            class="container-fluid p-2 text-end rounded w-50"
             type="number"
             step="0.01"
             min="0"
             id="ingredient-proteins"
+            data-next="ingredient-fats"
             name="ingredient-proteins"
           />
         </div>
         <div class="d-flex flex-row align-items-center m-2">
-          <label class="fs-4 m-2" for="ingredient-fats">Fats in 100 g: </label>
+          <label class="fs-4 m-2 w-50 text-start" for="ingredient-fats"
+            >Fats:
+          </label>
           <input
-            class="container-fluid p-2 text-center rounded"
+            class="container-fluid p-2 text-end rounded w-50"
             type="number"
             step="0.01"
             min="0"
             id="ingredient-fats"
+            data-next="ingredient-carbohydrates"
             name="ingredient-fats"
           />
         </div>
         <div class="d-flex flex-row align-items-center m-2">
-          <label class="fs-4 m-2" for="ingredient-carbohydrates"
-            >Carbohydrates in 100 g:
+          <label class="fs-4 m-2 w-50 text-start" for="ingredient-carbohydrates"
+            >Carbohydrates:
           </label>
           <input
-            class="container-fluid p-2 text-center rounded"
+            class="container-fluid p-2 text-end rounded w-50"
             type="number"
             step="0.01"
             min="0"
             id="ingredient-carbohydrates"
+            data-next="vitamins"
             name="ingredient-carbohydrates"
           />
         </div>
 
-        <div id="vitamins" class="accordion overflow-auto w-100 p-2">
+        <div
+          id="vitamins"
+          data-next="*"
+          class="accordion overflow-auto w-100 p-2"
+        >
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
               <button
