@@ -8,11 +8,11 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("api/admin/", admin.site.urls),
 
-    path('__debug__/', include('debug_toolbar.urls')),
+    path('api/__debug__/', include('debug_toolbar.urls')),
 
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/',
