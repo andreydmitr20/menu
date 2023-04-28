@@ -4,14 +4,15 @@ from django.contrib import admin
 from .models import Dish, Unit, Ingredient, Tag, Vitamin, Composition
 
 
-# class DishAdmin(admin.ModelAdmin):
-#     """ Dish admin"""
-#     list_display = ['name', 'photo', 'receipt', 'user']
-#     list_filter = ['name', 'user']
-#     search_fields = ['name', 'user', 'receipt']
+class DishAdmin(admin.ModelAdmin):
+    """ Dish admin"""
+    list_display = ['name', 'photo', 'receipt', 'user', 'created']
+    list_filter = ['name', 'user']
+    search_fields = ['name', 'user', 'receipt']
 
 
-# admin.site.register(Dish, DishAdmin)
+admin.site.register(Dish, DishAdmin)
+
 
 class VitaminAdmin(admin.ModelAdmin):
     """ Vitamin admin
