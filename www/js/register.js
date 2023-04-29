@@ -15,6 +15,7 @@ viewPassword.addEventListener("click", () => {
   } else {
     password.type = "password";
   }
+  password.focus();
 });
 
 userName.focus();

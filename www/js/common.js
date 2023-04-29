@@ -218,13 +218,13 @@ const fetchAPI = (
     request["body"] = JSON.stringify(body);
   }
 
-  console.log(fullUrl);
+  console.log(apiMethod.toUpperCase(), fullUrl);
 
   fetch(fullUrl, request)
     .then((response) => {
       responseStatus = response.status;
 
-      console.log("response:", response);
+      // console.log("response:", response);
       if (response.status === 401 && recursion !== true) {
         console.log("get access token");
         fetchAPI(
@@ -268,7 +268,7 @@ const fetchAPI = (
       throw new Error((message = response.responseText));
     })
     .then((data) => {
-      console.log("json", data);
+      // console.log("json", data);
 
       if (data !== null) {
         if (responseStatus >= 400 && responseStatus < 500) {
@@ -323,4 +323,20 @@ const getErrorTextFromMessage = (err, propertyArray) => {
     }
   } catch (e) {}
   return errorText;
+};
+
+// set focus to element in data-next="element-id" when press enter
+// if  data-next="*element-id" then element will be clicked
+const setFocusToNextField = (event) => {
+  if (event.keyCode == 13) {
+    let nextId = event.target.dataset.next;
+    if (!strIsEmpty(nextId)) {
+      event.preventDefault();
+      if (nextId[0] === "*") {
+        document.querySelector("#" + nextId.slice(1)).click();
+      } else {
+        document.querySelector("#" + nextId).focus();
+      }
+    }
+  }
 };

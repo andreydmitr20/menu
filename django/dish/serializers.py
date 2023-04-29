@@ -38,6 +38,14 @@ class TagShortSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+def checkVitamins(value):
+    print(value)
+    return True
+
+
+checkVitaminsError = "Vitamins have wrong data"
+
+
 class IngredientSerializer(serializers.ModelSerializer):
     creator = serializers.CharField(
         source='user.username')  # , allow_null = True)
@@ -46,3 +54,8 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ['id', 'name', 'photo', 'creator', 'user_id', 'proteins',
                   'fats', 'carbohydrates', 'vitamins']
+
+    def validate_vitamins(self, value):
+        if not checkVitamins(value):
+            raise serializers.ValidationError([checkVitaminsError])
+        return value

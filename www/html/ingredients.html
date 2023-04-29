@@ -105,16 +105,12 @@
             step="0.01"
             min="0"
             id="ingredient-carbohydrates"
-            data-next="vitamins"
+            data-next="*save"
             name="ingredient-carbohydrates"
           />
         </div>
 
-        <div
-          id="vitamins"
-          data-next="*"
-          class="accordion overflow-auto w-100 p-2"
-        >
+        <div id="vitamins" class="accordion overflow-auto w-100 p-2">
           <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingOne">
               <button
@@ -132,6 +128,8 @@
             <div id="vitamins-list"></div>
           </div>
         </div>
+
+        <p id="error-text" class="text-danger m-2"></p>
 
         <button
           id="save"

@@ -47,7 +47,7 @@ iconUrl.addEventListener("input", () => {
 logout.addEventListener("click", () => {
   startButtonPressAnimation(logout);
   errorText.textContent = "";
-  userLogout();
+
   fetchAPI(
     API_USER_LOGOUT,
     "post",
@@ -55,10 +55,12 @@ logout.addEventListener("click", () => {
     {},
     {
       ok: () => {
-        window.open("../html/login.html", "_self");
+        userLogout();
+        window.open("./login.html", "_self");
       },
       error: () => {
-        window.open("../html/login.html", "_self");
+        userLogout();
+        window.open("./login.html", "_self");
       },
     }
   );

@@ -46,3 +46,12 @@ registerButton.addEventListener("click", (event) => {
   startButtonPressAnimation(registerButton);
   window.open("../html/register.html", "_self");
 });
+
+btnAction("view-password", () => {
+  if (password.type === "password") {
+    password.type = "text";
+  } else {
+    password.type = "password";
+  }
+  password.focus();
+});

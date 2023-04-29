@@ -135,22 +135,14 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
 
 searchInput.focus();
 
-// set focus to next in data-next="field-id" when press enter
-const setFocusToNextField = (event) => {
-  if (event.keyCode == 13) {
-    let nextId = event.target.dataset.next;
-    if (!strIsEmpty(nextId)) {
-      event.preventDefault();
-      if (nextId === "*") {
-        console.log("ok");
-      } else {
-        document.querySelector("#" + nextId).focus();
-      }
-    }
-  }
-};
+const errorText = document.querySelector("#error-text");
 
 // add ingredient
+const saveBtn = btnAction("save", () => {
+  console.log("save");
+  // prep vitamins
+});
+
 const add = btnAction("add", () => {
   searchDiv.classList.add("d-none");
   pagination.classList.add("d-none");
@@ -188,4 +180,13 @@ const add = btnAction("add", () => {
     .addEventListener("keypress", (event) => {
       setFocusToNextField(event);
     });
+});
+
+const ingredientPhoto = document.querySelector("#ingredient-photo");
+const ingredientPhotoUrl = document.querySelector("#ingredient-photo-url");
+ingredientPhotoUrl.addEventListener("input", () => {
+  ingredientPhoto.src = ingredientPhotoUrl.value;
+});
+ingredientPhoto.addEventListener("error", () => {
+  ingredientPhoto.src = "../icon/ingredient.png";
 });
