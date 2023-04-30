@@ -7,17 +7,13 @@ btnAction("menu", () => {
 units = document.querySelector("#vitamins");
 
 const getVitamins = () => {
-  fetchAPI(
-    API_DISH_VITAMINS,
-    "get",
-    "",
-    {
-      ok: (data) => {
-        // console.log(data);
-        let html = "";
-        let index = 0;
-        for (let vitamin of data) {
-          html += `
+  fetchAPI(API_DISH_VITAMINS, "get", "", true, {
+    ok: (data) => {
+      // console.log(data);
+      let html = "";
+      let index = 0;
+      for (let vitamin of data) {
+        html += `
           <div class="accordion-item mt-1">
             <h2 class="accordion-header " id="h${index}">
               <button class="accordion-button bg-warning bg-gradient fs-3 " type="button" 
@@ -36,17 +32,15 @@ const getVitamins = () => {
             </div>
           </div>
           `;
-          index += 1;
-        }
-        vitamins.innerHTML = html;
-      },
-      error: (err) => {
-        console.log(err);
-        vitamins.innerHTML = TEXT_ERROR_SERVER_ERROR;
-      },
+        index += 1;
+      }
+      vitamins.innerHTML = html;
     },
-    true
-  );
+    error: (err) => {
+      console.log(err);
+      vitamins.innerHTML = TEXT_ERROR_SERVER_ERROR;
+    },
+  });
 };
 
 getVitamins();

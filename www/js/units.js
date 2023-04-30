@@ -7,17 +7,13 @@ btnAction("menu", () => {
 units = document.querySelector("#units");
 
 const getUnits = () => {
-  fetchAPI(
-    API_DISH_UNITS,
-    "get",
-    "",
-    {
-      ok: (data) => {
-        // console.log(data);
-        let html = "";
-        let index = 0;
-        for (let unit of data) {
-          html += `
+  fetchAPI(API_DISH_UNITS, "get", "", true, {
+    ok: (data) => {
+      // console.log(data);
+      let html = "";
+      let index = 0;
+      for (let unit of data) {
+        html += `
           <div class="accordion-item mt-1">
             <h2 class="accordion-header " id="h${index}">
               <button class="accordion-button bg-warning bg-gradient fs-3 " type="button" 
@@ -36,17 +32,15 @@ const getUnits = () => {
             </div>
           </div>
           `;
-          index += 1;
-        }
-        units.innerHTML = html;
-      },
-      error: (err) => {
-        console.log(err);
-        units.innerHTML = TEXT_ERROR_SERVER_ERROR;
-      },
+        index += 1;
+      }
+      units.innerHTML = html;
     },
-    true
-  );
+    error: (err) => {
+      console.log(err);
+      units.innerHTML = TEXT_ERROR_SERVER_ERROR;
+    },
+  });
 };
 
 getUnits();

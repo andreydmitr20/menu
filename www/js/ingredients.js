@@ -6,22 +6,16 @@ btnAction("menu", () => {
 
 // get user data
 const getUserData = (varUserId) => {
-  fetchAPI(
-    API_USER,
-    "get",
-    "",
-    {
-      ok: (data) => {
-        varUserId = data.user_id;
-        console.log(varUserId);
-      },
-      error: () => {
-        console.log("in error");
-        window.open("./login.html", "_self");
-      },
+  fetchAPI(API_USER, "get", "", (jwtAuth = true), {
+    ok: (data) => {
+      varUserId = data.user_id;
+      console.log(varUserId);
     },
-    true
-  );
+    error: () => {
+      console.log("in error");
+      window.open("./login.html", "_self");
+    },
+  });
 };
 let userId;
 getUserData(userId);
@@ -75,6 +69,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
     API_DISH_INGREDIENTS,
     "get",
     `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}`,
+    (jwtAuth = true),
     {
       ok: (data) => {
         console.log(data);
@@ -128,8 +123,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
       error: (err) => {
         console.log(err);
       },
-    },
-    true
+    }
   );
 };
 

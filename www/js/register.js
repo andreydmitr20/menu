@@ -77,6 +77,7 @@ okButton.addEventListener("click", (event) => {
       email: email.value,
       icon: iconUrl.value,
     },
+    (jwtAuth = false),
     {
       ok: () => {
         errorText.textContent = "";
@@ -101,7 +102,6 @@ okButton.addEventListener("click", (event) => {
         ]);
         okButton.disabled = false;
       },
-    },
-    false
+    }
   );
 });

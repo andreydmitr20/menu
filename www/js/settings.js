@@ -15,22 +15,16 @@ const settingsForm = document.querySelector("#settings-form");
 
 // get user data
 const getUserData = () => {
-  fetchAPI(
-    API_USER,
-    "get",
-    "",
-    {
-      ok: (data) => {
-        // console.log(data);
-        userName.value = data.username;
-        // userName.dataset.id = data.token_user_id;
-        email.value = data.email;
-        iconUrl.value = data.icon;
-        iconImage.src = iconUrl.value;
-      },
+  fetchAPI(API_USER, "get", "", true, {
+    ok: (data) => {
+      // console.log(data);
+      userName.value = data.username;
+      // userName.dataset.id = data.token_user_id;
+      email.value = data.email;
+      iconUrl.value = data.icon;
+      iconImage.src = iconUrl.value;
     },
-    true
-  );
+  });
 };
 getUserData();
 
@@ -53,6 +47,7 @@ logout.addEventListener("click", () => {
     "post",
 
     {},
+    false,
     {
       ok: () => {
         userLogout();
@@ -116,6 +111,7 @@ const changePasswordAction = btnAction("change-password-action", () => {
       current_password: currentPassword.value,
       new_password: newPassword.value,
     },
+    true,
     {
       ok: () => {
         modal.style.display = "none";
@@ -130,8 +126,7 @@ const changePasswordAction = btnAction("change-password-action", () => {
         ]);
         // newPassword.focus();
       },
-    },
-    true
+    }
   );
 });
 
@@ -141,6 +136,7 @@ save.addEventListener("click", (event) => {
   fetchAPI(
     API_USER,
     "post",
+    true,
     { username: userName.value, email: email.value, icon: iconUrl.value },
     {
       ok: () => {
@@ -155,7 +151,6 @@ save.addEventListener("click", (event) => {
           ["icon", iconUrl],
         ]);
       },
-    },
-    true
+    }
   );
 });

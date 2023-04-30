@@ -86,24 +86,18 @@ const getDict = (api, functionsObj) => {
   }
 
   //
-  fetchAPI(
-    api,
-    "get",
-    GET_SHORT,
-    {
-      ok: (data) => {
-        try {
-          sessionStorageSet(api, JSON.stringify(data));
-          callFunctionFrom(functionsObj, "ok", data);
-        } catch (e) {
-          sessionStorageRemove(ssDict);
-          callFunctionFrom(functionsObj, "error", TEXT_ERROR_SERVER_ERROR);
-        }
-      },
-      error: (err) => callFunctionFrom(functionsObj, "error", err),
+  fetchAPI(api, "get", GET_SHORT, (jwtAuth = true), {
+    ok: (data) => {
+      try {
+        sessionStorageSet(api, JSON.stringify(data));
+        callFunctionFrom(functionsObj, "ok", data);
+      } catch (e) {
+        sessionStorageRemove(ssDict);
+        callFunctionFrom(functionsObj, "error", TEXT_ERROR_SERVER_ERROR);
+      }
     },
-    true
-  );
+    error: (err) => callFunctionFrom(functionsObj, "error", err),
+  });
 };
 
 const userLogout = () => {
@@ -135,6 +129,7 @@ const getAccessJwt = (functionsObj, saveJwt) => {
     {
       refresh: jwtRefresh,
     },
+    (jwtAuth = false),
     {
       ok: (data) => {
         if (saveJwt) sessionStorageSet(SS_JWT_ACCESS, data.access);
@@ -180,27 +175,20 @@ const btnAction = (id, clickFunction) => {
   return btn;
 };
 
-// fetch data from api
-const fetchAPI = (
-  apiLink,
-  apiMethod,
-  body,
-  functionsObj,
-  jwtAuth = false,
-  recursion
-) => {
+// fetch
+async function fetchAPIStart(apiLink, apiMethod, body, jwtAuth = false) {
   // console.log("body", body);
   let fullUrl = apiUrl + apiLink;
 
   let headers = {
     "Content-Type": "application/json",
   };
+
   if (jwtAuth) {
     headers["Authorization"] = "Bearer " + sessionStorageGet(SS_JWT_ACCESS);
   }
 
   //   console.log([headers]);
-  let responseStatus = 200;
   let request = {
     method: apiMethod,
 
@@ -220,70 +208,74 @@ const fetchAPI = (
 
   console.log(apiMethod.toUpperCase(), fullUrl);
 
-  fetch(fullUrl, request)
-    .then((response) => {
-      responseStatus = response.status;
+  return await fetch(fullUrl, request);
+}
 
-      // console.log("response:", response);
-      if (response.status === 401 && recursion !== true) {
-        console.log("get access token");
-        fetchAPI(
-          API_TOKEN_REFRESH,
-          "post",
+//
+async function fetchAPI(
+  apiLink,
+  apiMethod,
+  body,
+  jwtAuth = false,
+  functionsObj
+) {
+  let response = await fetchAPIStart(apiLink, apiMethod, body, jwtAuth);
+  // console.log("response:", response);
+  if (response.status === 401) {
+    // if can not get access token - > go to login page
+    if (apiLink === API_TOKEN_REFRESH) {
+      // userLogout();
+      // window.open("./login.html", "_self");
+      callFunctionFrom(functionsObj, "error", "Unauthorized");
+      return;
+    }
 
-          {
-            refresh: localStorageGet(LS_JWT_REFRESH),
-          },
-          {
-            ok: (data) => {
-              console.log("repeat fetch");
-              sessionStorageSet(SS_JWT_ACCESS, data.access);
-              fetchAPI(
-                apiLink,
-                apiMethod,
-                body,
-                functionsObj,
-                (jwtAuth = true),
-                (recursion = true)
-              );
-            },
-            error: (err) => {
-              console.log(err, "get access token error");
-              sessionStorageRemove(SS_JWT_ACCESS);
-              callFunctionFrom(functionsObj, "error", err.message);
-            },
-          },
+    // get access token
+    // console.log("get access token");
+    response = await fetchAPIStart(
+      API_TOKEN_REFRESH,
+      "post",
+      { refresh: localStorageGet(LS_JWT_REFRESH) },
+      (jwtAuth = false)
+    );
+    // console.log("access token:", response);
+    if (response.status !== 200) {
+      // did not get refresh token
+      callFunctionFrom(functionsObj, "error", "Unauthorized");
+      return;
+    }
+    // have got refresh token - > save and repeat fetch
+    let data = await response.json();
+    sessionStorageSet(SS_JWT_ACCESS, data.access);
+    console.log("repeat fetch");
+    response = await fetchAPIStart(apiLink, apiMethod, body, (jwtAuth = true));
+  }
 
-          (jwtAuth = false),
-          (recursion = true)
-        );
-        return;
-      }
-
-      if (response.status >= 200 && response.status < 500) {
-        // console.log(response);
-        if (response.status === 204) return;
-        return response.json();
-      }
-      throw new Error((message = response.responseText));
-    })
-    .then((data) => {
-      // console.log("json", data);
-
-      if (data !== null) {
-        if (responseStatus >= 400 && responseStatus < 500) {
-          throw new Error((message = JSON.stringify(data)));
-        }
-        callFunctionFrom(functionsObj, "ok", data);
-      }
-    })
-    .catch((error) => {
-      // to clear exit when use recursion
-      console.log(error);
-      if (recursion !== true)
-        callFunctionFrom(functionsObj, "error", error.message);
-    });
-};
+  // console.log(response);
+  if (response.status >= 200 && response.status < 500) {
+    if (response.status === 204) {
+      callFunctionFrom(functionsObj, "ok", {});
+      return;
+    }
+    // get data
+    // console.log("get data");
+    let data = await response.json();
+    // console.log(data);
+    if (data === null) data = {};
+    if (response.status >= 400 && response.status < 500) {
+      // error
+      callFunctionFrom(functionsObj, "error", JSON.stringify(data));
+      return;
+    }
+    // console.log("ok", data);
+    callFunctionFrom(functionsObj, "ok", data);
+    return;
+  } else {
+    // error
+    callFunctionFrom(functionsObj, "error", response.responseText);
+    return;
+  }
+}
 
 // try to login
 const login = (username, password, functionsObj) => {
@@ -296,6 +288,7 @@ const login = (username, password, functionsObj) => {
       username: username,
       password: password,
     },
+    (jwtAuth = false),
     {
       ok: (data) => {
         sessionStorageSet(SS_JWT_ACCESS, data.access);
