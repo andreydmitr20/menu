@@ -146,6 +146,20 @@
         id="search-div"
         class="d-flex flex-row flex-nowrap justify-content-center align-items-center"
       >
+        <!-- only mine -->
+        <div
+          id="mine-div"
+          class="d-flex flex-column flex-nowrap justify-content-center align-items-center"
+        >
+          <input
+            id="mine-search"
+            name="mine-search"
+            class="form-check-input rounded mt-2"
+            type="checkbox"
+          />
+          <label class="fs-4 mt-1 ms-2" for="mine-search">Mine</label>
+        </div>
+
         <input
           class="container-fluid p-2 ms-2 fs-3 text-center rounded"
           type="url"
@@ -168,10 +182,10 @@
         <button
           id="add"
           type="button"
-          class="btn btn-warning bg-gradient d-flex flex-row justify-content-center align-items-center fs-4 me-4 p-2"
+          class="btn btn-warning bg-gradient d-flex flex-row justify-content-center align-items-center fs-4 mx-2"
         >
           <img class="img-fluid rounded w-25 mx-2" src="../icon/plus.png" />
-          Add
+          New
         </button>
 
         <button

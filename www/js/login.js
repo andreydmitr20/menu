@@ -3,8 +3,9 @@ const password = document.querySelector("#password");
 const okButton = document.querySelector("#okButton");
 const registerButton = document.querySelector("#registerButton");
 
-const body = document.querySelector("body");
-body.addEventListener("loaded", () => username.focus());
+document
+  .querySelector("body")
+  .addEventListener("loaded", () => username.focus());
 
 //
 const loginDone = () => {

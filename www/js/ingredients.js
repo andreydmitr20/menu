@@ -4,15 +4,25 @@ btnAction("menu", () => {
   window.open("./more.html", "_self");
 });
 
+// to search only in mine ingredients
+const mineSearch = btnAction("mine-search", (event) => {
+  const element = event.target;
+  element.checked = !element.checked;
+  if (element.checked) {
+    localStorageSet(LS_MINE_SEARCH, "1");
+  } else {
+    localStorageRemove(LS_MINE_SEARCH);
+  }
+});
+if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) mineSearch.checked = true;
+
 // get user data
 const getUserData = (varUserId) => {
-  fetchAPI(API_USER, "get", "", (jwtAuth = true), {
+  fetchAPI(API_USER, "get", "", true, {
     ok: (data) => {
-      varUserId = data.user_id;
-      console.log(varUserId);
+      varUserId = data.id;
     },
     error: () => {
-      console.log("in error");
       window.open("./login.html", "_self");
     },
   });
@@ -68,7 +78,9 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
   fetchAPI(
     API_DISH_INGREDIENTS,
     "get",
-    `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}`,
+    `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}&mine=${
+      mineSearch.checked ? "1" : "0"
+    }`,
     (jwtAuth = true),
     {
       ok: (data) => {

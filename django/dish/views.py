@@ -89,22 +89,27 @@ class IngredientsView(APIView):
         search_text = self.request.query_params.get('search')
         search_text = search_text.strip().split(' ')
         search_text_len = len(search_text)
+
+        queryset = Ingredient.objects.all()
+        print(self.request.user.id)
+        if (self.request.query_params.get('mine') == "1"):
+            queryset = queryset.filter(user=self.request.user.id)
         if (search_text_len == 0):
-            queryset = Ingredient.objects.all().order_by('name')
+            queryset = queryset.order_by('name')
         elif (search_text_len == 1):
-            queryset = Ingredient.objects.filter(
+            queryset = queryset.filter(
                 Q(
                     name__icontains=search_text[0].strip()
                 )).order_by('name')
         elif (search_text_len == 2):
-            queryset = Ingredient.objects.filter(
+            queryset = queryset.filter(
                 Q(
                     name__icontains=search_text[0].strip()
                 ) | Q(
                     name__icontains=search_text[1].strip()
                 )).order_by('name')
         else:
-            queryset = Ingredient.objects.filter(
+            queryset = queryset.filter(
                 Q(
                     name__icontains=search_text[0].strip()
                 ) | Q(
@@ -112,7 +117,7 @@ class IngredientsView(APIView):
                 ) | Q(
                     name__icontains=search_text[2].strip()
                 )).order_by('name')
-
+        print(queryset.query)
         page_number = self.request.query_params.get('page_number', 1)
         page_size = self.request.query_params.get('page_size', 10)
         paginator = Paginator(queryset, page_size)

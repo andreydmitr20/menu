@@ -15,6 +15,8 @@ const SS_JWT_ACCESS = "jwt_access";
 
 const SS_API_URL = "API_URL";
 
+const LS_MINE_SEARCH = "MINE_SEARCH";
+
 // api
 
 const API_URL_PREFIX = "api/";
@@ -207,7 +209,6 @@ async function fetchAPIStart(apiLink, apiMethod, body, jwtAuth = false) {
   }
 
   console.log(apiMethod.toUpperCase(), fullUrl);
-
   return await fetch(fullUrl, request);
 }
 

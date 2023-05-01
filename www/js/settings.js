@@ -135,9 +135,9 @@ save.addEventListener("click", (event) => {
   errorText.textContent = "";
   fetchAPI(
     API_USER,
-    "post",
-    true,
+    "put",
     { username: userName.value, email: email.value, icon: iconUrl.value },
+    true,
     {
       ok: () => {
         window.open("./more.html", "_self");

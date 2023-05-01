@@ -30,7 +30,7 @@ class UserView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    def post(self, request):
+    def put(self, request):
         user = self.get_object(request)
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
