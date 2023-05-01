@@ -35,9 +35,16 @@ getDict(API_DISH_VITAMINS, {
         aria-labelledby="flush-headingOne"
         data-bs-parent="#accordionFlushExample"
       >
-        <div class="accordion-body d-flex flex-row flex-nowrap text-primary justify-content-between border border-warning rounded">
+        <div 
+         class="accordion-body d-flex flex-row flex-nowrap text-primary justify-content-between border border-warning rounded">
           ${element["name"]}
-          <input class="w-50 p-2 text-end " type="number" id="v${element["id"]}" min="0" step="0.001">
+          <input 
+          class="w-50 p-2 text-end " 
+          type="number" 
+          data-field="vitamin"
+          data-id="${element["id"]}" 
+          min="0" 
+          step="0.001">
         </div>
       </div>`;
       });
@@ -95,7 +102,10 @@ btnAction("mine-search", (event) => {
   }
   search.click();
 });
-if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) mineSearch.checked = true;
+if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) {
+  mineSearch.checked = true;
+  search.click();
+}
 
 // click edit button
 ingredients.addEventListener("click", (event) => {
@@ -192,7 +202,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
             </td>
             
             <td class="text-end align-middle">${editButton(
-              element.user_id,
+              element.user,
               element.creator,
               element.id
             )}</td>
@@ -214,31 +224,106 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
 
 searchInput.focus();
 
+const add = btnAction("add", () => {
+  prepareIngredient();
+});
+
+// photo
+const ingredientPhoto = document.querySelector("#ingredient-photo");
+const ingredientPhotoUrl = document.querySelector("#ingredient-photo-url");
+ingredientPhotoUrl.addEventListener("input", () => {
+  ingredientPhoto.src = ingredientPhotoUrl.value;
+});
+const setDefaultPhoto = () => {
+  ingredientPhoto.src = "../icon/ingredient.png";
+};
+ingredientPhoto.addEventListener("error", () => {
+  setDefaultPhoto();
+});
+
 const errorText = document.querySelector("#error-text");
 
 //
-const saveBtn = btnAction("save", () => {
-  console.log("save");
-  // prep vitamins
+const saveButton = btnAction("save", (event) => {
+  //
+  let vitaminsObj = {};
+  let requestBody = {};
+  newIngredient.querySelectorAll("input").forEach((inputElement) => {
+    const field = inputElement.dataset.field;
+    if (!strIsEmpty(field)) {
+      if (field !== "vitamin") {
+        if (!strIsEmpty(inputElement.value)) {
+          requestBody[field] = inputElement.value;
+        } else {
+          requestBody[field] = null;
+        }
+      } else if (!strIsEmpty(inputElement.value)) {
+        vitaminsObj[`${inputElement.dataset.id}`] = inputElement.value;
+      }
+    }
+  });
+  let vitaminsJSON = "";
+  try {
+    vitaminsJSON = JSON.stringify(vitaminsObj);
+  } catch (error) {
+    console.error(error);
+    setText(errorText, TEXT_ERROR_INVALID_VITAMINS_DATA);
+    return;
+  }
+  requestBody["vitamins"] = vitaminsJSON;
+  requestBody["user"] = currentUser.id;
+  console.log(requestBody);
+
+  // save
+  let ingredientId = saveButton.dataset.ingredientId;
+  let api = API_DISH_INGREDIENTS;
+  let method = "post";
+  if (ingredientId !== "") {
+    method = "put";
+    api += ingredientId;
+  }
+  fetchAPI(api, method, requestBody, true, {
+    ok: (data) => {
+      menu.click();
+    },
+    error: (error) => {
+      console.log(error);
+      setText(errorText, getErrorTextFromMessage(error, newIngredient));
+    },
+  });
 });
 
-btnAction("menu", () => {
+const deleteButton = btnAction("delete", () => {
+  console.log("delete");
+});
+
+const menu = btnAction("menu", () => {
   if (newIngredient.classList.contains("d-none")) {
     window.open("./more.html", "_self");
   } else {
-    searchDiv.classList.remove("d-none");
-    pagination.classList.remove("d-none");
-    ingredients.classList.remove("d-none");
-    newIngredient.classList.add("d-none");
+    showElement(searchDiv);
+    showElement(pagination);
+    showElement(ingredients);
+    hideElement(newIngredient);
     searchInput.focus();
   }
 });
+
 // prepare to create or edit ingredient
-const prepareIngredient = (ingredientId) => {
-  searchDiv.classList.add("d-none");
-  pagination.classList.add("d-none");
-  ingredients.classList.add("d-none");
-  newIngredient.classList.remove("d-none");
+// ingredientId is null for new ingredient
+function prepareIngredient(ingredientId) {
+  hideElement(searchDiv);
+  hideElement(pagination);
+  hideElement(ingredients);
+  showElement(newIngredient);
+  hideElement(deleteButton);
+  setDefaultPhoto();
+  setText(errorText, "");
+  if (ingredientId === undefined) {
+    saveButton.dataset.ingredientId = "";
+  } else {
+    saveButton.dataset.ingredientId = ingredientId;
+  }
 
   document.querySelector("#ingredient-name").focus();
   document
@@ -251,20 +336,39 @@ const prepareIngredient = (ingredientId) => {
   allInputs.forEach((inputElement) => {
     inputElement.value = "";
   });
+  // get data
   if (ingredientId !== undefined) {
-    console.log("get data");
+    showElement(deleteButton);
+    // get data
+    fetchAPI(API_DISH_INGREDIENTS, "get", `${ingredientId}`, true, {
+      ok: (data) => {
+        console.log(data);
+        if (data.length === 0) {
+          // error
+          menu.click();
+          return;
+        }
+
+        let vitaminsObj = JSON.parse(data["vitamins"]);
+        if (vitaminsObj === null) vitaminsObj = {};
+        console.log(vitaminsObj);
+
+        allInputs.forEach((inputElement) => {
+          const field = inputElement.dataset.field;
+          if (!strIsEmpty(field)) {
+            if (field !== "vitamin") {
+              inputElement.value = data[field];
+              if (field === "photo") ingredientPhoto.src = data[field];
+            } else {
+              console.log(inputElement.dataset.id);
+              inputElement.value = vitaminsObj[`"${inputElement.dataset.id}"`];
+            }
+          }
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
-};
-
-const add = btnAction("add", () => {
-  prepareIngredient();
-});
-
-const ingredientPhoto = document.querySelector("#ingredient-photo");
-const ingredientPhotoUrl = document.querySelector("#ingredient-photo-url");
-ingredientPhotoUrl.addEventListener("input", () => {
-  ingredientPhoto.src = ingredientPhotoUrl.value;
-});
-ingredientPhoto.addEventListener("error", () => {
-  ingredientPhoto.src = "../icon/ingredient.png";
-});
+}

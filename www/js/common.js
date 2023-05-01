@@ -39,20 +39,14 @@ const API_DISH_INGREDIENTS = "dish/ingredients/";
 
 const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
+const TEXT_ERROR_INVALID_VITAMINS_DATA = "Invalid vitamins data";
 const TEXT_ERROR_SERVER_ERROR = "Server error";
 
 const INGREDIENTS_PAGE_SIZE = 6;
 
-// border border-primary rounded
-// const BODY_STYLE = "bg-warning";
-
-// set same background-color
-// const commonBody = document.querySelector("body");
-// commonBody.addEventListener("loaded", () => {
-//   BODY_STYLE.split(" ").forEach((style) => {
-//     body.classList.add(style);
-//   });
-// });
+//
+const showElement = (element) => element.classList.remove("d-none");
+const hideElement = (element) => element.classList.add("d-none");
 
 //
 const getApiUrl = () => {
@@ -301,23 +295,45 @@ const login = (username, password, functionsObj) => {
   );
 };
 
+// // get error text from error message
+// const getErrorTextFromMessage = (err, propertyArray) => {
+//   let errorText = "Invalid data";
+//   try {
+//     let obj = JSON.parse(err.replace("Error:", "").trim());
+//     if (typeof obj === "object") {
+//       for (let property of propertyArray) {
+//         if (obj.hasOwnProperty(property[0])) {
+//           errorText = obj[property[0]];
+//           property[1].focus();
+//           break;
+//         }
+//       }
+//     }
+//   } catch (e) {}
+//   return errorText;
+// };
+
 // get error text from error message
-const getErrorTextFromMessage = (err, propertyArray) => {
+const getErrorTextFromMessage = (err, element) => {
   let errorText = "Invalid data";
   try {
     let obj = JSON.parse(err.replace("Error:", "").trim());
     if (typeof obj === "object") {
-      for (let property of propertyArray) {
-        if (obj.hasOwnProperty(property[0])) {
-          errorText = obj[property[0]];
-          property[1].focus();
-          break;
+      let searchKey = Object.keys(obj)[0];
+      element.querySelectorAll("input").forEach((inputElement) => {
+        if (inputElement.dataset.field === searchKey) {
+          inputElement.focus();
+          errorText = obj[searchKey];
         }
-      }
+      });
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log("parse JSON error");
+  }
   return errorText;
 };
+
+const setText = (element, text) => (element.textContent = text);
 
 // set focus to element in data-next="element-id" when press enter
 // if  data-next="*element-id" then element will be clicked

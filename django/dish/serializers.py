@@ -1,3 +1,4 @@
+from pkg_resources import require
 from rest_framework import serializers
 from .models import Vitamin, Unit, Tag, Ingredient
 
@@ -48,11 +49,11 @@ checkVitaminsError = "Vitamins have wrong data"
 
 class IngredientSerializer(serializers.ModelSerializer):
     creator = serializers.CharField(
-        source='user.username')  # , allow_null = True)
+        source='user.username', required=False)  # , allow_null = True)
 
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'photo', 'creator', 'user_id', 'proteins',
+        fields = ['id', 'name', 'photo', 'creator', 'user', 'proteins',
                   'fats', 'carbohydrates', 'vitamins']
 
     def validate_vitamins(self, value):

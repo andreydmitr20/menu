@@ -40,7 +40,7 @@ iconUrl.addEventListener("input", () => {
 
 logout.addEventListener("click", () => {
   startButtonPressAnimation(logout);
-  errorText.textContent = "";
+  setText(errorText, "");
 
   fetchAPI(
     API_USER_LOGOUT,
@@ -116,15 +116,13 @@ const changePasswordAction = btnAction("change-password-action", () => {
       ok: () => {
         modal.style.display = "none";
         settingsForm.style.display = "block";
-        console.log("change pass");
       },
       error: (err) => {
         console.log(err);
-        errorPasswordText.textContent = getErrorTextFromMessage(err, [
-          ["current_password", currentPassword],
-          ["new_password", newPassword],
-        ]);
-        // newPassword.focus();
+        setText(
+          errorPasswordText,
+          getErrorTextFromMessage(err, document.querySelector("#passwordModal"))
+        );
       },
     }
   );
@@ -132,7 +130,7 @@ const changePasswordAction = btnAction("change-password-action", () => {
 
 const save = document.querySelector("#save");
 save.addEventListener("click", (event) => {
-  errorText.textContent = "";
+  setText(errorText, "");
   fetchAPI(
     API_USER,
     "put",
@@ -141,15 +139,13 @@ save.addEventListener("click", (event) => {
     {
       ok: () => {
         window.open("./more.html", "_self");
-
-        // errorText.textContent = "Settings were saved";
       },
       error: (err) => {
-        // console.log(err);
-        errorText.textContent = getErrorTextFromMessage(err, [
-          ["email", email],
-          ["icon", iconUrl],
-        ]);
+        console.log(err);
+        setText(
+          errorText,
+          getErrorTextFromMessage(err, document.querySelector("#settings-form"))
+        );
       },
     }
   );

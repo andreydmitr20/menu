@@ -80,7 +80,7 @@ okButton.addEventListener("click", (event) => {
     (jwtAuth = false),
     {
       ok: () => {
-        errorText.textContent = "";
+        setText(errorText, "");
 
         console.log("registered");
         okButton.disabled = false;
@@ -95,11 +95,10 @@ okButton.addEventListener("click", (event) => {
         });
       },
       error: (err) => {
-        errorText.textContent = getErrorTextFromMessage(err, [
-          ["username", userName],
-          ["password", password],
-          ["email", email],
-        ]);
+        setText(
+          errorText,
+          getErrorTextFromMessage(err, document.querySelector("#register-form"))
+        );
         okButton.disabled = false;
       },
     }

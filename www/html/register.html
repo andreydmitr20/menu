@@ -30,7 +30,7 @@
         <img class="img-fluid rounded w80 p-1" src="../icon/favicon.png" />
       </div>
 
-      <form class="text-center text-primary fs-3 p-3">
+      <form id="register-form" class="text-center text-primary fs-3 p-3">
         <img
           id="iconImage"
           class="img-fluid rounded-circle w-25 p-2 me-4"
@@ -43,6 +43,7 @@
           class="container-fluid p-2 text-center rounded m-2"
           type="text"
           id="username"
+          data-field="username"
           name="username"
           placeholder=""
         /><br />
@@ -61,6 +62,7 @@
           class="container-fluid p-2 text-center rounded m-2"
           type="password"
           id="password"
+          data-field="password"
           name="password"
           minlength="8"
           autocomplete="on"
@@ -74,6 +76,7 @@
           class="container-fluid p-2 text-center rounded m-2"
           type="email"
           id="email"
+          data-field="email"
           name="email"
           placeholder=""
         /><br />

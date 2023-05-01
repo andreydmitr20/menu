@@ -75,15 +75,33 @@ class TagsView(APIView):
         return Response(serializer.data)
 
 
-class IngredientsView(APIView):
+class IngredientDetailView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = IngredientSerializer
 
-    # def get_object(self, request):
-    #     try:
-    #         return Ingredient.objects.get(pk=request.ingredient.id)
-    #     except Ingredient.DoesNotExist:
-    #         raise Http404
+    def get_object(self, ingredient_id):
+        try:
+            return Ingredient.objects.get(pk=ingredient_id)
+        except Ingredient.DoesNotExist:
+            raise Http404
+
+    def get(self, request, ingredient_id, format=None):
+        ingredient = self.get_object(ingredient_id)
+        serializer = self.serializer_class(ingredient)
+        return Response(serializer.data)
+
+    def put(self, request, ingredient_id, format=None):
+        ingredient = self.get_object(ingredient_id)
+        serializer = self.serializer_class(ingredient, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class IngredientsView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = IngredientSerializer
 
     def get(self, format=None):
         search_text = self.request.query_params.get('search')
@@ -91,7 +109,6 @@ class IngredientsView(APIView):
         search_text_len = len(search_text)
 
         queryset = Ingredient.objects.all()
-        print(self.request.user.id)
         if (self.request.query_params.get('mine') == "1"):
             queryset = queryset.filter(user=self.request.user.id)
         if (search_text_len == 0):
@@ -117,7 +134,6 @@ class IngredientsView(APIView):
                 ) | Q(
                     name__icontains=search_text[2].strip()
                 )).order_by('name')
-        print(queryset.query)
         page_number = self.request.query_params.get('page_number', 1)
         page_size = self.request.query_params.get('page_size', 10)
         paginator = Paginator(queryset, page_size)
@@ -129,8 +145,7 @@ class IngredientsView(APIView):
 
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
-        print(request.user.id, request.data.user_id)
-        if request.user.id == request.data.user_id and serializer.is_valid():
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
