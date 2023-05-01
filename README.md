@@ -10,7 +10,7 @@ receipts.
 
 ## Install on a server.
 
-1.          > gh repo clone andreydmitr20/menu
+1.           > gh repo clone andreydmitr20/menu
 
 2.  Create .env file inside /env folder.
     It should contain something like that:
@@ -62,11 +62,11 @@ To create new database db.sqlite3:
 
         > python3 -m venv .venv
 
-2.           > source .venv/bin/activate
+2.            > source .venv/bin/activate
 
-3.           > pip3 install -r requirements.txt
+3.            > pip3 install -r requirements.txt
 
-4.           > python3 manage.py runserver
+4.            > python3 manage.py runserver
 
 5.  Then open in your browser (put your path instead of "....."):
     file:///...../menu/www/html/index.html
@@ -93,3 +93,4 @@ To create new database db.sqlite3:
 <a href="https://www.flaticon.com/free-icons/vitamins" title="vitamins icons">Vitamins icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/tick" title="tick icons">Tick icons created by Octopocto - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/ui" title="ui icons">Ui icons created by Corner Pixel - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/edit" title="edit icons">Edit icons created by Freepik - Flaticon</a>

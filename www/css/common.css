@@ -23,6 +23,9 @@ body > div {
 .w80 {
   width: 80px;
 }
+.w30 {
+  width: 30px;
+}
 
 /* .fill-bottom {
   height: 100%;
