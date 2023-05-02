@@ -7,9 +7,7 @@ const okButton = document.querySelector("#ok");
 const errorText = document.querySelector("#error-text");
 const viewPassword = document.querySelector("#view-password");
 
-viewPassword.addEventListener("click", () => {
-  startButtonPressAnimation(viewPassword);
-
+btnAction("view-password", () => {
   if (password.type === "password") {
     password.type = "text";
   } else {
@@ -20,7 +18,7 @@ viewPassword.addEventListener("click", () => {
 
 userName.focus();
 
-btnAction("menu", () => {
+btnAction("back", () => {
   window.open("./login.html", "_self");
 });
 
@@ -56,15 +54,8 @@ email.addEventListener("keypress", (event) => {
   }
 });
 
-iconUrl.addEventListener("keypress", (event) => {
-  if (event.keyCode === 13) {
-    okButton.click();
-  }
-});
-
-okButton.addEventListener("click", (event) => {
-  startButtonPressAnimation(okButton);
-  okButton.disabled = true;
+okButton = btnAction("ok", (event) => {
+  event.target.disabled = true;
 
   // try to register of user
   fetchAPI(
@@ -83,7 +74,7 @@ okButton.addEventListener("click", (event) => {
         setText(errorText, "");
 
         console.log("registered");
-        okButton.disabled = false;
+        event.target.disabled = false;
         // auto login
         login(userName.value, password.value, {
           ok: () => {
@@ -99,8 +90,14 @@ okButton.addEventListener("click", (event) => {
           errorText,
           getErrorTextFromMessage(err, document.querySelector("#register-form"))
         );
-        okButton.disabled = false;
+        event.target.disabled = false;
       },
     }
   );
+});
+
+iconUrl.addEventListener("keypress", (event) => {
+  if (event.keyCode === 13) {
+    okButton.click();
+  }
 });

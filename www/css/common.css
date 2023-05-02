@@ -18,6 +18,7 @@ body {
 body > div {
   overflow: auto;
   max-width: 600px;
+  width: 100%;
 }
 
 .w80 {

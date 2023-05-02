@@ -85,18 +85,24 @@ class IngredientDetailView(APIView):
         except Ingredient.DoesNotExist:
             raise Http404
 
-    def get(self, request, ingredient_id, format=None):
+    def get(self, request, ingredient_id=None, format=None):
         ingredient = self.get_object(ingredient_id)
         serializer = self.serializer_class(ingredient)
         return Response(serializer.data)
 
-    def put(self, request, ingredient_id, format=None):
+    def put(self, request, ingredient_id=None, format=None):
         ingredient = self.get_object(ingredient_id)
         serializer = self.serializer_class(ingredient, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, ingredient_id=None, format=None):
+        ingredient = self.get_object(ingredient_id)
+        # TODO check if error because this ingredient already included in a dish
+        ingredient.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class IngredientsView(APIView):

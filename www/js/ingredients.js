@@ -118,8 +118,7 @@ ingredients.addEventListener("click", (event) => {
       element = element.parentElement;
       id = element.dataset.id;
     }
-    startButtonPressAnimation(element);
-    prepareIngredient(id);
+    startButtonPressAnimation(element, () => prepareIngredient(id), event);
   }
 });
 
@@ -228,6 +227,7 @@ const add = btnAction("add", () => {
   prepareIngredient();
 });
 
+const ingredientName = document.querySelector("#ingredient-name");
 // photo
 const ingredientPhoto = document.querySelector("#ingredient-photo");
 const ingredientPhotoUrl = document.querySelector("#ingredient-photo-url");
@@ -284,7 +284,7 @@ const saveButton = btnAction("save", (event) => {
   }
   fetchAPI(api, method, requestBody, true, {
     ok: (data) => {
-      menu.click();
+      back.click();
     },
     error: (error) => {
       console.log(error);
@@ -293,20 +293,59 @@ const saveButton = btnAction("save", (event) => {
   });
 });
 
-const deleteButton = btnAction("delete", () => {
-  console.log("delete");
-});
-
-const menu = btnAction("menu", () => {
-  if (newIngredient.classList.contains("d-none")) {
-    window.open("./more.html", "_self");
-  } else {
+// back action
+const back = btnAction("back", () => {
+  if (isElementVisible(deleteModal)) {
+    showElement(newIngredient);
+    hideElement(deleteModal);
+  } else if (isElementVisible(newIngredient)) {
     showElement(searchDiv);
     showElement(pagination);
     showElement(ingredients);
     hideElement(newIngredient);
-    searchInput.focus();
+    search.click();
+  } else {
+    window.open("./more.html", "_self");
   }
+});
+
+// delete
+const deleteModal = document.querySelector("#deleteModal");
+const deleteButton = btnAction("delete", () => {
+  // ask
+  document.querySelector("#delete-name").textContent =
+    ingredientName.value + " ?";
+
+  hideElement(newIngredient);
+  showElement(deleteModal);
+});
+
+const deleteNoButton = btnAction("delete-no", () => {
+  back.click();
+});
+
+btnAction("delete-yes", () => {
+  // delete
+  fetchAPI(
+    API_DISH_INGREDIENTS + saveButton.dataset.ingredientId,
+    "delete",
+    {},
+    true,
+    {
+      ok: () => {
+        back.click();
+        back.click();
+      },
+      error: (error) => {
+        console.error(error);
+        setText(
+          errorText,
+          "Can not delete the ingredient which is already been used in a dish"
+        );
+        back.click();
+      },
+    }
+  );
 });
 
 // prepare to create or edit ingredient
@@ -325,12 +364,13 @@ function prepareIngredient(ingredientId) {
     saveButton.dataset.ingredientId = ingredientId;
   }
 
-  document.querySelector("#ingredient-name").focus();
+  ingredientName.focus();
   document
     .querySelector("#new-ingredient")
     .addEventListener("keypress", (event) => {
       setFocusToNextField(event);
     });
+
   // clear all
   const allInputs = newIngredient.querySelectorAll("input");
   allInputs.forEach((inputElement) => {
@@ -345,7 +385,7 @@ function prepareIngredient(ingredientId) {
         console.log(data);
         if (data.length === 0) {
           // error
-          menu.click();
+          back.click();
           return;
         }
 

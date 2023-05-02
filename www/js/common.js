@@ -44,9 +44,11 @@ const TEXT_ERROR_SERVER_ERROR = "Server error";
 
 const INGREDIENTS_PAGE_SIZE = 6;
 
+const BUTTON_PRESS_ANIMATION_DELAY = 50;
 //
 const showElement = (element) => element.classList.remove("d-none");
 const hideElement = (element) => element.classList.add("d-none");
+const isElementVisible = (element) => !element.classList.contains("d-none");
 
 //
 const getApiUrl = () => {
@@ -155,9 +157,10 @@ const buttonPressEventListener = (event) => {
   event.target.removeEventListener("animationend", buttonPressEventListener);
   event.target.classList.remove(CSS_BUTTON_PRESS_ANIMATION);
 };
-const startButtonPressAnimation = (element) => {
+const startButtonPressAnimation = (element, clickFunction, event) => {
   element.addEventListener("animationend", buttonPressEventListener);
   element.classList.add(CSS_BUTTON_PRESS_ANIMATION);
+  setTimeout(clickFunction, BUTTON_PRESS_ANIMATION_DELAY, event);
 };
 
 // action for button click with animation
@@ -165,8 +168,7 @@ const btnAction = (id, clickFunction) => {
   const btn = document.querySelector("#" + id);
   btn.addEventListener("click", (event) => {
     event.preventDefault();
-    startButtonPressAnimation(btn);
-    setTimeout(clickFunction, 50, event);
+    startButtonPressAnimation(btn, clickFunction, event);
   });
   return btn;
 };
@@ -294,24 +296,6 @@ const login = (username, password, functionsObj) => {
     }
   );
 };
-
-// // get error text from error message
-// const getErrorTextFromMessage = (err, propertyArray) => {
-//   let errorText = "Invalid data";
-//   try {
-//     let obj = JSON.parse(err.replace("Error:", "").trim());
-//     if (typeof obj === "object") {
-//       for (let property of propertyArray) {
-//         if (obj.hasOwnProperty(property[0])) {
-//           errorText = obj[property[0]];
-//           property[1].focus();
-//           break;
-//         }
-//       }
-//     }
-//   } catch (e) {}
-//   return errorText;
-// };
 
 // get error text from error message
 const getErrorTextFromMessage = (err, element) => {

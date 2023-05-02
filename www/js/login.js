@@ -1,7 +1,5 @@
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
-const okButton = document.querySelector("#okButton");
-const registerButton = document.querySelector("#registerButton");
 
 document
   .querySelector("body")
@@ -29,6 +27,7 @@ username.addEventListener("keypress", (event) => {
     }
   }
 });
+
 password.addEventListener("keypress", (event) => {
   if (event.keyCode == 13) {
     event.preventDefault();
@@ -36,15 +35,9 @@ password.addEventListener("keypress", (event) => {
   }
 });
 
-okButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  startButtonPressAnimation(okButton);
-  loginDone();
-});
+btnAction("okButton", loginDone);
 
-registerButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  startButtonPressAnimation(registerButton);
+btnAction("registerButton", () => {
   window.open("../html/register.html", "_self");
 });
 
