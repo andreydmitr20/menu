@@ -18,25 +18,28 @@ const pageFirst = btnAction("page-next", () => {
 });
 
 // SEARCH
-const goToPage = (page) => {
-  getSearchResults(searchInput.value, page, DISHES_PAGE_SIZE);
-};
 const searchInput = document.querySelector("#search-input");
-const search = btnAction("search", (event) => {
+
+const searchFunction = createSlowedFunction(() => {
   if (mineSearch.checked) {
     goToPage(1);
   } else if (!strIsEmpty(searchInput.value)) {
     goToPage(1);
   }
   searchInput.focus();
+});
 
-  dishes.textContent = currentUser.id;
+const goToPage = (page) => {
+  getSearchResults(searchInput.value, page, DISHES_PAGE_SIZE);
+};
+const search = btnAction("search", (event) => {
+  searchFunction();
 });
-searchInput.addEventListener("keypress", (event) => {
-  if (event.keyCode === 13) {
-    search.click();
-  }
+
+searchInput.addEventListener("keydown", (event) => {
+  searchFunction();
 });
+
 // to search only in mine
 const mineSearch = document.querySelector("#mine-search");
 btnAction("mine-search", (event) => {
@@ -49,11 +52,11 @@ btnAction("mine-search", (event) => {
       dishes.innerHTML = "";
     }
   }
-  search.click();
+  searchFunction();
 });
 if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) {
   mineSearch.checked = true;
-  search.click();
+  searchFunction();
 }
 
 // GET SEARCH RESULTS

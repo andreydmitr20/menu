@@ -70,6 +70,17 @@ const getApiUrl = () => {
 let apiUrl = getApiUrl();
 
 //
+const createSlowedFunction = (slowedFunction) => {
+  let timeoutId;
+  return () => {
+    if (timeoutId !== undefined) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timeoutId = undefined;
+      slowedFunction();
+    }, 150);
+  };
+};
+//
 const strIsEmpty = (str) => {
   return str === null || str === undefined || str === "";
 };

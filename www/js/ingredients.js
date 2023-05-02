@@ -62,7 +62,8 @@ const goToPage = (page) => {
 };
 
 const searchInput = document.querySelector("#search-input");
-const search = btnAction("search", (event) => {
+
+const searchFunction = createSlowedFunction(() => {
   if (mineSearch.checked) {
     goToPage(1);
   } else if (!strIsEmpty(searchInput.value)) {
@@ -70,10 +71,12 @@ const search = btnAction("search", (event) => {
   }
   searchInput.focus();
 });
-searchInput.addEventListener("keypress", (event) => {
-  if (event.keyCode === 13) {
-    search.click();
-  }
+
+const search = btnAction("search", (event) => {
+  searchFunction();
+});
+searchInput.addEventListener("keydown", (event) => {
+  searchFunction();
 });
 // to search only in mine ingredients
 const mineSearch = document.querySelector("#mine-search");
@@ -87,11 +90,11 @@ btnAction("mine-search", (event) => {
       ingredients.innerHTML = "";
     }
   }
-  search.click();
+  searchFunction();
 });
 if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) {
   mineSearch.checked = true;
-  search.click();
+  searchFunction();
 }
 
 // click edit button
@@ -292,7 +295,7 @@ const back = btnAction("back", () => {
     showElement(pagination);
     showElement(ingredients);
     hideElement(newIngredient);
-    search.click();
+    searchFunction();
   } else {
     window.open("./more.html", "_self");
   }
