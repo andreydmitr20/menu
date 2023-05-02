@@ -75,7 +75,7 @@ class TagsView(APIView):
         return Response(serializer.data)
 
 
-class IngredientDetailView(APIView):
+class IngredientsView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = IngredientSerializer
 
@@ -86,30 +86,12 @@ class IngredientDetailView(APIView):
             raise Http404
 
     def get(self, request, ingredient_id=None, format=None):
-        ingredient = self.get_object(ingredient_id)
-        serializer = self.serializer_class(ingredient)
-        return Response(serializer.data)
+        print('id', ingredient_id)
+        if ingredient_id != None:
+            ingredient = self.get_object(ingredient_id)
+            serializer = self.serializer_class(ingredient)
+            return Response(serializer.data)
 
-    def put(self, request, ingredient_id=None, format=None):
-        ingredient = self.get_object(ingredient_id)
-        serializer = self.serializer_class(ingredient, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, ingredient_id=None, format=None):
-        ingredient = self.get_object(ingredient_id)
-        # TODO check if error because this ingredient already included in a dish
-        ingredient.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class IngredientsView(APIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = IngredientSerializer
-
-    def get(self, format=None):
         search_text = self.request.query_params.get('search')
         search_text = search_text.strip().split(' ')
         search_text_len = len(search_text)
@@ -149,9 +131,23 @@ class IngredientsView(APIView):
         response = Response(serializer.data, status=status.HTTP_200_OK)
         return response
 
-    def post(self, request, format=None):
+    def post(self, request, ingredient_id=None, format=None):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, ingredient_id=None, format=None):
+        ingredient = self.get_object(ingredient_id)
+        serializer = self.serializer_class(ingredient, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, ingredient_id=None, format=None):
+        ingredient = self.get_object(ingredient_id)
+        # TODO check if error because this ingredient already included in a dish
+        ingredient.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

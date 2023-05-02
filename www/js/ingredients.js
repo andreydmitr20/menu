@@ -24,7 +24,7 @@ const vitaminsList = document.querySelector("#vitamins-list");
 // get vitamins
 getDict(API_DISH_VITAMINS, {
   ok: (data) => {
-    console.log(data);
+    // console.log(data);
     if (data.length > 0) {
       html = "";
       data.forEach((element) => {
@@ -272,7 +272,7 @@ const saveButton = btnAction("save", (event) => {
   }
   requestBody["vitamins"] = vitaminsJSON;
   requestBody["user"] = currentUser.id;
-  console.log(requestBody);
+  // console.log(requestBody);
 
   // save
   let ingredientId = saveButton.dataset.ingredientId;
@@ -400,7 +400,7 @@ function prepareIngredient(ingredientId) {
               inputElement.value = data[field];
               if (field === "photo") ingredientPhoto.src = data[field];
             } else {
-              console.log(inputElement.dataset.id);
+              // console.log(inputElement.dataset.id);
               inputElement.value = vitaminsObj[`"${inputElement.dataset.id}"`];
             }
           }
