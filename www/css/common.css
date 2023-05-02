@@ -33,9 +33,9 @@ body > div {
   overflow: hidden;
 } */
 
-/* .my-shadow {
-  box-shadow: 0px 0px 8px;
-} */
+.my-shadow {
+  filter: drop-shadow(2px 2px 2px yellow);
+}
 
 .modal {
   width: 400px;

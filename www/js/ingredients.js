@@ -1,18 +1,5 @@
 checkAuth();
-
-// get user data
-const getUserData = (varUserId) => {
-  fetchAPI(API_USER, "get", "", true, {
-    ok: (data) => {
-      varUserId["id"] = data.id;
-    },
-    error: () => {
-      window.open("./login.html", "_self");
-    },
-  });
-};
-let currentUser = {};
-getUserData(currentUser);
+getCurrentUser();
 
 const newIngredient = document.querySelector("#new-ingredient");
 const searchDiv = document.querySelector("#search-div");
@@ -124,8 +111,8 @@ ingredients.addEventListener("click", (event) => {
 
 // get user data
 const getIngredients = (searchText, pageToGo, pageSize) => {
-  const editButton = (userId, creator, ingredientId) => {
-    if (userId === currentUser.id) {
+  const editButton = (userId, userUsername, ingredientId) => {
+    if (+userId === currentUser.id) {
       return `<button
                 type="button"
                 class="btn btn-primary bg-gradient  fs-5 mx-1"
@@ -139,7 +126,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
                 />
               </button>`;
     } else {
-      return creator;
+      return userUsername;
     }
   };
 
@@ -159,7 +146,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
     "get",
     `?search=${searchTextPlus}&page_size=${pageSize}&page_number=${pageToGo}&mine=${
       mineSearch.checked ? "1" : "0"
-    }`,
+    }&short=1`,
     (jwtAuth = true),
     {
       ok: (data) => {
@@ -175,12 +162,12 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
 
         // table header
         html += `
-        <table class="table w-100 ">
+        <table class="table w-100  ">
           <thead>
             <tr>
               <th scope="col">Ingredient</th>
               <th scope="col"></th>
-              <th scope="col">Creator</th>
+              <th scope="col">Creator/Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -190,9 +177,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
             // console.log(element);
             html += ` 
           <tr>
-            <td class="fs-2 text-start text-capitalize align-middle">${
-              element.name
-            }</td>
+            
             
             <td>
               <img class="img-fluid rounded w80" src="${
@@ -200,9 +185,13 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
               }">
             </td>
             
-            <td class="text-end align-middle">${editButton(
-              element.user,
-              element.creator,
+            <td class="my-shadow fs-2 text-start text-capitalize text-primary align-middle">${
+              element.name
+            }</td>
+
+            <td class="text-center align-middle">${editButton(
+              element.user__id,
+              element.user__username,
               element.id
             )}</td>
             
@@ -215,7 +204,7 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
         </table>`;
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     }
   );
@@ -382,7 +371,7 @@ function prepareIngredient(ingredientId) {
     // get data
     fetchAPI(API_DISH_INGREDIENTS, "get", `${ingredientId}`, true, {
       ok: (data) => {
-        console.log(data);
+        // console.log(data);
         if (data.length === 0) {
           // error
           back.click();
@@ -391,7 +380,7 @@ function prepareIngredient(ingredientId) {
 
         let vitaminsObj = JSON.parse(data["vitamins"]);
         if (vitaminsObj === null) vitaminsObj = {};
-        console.log(vitaminsObj);
+        // console.log(vitaminsObj);
 
         allInputs.forEach((inputElement) => {
           const field = inputElement.dataset.field;

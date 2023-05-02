@@ -48,14 +48,14 @@ class IngredientAdmin(admin.ModelAdmin):
 admin.site.register(Ingredient, IngredientAdmin)
 
 
-# class CompositionAdmin(admin.ModelAdmin):
-#     """ Composition admin"""
-#     list_display = ['dish', 'ingredient', 'amount', 'unit']
-#     list_filter = ['dish', 'ingredient', 'unit']
-#     search_fields = ['dish', 'ingredient', 'unit']
+class CompositionAdmin(admin.ModelAdmin):
+    """ Composition admin"""
+    list_display = ['dish', 'ingredient', 'amount', 'unit']
+    list_filter = ['dish', 'ingredient', 'unit']
+    search_fields = ['dish', 'ingredient', 'unit']
 
 
-# admin.site.register(Composition, CompositionAdmin)
+admin.site.register(Composition, CompositionAdmin)
 
 
 class TagAdmin(admin.ModelAdmin):

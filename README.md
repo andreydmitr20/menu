@@ -1,50 +1,46 @@
-## Menu.
+## Description.
 
-MVP.
+This is a MVP for my site <a href="memenu.me">memenu.me</a>.
+
 To collect dishes which you like. <br>
-To find fast what to cook from existing
-ingredients. <br>
+To find fast what to cook. <br>
 To feed yourself healthy dishes. <br>
-To share dishes
-receipts.
+To share dishes receipts.
+
+Frontend: JS + CSS + BOOTSTRAP
+Backend: Django
 
 ## Install on a server.
 
-1.           > gh repo clone andreydmitr20/menu
+1.             > gh repo clone andreydmitr20/menu
 
 2.  Create .env file inside /env folder.
     It should contain something like that:
     SECRET_KEY = "yfYAF5eGCekxO8eobSN0ChAdscF5ygbntIa6ud0JVTQ6JgSsmN"
     DEBUG=True
 
-3.  Copy /utils/test_db.sqlite3 into /db/db.sqlite3
+3.  Copy test database from /utils/test_db.sqlite3 into /db/db.sqlite3
 
-4.  In Jenkins add new task to execute shell script.
-    Here is an example o a script.
+4.  In Jenkins add new task to get updates from git.
 
-        docker build ./django -t django_menu
+5.  In a shell run :
 
-        docker build ./nginx -t nginx_menu
+        docker compose build
 
-        docker rm -f django_menu_cont
-        docker rm -f nginx_menu_cont
-
-        docker run -d --name nginx_menu_cont -p 80:80 -p 443:443 -v /home/user1/jenkins/workspace/menu1/www/:/code/www:ro -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -v /etc/ssl/certs/cert_memenu.pem:/etc/ssl/certs/cert_memenu.pem:ro -v /etc/ssl/private/key_memenu.pem:/etc/ssl/private/key_memenu.pem:ro -i nginx_menu
-
-        docker run -d --name django_menu_cont -v /home/user1/jenkins/workspace/menu1/django/:/code -v /home/user1/jenkins/workspace/menu1/env/:/code/env:ro -v /home/user1/jenkins/workspace/menu1/db/:/code/db -v uwsgi_data:/tmp/uwsgi/ -v web_static:/code/static/ -i django_menu sh -c "python3 manage.py collectstatic --noinput && uwsgi --ini uwsgi.ini"
-
-5.  Run Jenkins task
+        docker compose up -d
 
 If you need do make some operations on database, use: > docker ps -a
 to find the docker-menu container id.
-
 Then run:
 
-        > docker exec -it <docker-menu container id> /bin/sh
+        > docker exec -it django_cont /bin/sh
 
 After that you can run commands inside the container.
 
+\# python3 manage.py migrate
+
 To create new database db.sqlite3:
+
 \# python3 manage.py migrate
 \# python3 m shell
 
@@ -62,14 +58,14 @@ To create new database db.sqlite3:
 
         > python3 -m venv .venv
 
-2.            > source .venv/bin/activate
+2.              > source .venv/bin/activate
 
-3.            > pip3 install -r requirements.txt
+3.              > pip3 install -r requirements.txt
 
-4.            > python3 manage.py runserver
+4.              > python3 manage.py runserver
 
 5.  Then open in your browser (put your path instead of "....."):
-    file:///...../menu/www/html/index.html
+    file:///...../www/html/index.html
 
 ## Relational schema
 

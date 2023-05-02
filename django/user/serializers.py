@@ -27,6 +27,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'icon']
 
 
+class UserShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

@@ -1,20 +1,27 @@
 
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.http import Http404, HttpResponse
-from django.shortcuts import render
+from re import search
+
 from rest_framework import status, viewsets
-from django.core.paginator import Paginator
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Ingredient, Tag, Unit, Vitamin
-from .serializers import (IngredientSerializer,
-                          TagSerializer, TagShortSerializer,
-                          UnitSerializer, UnitShortSerializer,
-                          VitaminSerializer, VitaminShortSerializer)
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import Http404, HttpResponse
+from django.shortcuts import render
+
+from .models import Dish, Ingredient, Tag, Unit, Vitamin
+from .serializers import (DishSerializer, DishShortSerializer,
+                          IngredientSerializer, IngredientShortSerializer,
+                          TagSerializer, TagShortSerializer, UnitSerializer,
+                          UnitShortSerializer, VitaminSerializer,
+                          VitaminShortSerializer)
+
+USER_IS_NOT_AUTHORIZED_TO_DELETE = 'User is not authorized to delete'
+ERROR_WHILE_DELETING = 'Error while deleting'
 
 
 class VitaminsView(APIView):
@@ -23,17 +30,17 @@ class VitaminsView(APIView):
 
     def get(self, format=None):
 
-        serializerClass = (VitaminSerializer
-                           if (self.request.query_params.get('short') != '1')
-                           else VitaminShortSerializer)
+        serializer_class_local = (VitaminSerializer
+                                  if (self.request.query_params.get('short') != '1')
+                                  else VitaminShortSerializer)
 
-        fields = serializerClass.Meta.fields
+        fields = serializer_class_local.Meta.fields
 
         queryset = (Vitamin.objects.all()
                     if (type(fields) is str)
-                    else Vitamin.objects.all().values(*fields)).order_by('name')
+                    else Vitamin.objects.values(*fields)).order_by('name')
 
-        serializer = serializerClass(queryset, many=True)
+        serializer = serializer_class_local(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -42,17 +49,17 @@ class UnitsView(APIView):
     serializer_class = UnitSerializer
 
     def get(self, format=None):
-        serializerClass = (UnitSerializer
-                           if (self.request.query_params.get('short') != '1')
-                           else UnitShortSerializer)
+        serializer_class_local = (UnitSerializer
+                                  if (self.request.query_params.get('short') != '1')
+                                  else UnitShortSerializer)
 
-        fields = serializerClass.Meta.fields
+        fields = serializer_class_local.Meta.fields
 
         queryset = (Unit.objects.all()
                     if (type(fields) is str)
-                    else Unit.objects.all().values(*fields)).order_by('name')
+                    else Unit.objects.values(*fields)).order_by('name')
 
-        serializer = serializerClass(queryset, many=True)
+        serializer = serializer_class_local(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -61,18 +68,52 @@ class TagsView(APIView):
     serializer_class = TagSerializer
 
     def get(self, format=None):
-        serializerClass = (TagSerializer
-                           if (self.request.query_params.get('short') != '1')
-                           else TagShortSerializer)
+        serializer_class_local = (TagSerializer
+                                  if (self.request.query_params.get('short') != '1')
+                                  else TagShortSerializer)
 
-        fields = serializerClass.Meta.fields
+        fields = serializer_class_local.Meta.fields
 
         queryset = (Tag.objects.all()
                     if (type(fields) is str)
-                    else Tag.objects.all().values(*fields)).order_by('id')
+                    else Tag.objects.values(*fields)).order_by('id')
 
-        serializer = serializerClass(queryset, many=True)
+        serializer = serializer_class_local(queryset, many=True)
         return Response(serializer.data)
+
+
+def parseSearchToQueryset(queryset,
+                          search_text: str,
+                          order_by=None):
+    search_text = search_text.strip()
+    if (search_text != ''):
+        search_text = search_text.split(' ')
+    search_text_len = len(search_text)
+    if search_text_len > 0:
+        if search_text_len == 1:
+            queryset = queryset.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                ))
+        elif (search_text_len == 2):
+            queryset = queryset.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                ) | Q(
+                    name__icontains=search_text[1].strip()
+                ))
+        else:
+            queryset = queryset.filter(
+                Q(
+                    name__icontains=search_text[0].strip()
+                ) | Q(
+                    name__icontains=search_text[1].strip()
+                ) | Q(
+                    name__icontains=search_text[2].strip()
+                ))
+    if order_by != None:
+        queryset = queryset.order_by(order_by)
+    return queryset
 
 
 class IngredientsView(APIView):
@@ -86,48 +127,38 @@ class IngredientsView(APIView):
             raise Http404
 
     def get(self, request, ingredient_id=None, format=None):
-        print('id', ingredient_id)
         if ingredient_id != None:
             ingredient = self.get_object(ingredient_id)
             serializer = self.serializer_class(ingredient)
             return Response(serializer.data)
 
-        search_text = self.request.query_params.get('search')
-        search_text = search_text.strip().split(' ')
-        search_text_len = len(search_text)
+        serializer_class_local = (IngredientSerializer
+                                  if (self.request.query_params.get('short') != '1')
+                                  else IngredientShortSerializer)
 
-        queryset = Ingredient.objects.all()
+        fields = serializer_class_local.Meta.fields
+        queryset = (Ingredient.objects.all()
+                    if (type(fields) is str)
+                    else Ingredient.objects
+                    # inner join
+                    .select_related('user')
+                    .values(*fields))
+
         if (self.request.query_params.get('mine') == "1"):
             queryset = queryset.filter(user=self.request.user.id)
-        if (search_text_len == 0):
-            queryset = queryset.order_by('name')
-        elif (search_text_len == 1):
-            queryset = queryset.filter(
-                Q(
-                    name__icontains=search_text[0].strip()
-                )).order_by('name')
-        elif (search_text_len == 2):
-            queryset = queryset.filter(
-                Q(
-                    name__icontains=search_text[0].strip()
-                ) | Q(
-                    name__icontains=search_text[1].strip()
-                )).order_by('name')
-        else:
-            queryset = queryset.filter(
-                Q(
-                    name__icontains=search_text[0].strip()
-                ) | Q(
-                    name__icontains=search_text[1].strip()
-                ) | Q(
-                    name__icontains=search_text[2].strip()
-                )).order_by('name')
+
+        queryset = parseSearchToQueryset(
+            queryset,
+            self.request.query_params.get('search'),
+            'name')
+
+        # print(queryset.query)
+
         page_number = self.request.query_params.get('page_number', 1)
         page_size = self.request.query_params.get('page_size', 10)
         paginator = Paginator(queryset, page_size)
-        serializer = self.serializer_class(paginator.page(
+        serializer = serializer_class_local(paginator.page(
             page_number), many=True, context={'request': self.request})
-
         response = Response(serializer.data, status=status.HTTP_200_OK)
         return response
 
@@ -140,6 +171,9 @@ class IngredientsView(APIView):
 
     def put(self, request, ingredient_id=None, format=None):
         ingredient = self.get_object(ingredient_id)
+        # check if the same user
+        if ingredient.user_id != request.user.id:
+            return Response(USER_IS_NOT_AUTHORIZED_TO_DELETE, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(ingredient, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -148,6 +182,58 @@ class IngredientsView(APIView):
 
     def delete(self, request, ingredient_id=None, format=None):
         ingredient = self.get_object(ingredient_id)
-        # TODO check if error because this ingredient already included in a dish
-        ingredient.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        # check if the same user
+        if ingredient.user_id != request.user.id:
+            return Response(USER_IS_NOT_AUTHORIZED_TO_DELETE, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            ingredient.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except:
+            return Response(ERROR_WHILE_DELETING, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DishesView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DishSerializer
+
+    def get_object(self, dish_id):
+        try:
+            return Dish.objects.get(pk=dish_id)
+        except Dish.DoesNotExist:
+            raise Http404
+
+    def get(self, request, dish_id=None, format=None):
+        if dish_id != None:
+            dish = self.get_object(dish_id)
+            serializer = self.serializer_class(dish)
+            return Response(serializer.data)
+
+        serializer_class_local = (DishSerializer
+                                  if (self.request.query_params.get('short') != '1')
+                                  else DishShortSerializer)
+
+        fields = serializer_class_local.Meta.fields
+        queryset = (Dish.objects.all()
+                    if (type(fields) is str)
+                    else Dish.objects
+                    # inner join
+                    .select_related('user')
+                    .values(*fields))
+
+        if (self.request.query_params.get('mine') == "1"):
+            queryset = queryset.filter(user=self.request.user.id)
+
+        queryset = parseSearchToQueryset(
+            queryset,
+            self.request.query_params.get('search'),
+            'name')
+
+        # print(queryset.query)
+
+        page_number = self.request.query_params.get('page_number', 1)
+        page_size = self.request.query_params.get('page_size', 10)
+        paginator = Paginator(queryset, page_size)
+        serializer = serializer_class_local(paginator.page(
+            page_number), many=True, context={'request': self.request})
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        return response

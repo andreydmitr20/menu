@@ -4,9 +4,9 @@ btnAction("menu", () => {
   window.open("./index.html", "_self");
 });
 
-// btnAction("dishes", () => {
-//   window.open("./dishes.html", "_self");
-// });
+btnAction("dishes", () => {
+  window.open("./dishes.html", "_self");
+});
 
 btnAction("ingredients", () => {
   window.open("./ingredients.html", "_self");

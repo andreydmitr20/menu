@@ -1,6 +1,6 @@
 from pkg_resources import require
 from rest_framework import serializers
-from .models import Vitamin, Unit, Tag, Ingredient
+from .models import Vitamin, Unit, Tag, Ingredient, Dish
 
 
 class VitaminSerializer(serializers.ModelSerializer):
@@ -40,6 +40,7 @@ class TagShortSerializer(serializers.ModelSerializer):
 
 
 def checkVitamins(value):
+    # TODO
     print(value)
     return True
 
@@ -54,9 +55,42 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ['id', 'name', 'photo', 'creator', 'user', 'proteins',
-                  'fats', 'carbohydrates', 'vitamins']
+                  'fats', 'carbohydrates', 'vitamins', 'created']
 
     def validate_vitamins(self, value):
         if not checkVitamins(value):
             raise serializers.ValidationError([checkVitaminsError])
         return value
+
+
+class IngredientShortSerializer(serializers.ModelSerializer):
+    # to make fields from another table valid
+    user__id = serializers.CharField()
+    user__username = serializers.CharField()
+
+    class Meta:
+        model = Ingredient
+        fields = ('id', 'name', 'photo', 'user__id', 'user__username')
+        # to avoid validation for fields from another table
+        read_only_fields = ('user__id', 'user__username')
+
+
+class DishSerializer(serializers.ModelSerializer):
+    user__id = serializers.CharField()
+    user__username = serializers.CharField()
+
+    class Meta:
+        model = Dish
+        fields = ('id', 'name', 'photo',  'receipt',
+                  'created', 'user__username', 'user__id',)
+        read_only_fields = ('user__id', 'user__username')
+
+
+class DishShortSerializer(serializers.ModelSerializer):
+    user__id = serializers.CharField()
+    user__username = serializers.CharField()
+
+    class Meta:
+        model = Dish
+        fields = ['id', 'name', 'photo',  'user__username', 'user__id']
+        read_only_fields = ('user__id', 'user__username')

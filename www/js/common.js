@@ -36,6 +36,7 @@ const API_DISH_VITAMINS = "dish/vitamins/";
 const API_DISH_UNITS = "dish/units/";
 const API_DISH_TAGS = "dish/tags/";
 const API_DISH_INGREDIENTS = "dish/ingredients/";
+const API_DISH_DISHES = "dish/dishes/";
 
 const CSS_BUTTON_PRESS_ANIMATION = "button-press-animation";
 
@@ -43,6 +44,7 @@ const TEXT_ERROR_INVALID_VITAMINS_DATA = "Invalid vitamins data";
 const TEXT_ERROR_SERVER_ERROR = "Server error";
 
 const INGREDIENTS_PAGE_SIZE = 6;
+const DISHES_PAGE_SIZE = 8;
 
 const BUTTON_PRESS_ANIMATION_DELAY = 50;
 //
@@ -333,4 +335,17 @@ const setFocusToNextField = (event) => {
       }
     }
   }
+};
+
+// get user data
+let currentUser = {};
+const getCurrentUser = () => {
+  fetchAPI(API_USER, "get", "", true, {
+    ok: (data) => {
+      currentUser["id"] = data.id;
+    },
+    error: () => {
+      window.open("./login.html", "_self");
+    },
+  });
 };

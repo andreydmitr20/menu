@@ -1,6 +1,8 @@
 from django.urls import path
 # IngredientsView,
-from .views import VitaminsView, UnitsView, TagsView,  IngredientsView
+from .views import (VitaminsView, UnitsView,
+                    TagsView,
+                    IngredientsView, DishesView)
 
 app_name = 'dish'
 
@@ -11,6 +13,10 @@ urlpatterns = [
 
     path('ingredients/', IngredientsView.as_view(), name='ingredients'),
     path('ingredients/<int:ingredient_id>',
-         IngredientsView.as_view(), name='ingredient'),
+         IngredientsView.as_view(), name='ingredients'),
+
+    path('dishes/', DishesView.as_view(), name='dishes'),
+    path('dishes/<int:dish_id>',
+         DishesView.as_view(), name='dishes'),
 
 ]
