@@ -99,11 +99,12 @@ const getDict = (api, functionsObj) => {
   //
   fetchAPI(api, "get", GET_SHORT, (jwtAuth = true), {
     ok: (data) => {
+      // console.log(data);
       try {
         sessionStorageSet(api, JSON.stringify(data));
         callFunctionFrom(functionsObj, "ok", data);
       } catch (e) {
-        sessionStorageRemove(ssDict);
+        sessionStorageRemove(api);
         callFunctionFrom(functionsObj, "error", TEXT_ERROR_SERVER_ERROR);
       }
     },

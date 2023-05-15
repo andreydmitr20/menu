@@ -1,7 +1,7 @@
 checkAuth();
 getCurrentUser();
 
-const newIngredient = document.querySelector("#new-ingredient");
+const editIngredient = document.querySelector("#edit-ingredient");
 const searchDiv = document.querySelector("#search-div");
 const pagination = document.querySelector("#pagination");
 const ingredients = document.querySelector("#ingredients");
@@ -64,11 +64,7 @@ const goToPage = (page) => {
 const searchInput = document.querySelector("#search-input");
 
 const searchFunction = createSlowedFunction(() => {
-  if (mineSearch.checked) {
-    goToPage(1);
-  } else if (!strIsEmpty(searchInput.value)) {
-    goToPage(1);
-  }
+  goToPage(1);
   searchInput.focus();
 });
 
@@ -92,10 +88,9 @@ btnAction("mine-search", (event) => {
   }
   searchFunction();
 });
-if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) {
-  mineSearch.checked = true;
-  searchFunction();
-}
+if (!strIsEmpty(localStorageGet(LS_MINE_SEARCH))) mineSearch.checked = true;
+
+searchFunction();
 
 // click edit button
 ingredients.addEventListener("click", (event) => {
@@ -213,8 +208,6 @@ const getIngredients = (searchText, pageToGo, pageSize) => {
   );
 };
 
-searchInput.focus();
-
 const add = btnAction("add", () => {
   prepareIngredient();
 });
@@ -240,7 +233,7 @@ const saveButton = btnAction("save", (event) => {
   //
   let vitaminsObj = {};
   let requestBody = {};
-  newIngredient.querySelectorAll("input").forEach((inputElement) => {
+  editIngredient.querySelectorAll("input").forEach((inputElement) => {
     const field = inputElement.dataset.field;
     if (!strIsEmpty(field)) {
       if (field !== "vitamin") {
@@ -280,7 +273,7 @@ const saveButton = btnAction("save", (event) => {
     },
     error: (error) => {
       console.log(error);
-      setText(errorText, getErrorTextFromMessage(error, newIngredient));
+      setText(errorText, getErrorTextFromMessage(error, editIngredient));
     },
   });
 });
@@ -288,13 +281,13 @@ const saveButton = btnAction("save", (event) => {
 // back action
 const back = btnAction("back", () => {
   if (isElementVisible(deleteModal)) {
-    showElement(newIngredient);
+    showElement(editIngredient);
     hideElement(deleteModal);
-  } else if (isElementVisible(newIngredient)) {
+  } else if (isElementVisible(editIngredient)) {
     showElement(searchDiv);
     showElement(pagination);
     showElement(ingredients);
-    hideElement(newIngredient);
+    hideElement(editIngredient);
     searchFunction();
   } else {
     window.open("./more.html", "_self");
@@ -308,7 +301,7 @@ const deleteButton = btnAction("delete", () => {
   document.querySelector("#delete-name").textContent =
     ingredientName.value + " ?";
 
-  hideElement(newIngredient);
+  hideElement(editIngredient);
   showElement(deleteModal);
 });
 
@@ -346,7 +339,7 @@ function prepareIngredient(ingredientId) {
   hideElement(searchDiv);
   hideElement(pagination);
   hideElement(ingredients);
-  showElement(newIngredient);
+  showElement(editIngredient);
   hideElement(deleteButton);
   setDefaultPhoto();
   setText(errorText, "");
@@ -357,14 +350,12 @@ function prepareIngredient(ingredientId) {
   }
 
   ingredientName.focus();
-  document
-    .querySelector("#new-ingredient")
-    .addEventListener("keypress", (event) => {
-      setFocusToNextField(event);
-    });
+  editIngredient.addEventListener("keypress", (event) => {
+    setFocusToNextField(event);
+  });
 
   // clear all
-  const allInputs = newIngredient.querySelectorAll("input");
+  const allInputs = editIngredient.querySelectorAll("input");
   allInputs.forEach((inputElement) => {
     inputElement.value = "";
   });
